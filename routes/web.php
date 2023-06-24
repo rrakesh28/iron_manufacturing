@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConversionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use GuzzleHttp\Handler\Proxy;
@@ -40,6 +41,10 @@ Route::get('/product/{id}/show',[ProductController::class,'show'])->name('produc
 Route::get('/product/{product}/edit',[ProductController::class,'edit'])->name('product.edit');
 Route::post('/product/{product}/update',[ProductController::class,'update'])->name('product.update');
 Route::post('/product/{product}/destroy',[ProductController::class,'destroy'])->name('product.destroy');
+
+
+Route::get('/conversion/create',[ConversionController::class,'create'])->name('conversion.create');
+Route::post('/conversion',[ConversionController::class,'store'])->name('conversion.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

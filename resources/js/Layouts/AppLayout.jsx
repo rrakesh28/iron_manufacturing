@@ -2,7 +2,7 @@ import {Head, Link, usePage} from '@inertiajs/react';
 import {useState} from 'react';
 
 export default function Authenticated({user, header, children}) {
-    const { sessionData } = usePage().props;
+    const {sessionData} = usePage().props;
     console.log(sessionData)
 
     return (
@@ -27,11 +27,17 @@ export default function Authenticated({user, header, children}) {
                             </svg>
                             <span className="ml-2">DashBoard</span>
                         </Link>
-                        <Link href="#" className="inline-flex items-center py-3 text-blue-600 bg-white rounded-lg px-2">
+                        <Link href={route('estimate.index')} className="inline-flex items-center py-3 text-blue-600 bg-white rounded-lg px-2">
                             <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
-                            <span className="ml-2">Bills/Estimate</span>
+                            <span className="ml-2">Estimate</span>
+                        </Link>
+                        <Link href={route('bill.index')} className="inline-flex items-center py-3 text-blue-600 bg-white rounded-lg px-2">
+                            <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            <span className="ml-2">Bills</span>
                         </Link>
                         <Link href={
                                 route('product.index')
@@ -42,13 +48,19 @@ export default function Authenticated({user, header, children}) {
                             </svg>
                             <span className="ml-2">Products</span>
                         </Link>
-                        <Link href="#" className="inline-flex items-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg px-2">
+                        <Link href={
+                                route('customer.index')
+                            }
+                            className="inline-flex items-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg px-2">
                             <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                             </svg>
                             <span className="ml-2">Customers</span>
                         </Link>
-                        <Link href={route('conversion.create')} className="inline-flex items-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg px-2">
+                        <Link href={
+                                route('conversion.create')
+                            }
+                            className="inline-flex items-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg px-2">
                             <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                             </svg>

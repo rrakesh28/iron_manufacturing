@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use Illuminate\Support\Facades\Session ;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class CustomerController extends Controller
+class EstimateController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $customers = Customer::all();
-        return Inertia::render('Customer/Index',compact('customers'));
+        return Inertia::render('Estimate/Index');
     }
 
     /**
@@ -23,7 +20,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Customer/Create');
+        return Inertia::render('Estimate/Create');
     }
 
     /**
@@ -31,21 +28,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $customer = new Customer();
-        $customer->full_name = $request->full_name;
-        $customer->mobile_number = $request->mobile_number;
-        $customer->email = $request->email;
-        $customer->company = $request->company;
-        $customer->address = $request->address;
-        $customer->save();
-
-        if($customer){
-            Session::flash('success','Customer created sucessfully!!');
-        }else{
-            Session::flash('error','Error in creating the customer!!');
-        }
-
-        return redirect(route('customer.index'));
+        //
     }
 
     /**

@@ -13,6 +13,7 @@ function Create({products}) {
     const [feet, setFeet] = useState(null);
     const [inches, setInches] = useState(null)
     const [kg, setKg] = useState(null)
+    const [result,setResult] = useState(null)
 
     const submit = (e) => {
         e.preventDefault();
@@ -22,7 +23,7 @@ function Create({products}) {
             inches: inches,
             kg: kg
         })).then((res) => {
-            console.log(res)
+            setResult(res.data)
         })
     }
 
@@ -98,6 +99,8 @@ function Create({products}) {
                                     required/>
                             </div>
                         }
+
+                        <p className='mt-10'>{result}</p>
                             <PrimaryButton className="mt-5">
                                 Submit
                             </PrimaryButton>

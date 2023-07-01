@@ -4,6 +4,8 @@ import AppLayout from '@/Layouts/AppLayout'
 import {Head, Link} from '@inertiajs/react'
 
 function Index({estimates}) {
+
+    
     return (
         <AppLayout>
             <Head title='Customers'/>
@@ -22,19 +24,16 @@ function Index({estimates}) {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
+                                   Estimate Id 
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     Full Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Phone Number
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Email
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Company
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Address
+                                    Total Amount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Actions

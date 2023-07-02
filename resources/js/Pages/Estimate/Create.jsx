@@ -12,15 +12,6 @@ import axios from 'axios';
 
 function Create({products, customers}) {
 
-
-    const [productsSelected, setProductsSelected] = useState([{
-            product: '',
-            unit: '',
-            feet: '',
-            inches: '',
-            kgs: ''
-        }])
-
     const [customer, setCusomter] = useState(null);
     const {
         data,
@@ -29,21 +20,30 @@ function Create({products, customers}) {
         processing,
         errors,
         reset
-    } = useForm({customer: '', products: ''});
-
-    // const [products, setProducts] = useState({})
+    } = useForm({
+        customer: '',
+        products: [
+            {
+                product: '',
+                unit: '',
+                feet: '',
+                inches: '',
+                kgs: ''
+            }
+        ]
+    });
 
     const handleProductSelect = (event, index) => {
         let product = JSON.parse(event.target.value)
-        let data = [...productsSelected]
-        data[index][event.target.name] = product
-        setProductsSelected(data)
+        let products = [...data.products]
+        products[index][event.target.name] = product
+        setData('products', products)
     }
 
     const handleFormChange = (event, index) => {
-        let data = [...productsSelected]
-        data[index][event.target.name] = event.target.value
-        setProductsSelected(data)
+        let products = [...data.products]
+        products[index][event.target.name] = event.target.value
+        setData('products', products)
     }
 
     const addProduct = () => {
@@ -55,10 +55,18 @@ function Create({products, customers}) {
             kgs: ''
         }
 
-        setProductsSelected([
-            ...productsSelected,
+        setData('products', [
+            ...data.products,
             object
         ])
+    }
+
+    const removeProduct = (index) => {
+        if(data.products.length>1){
+            let productsData = [...data.products]
+            productsData.splice(index,1)
+            setData('products',productsData)
+        }
     }
 
     const getCustomer = (event) => {
@@ -70,8 +78,6 @@ function Create({products, customers}) {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log(productsSelected)
-        setData('products',productsSelected)
         post(route('estimate.store'));
     }
     return (
@@ -140,7 +146,7 @@ function Create({products, customers}) {
                                 className='mt-5 bg-blue-700 text-sm px-6 py-2 rounded-lg text-white'>Create Customer</a>
                         </div>
                         {
-                        customer && productsSelected.map((productSelected, index) => {
+                        customer && data.products.map((productSelected, index) => {
                             return (
 
                                 <div key={index}>
@@ -183,14 +189,14 @@ function Create({products, customers}) {
                                                     <input type="radio" name="unit" id="unit" value='Feet'
                                                         onChange={
                                                             (e) => handleFormChange(e, index)
-                                                        }/>
+                                                        } required/>
                                                     <span>Feet</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <input type="radio" name="unit" id="unit" value="Inches"
                                                         onChange={
                                                             (e) => handleFormChange(e, index)
-                                                        }/>
+                                                        } required/>
                                                     <span>Inches</span>
                                                 </div>
                                             </div>
@@ -200,7 +206,7 @@ function Create({products, customers}) {
                                                 <input type="radio" name="unit" id="unit" value="Kgs"
                                                     onChange={
                                                         (e) => handleFormChange(e, index)
-                                                    }/>
+                                                    } required/>
                                                 <span>Kgs</span>
                                             </div>
                                         } </div>
@@ -277,11 +283,16 @@ function Create({products, customers}) {
                                             }
                                             className="mt-2"/>
                                     </div>
-                                } </div>
+                                } 
+                                <div className="flex justify-end">
+                                                <button type='button' onClick={(e)=>removeProduct(index)} className="px-4 py-2 bg-red-600 text-white">X</button>
+                                            </div>
+                                </div>
                             )
                         })
                     }
-                        {customer && <div className="mt-5 flex justify-center">
+                        {
+                        customer && <div className="mt-5 flex justify-center">
                             <button onClick={
                                     (e) => {
                                         addProduct()
@@ -289,7 +300,8 @@ function Create({products, customers}) {
                                 }
                                 type='button'
                                 className='mt-5 bg-blue-700 text-sm px-6 py-2 rounded-lg text-white'>Add Product</button>
-                        </div>}
+                        </div>
+                    }
                         <PrimaryButton className="mt-5"
                             disabled={processing}>
                             Submit

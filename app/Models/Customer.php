@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
+
+    public function estimates(){
+        return $this->hasMany(Estimate::class);
+    }
+
+    public function bills(){
+        return $this->hasMany(Bill::class);
+    }
 }

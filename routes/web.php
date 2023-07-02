@@ -6,8 +6,10 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EstimateController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Bill;
 use App\Models\Customer;
-use GuzzleHttp\Handler\Proxy;
+use App\Models\Estimate;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,7 +26,11 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Index');
+    $productsCount = Product::count();
+    $customersCount = Customer::count();
+    $estimatesCount = Estimate::count();
+    $billsCount = Bill::count();
+    return Inertia::render('Index',compact('productsCount','customersCount','estimatesCount','billsCount'));
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -40,15 +46,17 @@ Route::get('/dashboard', function () {
 Route::get('/estimate',[EstimateController::class,'index'])->name('estimate.index');
 Route::get('estimate/create',[EstimateController::class,'create'])->name('estimate.create');
 Route::post('estimate',[EstimateController::class,'store'])->name('estimate.store');
-Route::get('estimate/{id}/show',[EstimateController::class,'show'])->name('estimate.show');
-Route::get('estimate/{estimate}/edit',[EstimateController::class,'edit'])->name('cestimate.edit');
+Route::get('/estimate/{estimate}/convert',[EstimateController::class,'convertCreate'])->name('estimate.convert.create');
+Route::post('/estimate-convert',[EstimateController::class,'convertStore'])->name('estimate.convert.store');
+Route::get('estimate/{estimate}/show',[EstimateController::class,'show'])->name('estimate.show');
+Route::get('estimate/{estimate}/edit',[EstimateController::class,'edit'])->name('estimate.edit');
 Route::post('estimate/{estimate}/update',[EstimateController::class,'update'])->name('estimate.update');
 Route::post('estimate/{estimate}/destroy',[EstimateController::class,'destroy'])->name('estimate.destroy');
 
 Route::get('/bill',[BillController::class,'index'])->name('bill.index');
 Route::get('/bill/create',[BillController::class,'create'])->name('bill.create');
 Route::post('/bill',[BillController::class,'store'])->name('bill.store');
-Route::get('/bill/{id}/show',[BillController::class,'show'])->name('bill.show');
+Route::get('/bill/{bill}/show',[BillController::class,'show'])->name('bill.show');
 Route::get('/bill/{bill}/edit',[BillController::class,'edit'])->name('bill.edit');
 Route::post('/bill/{bill}/update',[BillController::class,'update'])->name('bill.update');
 Route::post('/bill/{bill}/destroy',[BillController::class,'destroy'])->name('bill.destroy');

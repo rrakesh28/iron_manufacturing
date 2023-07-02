@@ -1,22 +1,25 @@
 
+
 import React from 'react'
 import AppLayout from '@/Layouts/AppLayout'
 import {Head, Link} from '@inertiajs/react'
 
-function Index({estimates}) {
+function Show({estimate}) {
 
-   console.log(estimates) 
+   console.log(estimate) 
     return (
         <AppLayout>
             <Head title='Customers'/>
-            <div className="mt-5 px-5">
+            <div className="mt-5 p-5 bg-white">
                 <p className='text-[1.5rem] font-bold'>
-                    Estimates
+                    Estimate: {estimate.estimate_id}
                 </p>
-                <Link href={
-                        route('estimate.create')
-                    }
-                    className='bg-blue-700 text-sm px-6 py-2 rounded-lg text-white'>Create</Link>
+                <div>
+                    <p>Name: {estimate.customer.full_name}</p>
+                    <p>Number: {estimate.customer.mobile_number}</p>
+                    <p>Company: {estimate.customer.company}</p>
+                    <p>Total: {estimate.total_amount}</p>
+                </div>
             </div>
             <div className='mt-10 px-[2rem]'>
                 <div className="relative overflow-x-auto">
@@ -24,56 +27,44 @@ function Index({estimates}) {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
-                                   Estimate Id 
+                                   Product Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Full Name
+                                    Feet 
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Phone Number
+                                    Inches
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Total Amount
+                                    Kgs
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Actions
+                                    amount
                                 </th>
                             </tr>
                         </thead>
                         <tbody> {
-                            estimates ?. map((estimate, key) => {
+                            estimate.estimate_products ?. map((product, key) => {
                                 return <tr key={key}
                                     className="bg-white border-b ">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
-                                        estimate.estimate_id
+                                        product.product_name
                                     } </th>
                                     <td className="px-6 py-4">
                                         {
-                                        estimate.customer.full_name
+                                        product.feets
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        estimate.customer.mobile_number
+                                        product.inches
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        estimate.total_amount
+                                        product.kgs
                                     } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
-                                        <Link href={
-                                                route('estimate.show', {estimate: estimate})
-                                            }
-                                            className='text-blue-600 hover:underline'>Show</Link>
-                                        <Link href={
-                                                route('estimate.convert.create', {estimate: estimate})
-                                            }
-                                            className='text-blue-600 hover:underline'>Convert</Link>
-                                        <Link href={
-                                                route('estimate.destroy', {estimate: estimate})
-                                            }
-                                            method='post'
-                                            className='text-red-600 hover:underline'>Delete</Link>
+                                       {product.amount}
                                     </td>
                                 </tr>
                         })
@@ -86,4 +77,4 @@ function Index({estimates}) {
     )
 }
 
-export default Index
+export default Show

@@ -11,11 +11,9 @@ import {Head, Link, useForm} from '@inertiajs/react'
 import Select from 'react-select'
 import axios from 'axios';
 
-function Edit({products, estimate}) {
+function Create({products, customers}) {
 
-    console.log(estimate)
-
-    const [customer, setCusomter] = useState(estimate.customer);
+    const [customer, setCusomter] = useState(null);
     const {
         data,
         setData,
@@ -24,10 +22,17 @@ function Edit({products, estimate}) {
         errors,
         reset
     } = useForm({
-        customer: estimate.customer.id,
-        products: estimate.estimate_products,
+        customer: '',
+        products: [
+            {
+                product: '',
+                unit: '',
+                feet: '',
+                inches: '',
+                kgs: ''
+            }
+        ]
     });
-
 
     const handleProductSelect = (event, index) => {
         let product = JSON.parse(event.target.value)
@@ -57,7 +62,13 @@ function Edit({products, estimate}) {
         ])
     }
 
-
+    const removeProduct = (index) => {
+        if(data.products.length>1){
+            let productsData = [...data.products]
+            productsData.splice(index,1)
+            setData('products',productsData)
+        }
+    }
 
     const getCustomer = (event) => {
         setData('customer', event.value)
@@ -68,21 +79,33 @@ function Edit({products, estimate}) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('estimate.store'));
+        post(route('bill.store'));
     }
     return (
         <AppLayout>
             <Head title='Create Estimate'/>
             <div className="mt-5 px-5">
                 <p className='text-[1.5rem] font-bold'>
-                    Create Estimate
+                    Create Bill
                 </p>
             </div>
             <div className='mt-10 px-[2rem]'>
                 <div className="bg-white w-[30rem] p-[2rem]">
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                        {
+                            <InputLabel htmlFor="customer" value="Customer"/>
+
+                            <Select options={customers}
+                                onChange={
+                                    (e) => {
+                                        getCustomer(e)
+                                    }
+                                }/>
+
+                            <InputError message={
+                                    errors.customer
+                                }
+                                className="mt-2"/> {
                             customer && <table className='w-full mt-2'>
                                 <thead>
                                     <tr>
@@ -110,17 +133,28 @@ function Edit({products, estimate}) {
                                 </tbody>
                             </table>
                         } </div>
-                        
+                        <div className="mt-5 flex justify-center">
+                            <a href={
+                                    route('customer.create')
+                                }
+                                target='_blank'
+                                type='button'
+                                onClick={
+                                    (e) => {
+                                        setShowModal(true)
+                                    }
+                                }
+                                className='mt-5 bg-blue-700 text-sm px-6 py-2 rounded-lg text-white'>Create Customer</a>
+                        </div>
                         {
                         customer && data.products.map((productSelected, index) => {
                             return (
 
                                 <div key={index}>
-                                    <p>{productSelected.id}</p>
                                     <div className="mt-4">
                                         <InputLabel htmlFor="product" value="Product"/>
 
-                                        <select defaultValue={productSelected.id} name="product" id="product" className='w-full border border-gray-200 rounded-lg'
+                                        <select name="product" id="product" className='w-full border border-gray-200 rounded-lg'
                                             onChange={
                                                 (e) => handleProductSelect(e, index)
                                         }>
@@ -146,34 +180,34 @@ function Edit({products, estimate}) {
                                     </div>
 
                                     {
-                                    productSelected && <div className="mt-4">
+                                    productSelected.product && <div className="mt-4">
                                         <InputLabel htmlFor="unit" value="Unit"/>
                                         <div className="flex gap-4 flex-wrap">
                                             {
-                                            productSelected.unit_type === 'Feet' && <div className='flex gap-4'>
+                                            productSelected.product.unit_type === 'Feet' && <div className='flex gap-4'>
 
                                                 <div className="flex items-center gap-2">
-                                                    <input type="radio" name="unit" id="unit" value='Feet' defaultChecked={productSelected.unit_selected === 'Feet'}
+                                                    <input type="radio" name="unit" id="unit" value='Feet'
                                                         onChange={
                                                             (e) => handleFormChange(e, index)
-                                                        }/>
+                                                        } required/>
                                                     <span>Feet</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <input type="radio" name="unit" id="unit" value="Inches"
                                                         onChange={
                                                             (e) => handleFormChange(e, index)
-                                                        }/>
+                                                        } required/>
                                                     <span>Inches</span>
                                                 </div>
                                             </div>
                                         }
                                             {
-                                            (productSelected.unit_type === 'Kgs' || productSelected.unit_type === 'Feet') && <div className="flex items-center gap-2">
+                                            (productSelected.product.unit_type === 'Kgs' || productSelected.product.unit_type === 'Feet') && <div className="flex items-center gap-2">
                                                 <input type="radio" name="unit" id="unit" value="Kgs"
                                                     onChange={
                                                         (e) => handleFormChange(e, index)
-                                                    }/>
+                                                    } required/>
                                                 <span>Kgs</span>
                                             </div>
                                         } </div>
@@ -250,7 +284,11 @@ function Edit({products, estimate}) {
                                             }
                                             className="mt-2"/>
                                     </div>
-                                } </div>
+                                } 
+                                <div className="flex justify-end">
+                                                <button type='button' onClick={(e)=>removeProduct(index)} className="px-4 py-2 bg-red-600 text-white">X</button>
+                                            </div>
+                                </div>
                             )
                         })
                     }
@@ -276,4 +314,4 @@ function Edit({products, estimate}) {
     )
 }
 
-export default Edit;
+export default Create;

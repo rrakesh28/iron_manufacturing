@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Estimate extends Model
+class Bill extends Model
 {
     use HasFactory;
-    protected $with = ['customer','estimateProducts'];
+
+    protected $with = ['customer','billProducts'];
 
     public function customer(){
         return $this->belongsTo(Customer::class);
     }
 
-    public function estimateProducts(){
-        return $this->hasMany(EstimateProducts::class);
+    public function billProducts(){
+        return $this->hasMany(BillsProduct::class);
     }
 }

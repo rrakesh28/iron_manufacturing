@@ -46,23 +46,23 @@ function Index({customers}) {
                                     className="bg-white border-b ">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
-                                        customer.name
+                                        customer.full_name
                                     } </th>
                                     <td className="px-6 py-4">
                                         {
-                                        customer.unit_type
+                                        customer.mobile_number
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        customer.in_kgs
+                                        customer.email
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        customer.price_per_kg
+                                        customer.company
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        customer.price_per_kg
+                                        customer.address
                                     } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         <Link href={

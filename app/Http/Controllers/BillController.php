@@ -60,7 +60,7 @@ class BillController extends Controller
                     $inches = $product['inches'];
                     $kgsPerFeet = $product['product']['in_kgs'];
                     $price_per_kg = $product['product']['price_per_kg'];
-                    $answer = ($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg);
+                    $answer = (($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity'];
                     $total += $answer;
 
                     $billProduct= new BillsProduct();

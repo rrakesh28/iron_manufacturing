@@ -27,6 +27,7 @@ function Convert({estimate}) {
     useEffect(() => {
         const updatedProducts = estimate.estimate_products.map((product) => {
             let fields = {
+                final_quantity:'',
                 final_feets: '',
                 final_inches: '',
                 final_kgs: ''
@@ -104,6 +105,9 @@ function Convert({estimate}) {
                                         <p>Product: {
                                             productSelected.product_name
                                         }</p>
+                                        <p>Quantity: {
+                                            productSelected.quantity
+                                        }</p>
 
                                         <p>Unit: {
                                             productSelected.unit_selected
@@ -121,6 +125,23 @@ function Convert({estimate}) {
                                     </div>
 
 
+                                    {
+                                    productSelected.unit_selected === 'Feet' && <div className="mt-4">
+                                        <InputLabel htmlFor="Quantity" value="Quantity"/>
+
+                                        <TextInput id="final_quantity" type="number" name="final_quantity"
+                                            value={
+                                                productSelected.final_quantity
+                                            }
+                                            className="mt-1 block w-full"
+                                            onChange={
+                                                (e) => {
+                                                    handleFormChange(e, index)
+                                                }
+                                            }
+                                            required/>
+                                    </div>
+                                }
                                     {
                                     productSelected.unit_selected === 'Feet' && <div className="mt-4">
                                         <InputLabel htmlFor="feet" value="Feet"/>

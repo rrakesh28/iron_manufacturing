@@ -30,6 +30,9 @@ function Show({estimate}) {
                                    Product Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
+                                   Quantity
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     Feet 
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -50,6 +53,10 @@ function Show({estimate}) {
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
                                         product.product_name
+                                    } </th>
+                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                        {
+                                        product.quantity
                                     } </th>
                                     <td className="px-6 py-4">
                                         {

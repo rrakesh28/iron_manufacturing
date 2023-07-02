@@ -25,6 +25,7 @@ function Create({products, customers}) {
         products: [
             {
                 product: '',
+                quantity: '',
                 unit: '',
                 feet: '',
                 inches: '',
@@ -49,6 +50,7 @@ function Create({products, customers}) {
     const addProduct = () => {
         let object = {
             product: '',
+            quantity: '',
             unit: '',
             feet: '',
             inches: '',
@@ -62,10 +64,10 @@ function Create({products, customers}) {
     }
 
     const removeProduct = (index) => {
-        if(data.products.length>1){
+        if (data.products.length > 1) {
             let productsData = [...data.products]
-            productsData.splice(index,1)
-            setData('products',productsData)
+            productsData.splice(index, 1)
+            setData('products', productsData)
         }
     }
 
@@ -189,14 +191,16 @@ function Create({products, customers}) {
                                                     <input type="radio" name="unit" id="unit" value='Feet'
                                                         onChange={
                                                             (e) => handleFormChange(e, index)
-                                                        } required/>
+                                                        }
+                                                        required/>
                                                     <span>Feet</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <input type="radio" name="unit" id="unit" value="Inches"
                                                         onChange={
                                                             (e) => handleFormChange(e, index)
-                                                        } required/>
+                                                        }
+                                                        required/>
                                                     <span>Inches</span>
                                                 </div>
                                             </div>
@@ -206,7 +210,8 @@ function Create({products, customers}) {
                                                 <input type="radio" name="unit" id="unit" value="Kgs"
                                                     onChange={
                                                         (e) => handleFormChange(e, index)
-                                                    } required/>
+                                                    }
+                                                    required/>
                                                 <span>Kgs</span>
                                             </div>
                                         } </div>
@@ -218,13 +223,12 @@ function Create({products, customers}) {
                                     </div>
                                 }
 
-                                    {
-                                    productSelected.unit === 'Feet' && <div className="mt-4">
-                                        <InputLabel htmlFor="feet" value="Feet"/>
+                                    {(productSelected.unit === 'Feet' || productSelected.unit === 'Inches' ) &&<div className="mt-4">
+                                        <InputLabel htmlFor="quantity" value="Quantity"/>
 
-                                        <TextInput id="feet" type="number" name="feet"
+                                        <TextInput id="quantity" type="number" name="quantity"
                                             value={
-                                                productSelected.feet
+                                                productSelected.quantity
                                             }
                                             className="mt-1 block w-full"
                                             onChange={
@@ -234,60 +238,83 @@ function Create({products, customers}) {
                                             }
                                             required/>
 
-                                        <InputError message={
-                                                errors.feet
-                                            }
-                                            className="mt-2"/>
-                                    </div>
-                                }
-                                    {
-                                    (productSelected.unit === 'Feet' || productSelected.unit === 'Inches') && <div className="mt-4">
-                                        <InputLabel htmlFor="inches" value="Inches"/>
+                                    </div>}
 
-                                        <TextInput id="inches" type="number" name="inches"
-                                            value={
-                                                productSelected.inches
-                                            }
-                                            className="mt-1 block w-full"
-                                            onChange={
-                                                (e) => {
-                                                    handleFormChange(e, index)
-                                                }
-                                            }
-                                            required/>
 
-                                        <InputError message={
-                                                errors.inches
-                                            }
-                                            className="mt-2"/>
-                                    </div>
-                                }
-                                    {
-                                    productSelected.unit === 'Kgs' && <div className="mt-4">
-                                        <InputLabel htmlFor="kgs" value="Kgs"/>
+                                {
+                                productSelected.unit === 'Feet' && <div className="mt-4">
+                                    <InputLabel htmlFor="feet" value="Feet"/>
 
-                                        <TextInput id="kgs" type="number" name="kgs"
-                                            value={
-                                                productSelected.kgs
+                                    <TextInput id="feet" type="number" name="feet"
+                                        value={
+                                            productSelected.feet
+                                        }
+                                        className="mt-1 block w-full"
+                                        onChange={
+                                            (e) => {
+                                                handleFormChange(e, index)
                                             }
-                                            className="mt-1 block w-full"
-                                            onChange={
-                                                (e) => {
-                                                    handleFormChange(e, index)
-                                                }
-                                            }
-                                            required/>
+                                        }
+                                        required/>
 
-                                        <InputError message={
-                                                errors.kgs
-                                            }
-                                            className="mt-2"/>
-                                    </div>
-                                } 
-                                <div className="flex justify-end">
-                                                <button type='button' onClick={(e)=>removeProduct(index)} className="px-4 py-2 bg-red-600 text-white">X</button>
-                                            </div>
+                                    <InputError message={
+                                            errors.feet
+                                        }
+                                        className="mt-2"/>
                                 </div>
+                            }
+                                {
+                                (productSelected.unit === 'Feet' || productSelected.unit === 'Inches') && <div className="mt-4">
+                                    <InputLabel htmlFor="inches" value="Inches"/>
+
+                                    <TextInput id="inches" type="number" name="inches"
+                                        value={
+                                            productSelected.inches
+                                        }
+                                        className="mt-1 block w-full"
+                                        onChange={
+                                            (e) => {
+                                                handleFormChange(e, index)
+                                            }
+                                        }
+                                        required/>
+
+                                    <InputError message={
+                                            errors.inches
+                                        }
+                                        className="mt-2"/>
+                                </div>
+                            }
+                                {
+                                productSelected.unit === 'Kgs' && <div className="mt-4">
+                                    <InputLabel htmlFor="kgs" value="Kgs"/>
+
+                                    <TextInput id="kgs" type="number" name="kgs"
+                                        value={
+                                            productSelected.kgs
+                                        }
+                                        className="mt-1 block w-full"
+                                        onChange={
+                                            (e) => {
+                                                handleFormChange(e, index)
+                                            }
+                                        }
+                                        required/>
+
+                                    <InputError message={
+                                            errors.kgs
+                                        }
+                                        className="mt-2"/>
+                                </div>
+                            }
+                                <div className="flex justify-end">
+                                    <button type='button'
+                                        onClick={
+                                            (e) => removeProduct(index)
+                                        }
+                                        className="px-4 py-2 bg-red-600 text-white">X</button>
+                                </div>
+                            </div>
                             )
                         })
                     }

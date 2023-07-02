@@ -39,6 +39,9 @@ function Show({bill}) {
                                     Product Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
+                                   Estimated Quantity 
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     Estimated Feet
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -49,6 +52,9 @@ function Show({bill}) {
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Estimated amount
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                   Final Quantity 
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Final Feet
@@ -74,6 +80,10 @@ function Show({bill}) {
                                     } </th>
                                     <td className="px-6 py-4">
                                         {
+                                        product.estimated_quantity
+                                    } </td>
+                                    <td className="px-6 py-4">
+                                        {
                                         product.estimated_feets
                                     } </td>
                                     <td className="px-6 py-4">
@@ -87,6 +97,10 @@ function Show({bill}) {
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         {
                                         product.estimated_amount
+                                    } </td>
+                                    <td className="px-6 py-4">
+                                        {
+                                        product.final_quantity
                                     } </td>
 
                                     <td className="px-6 py-4">

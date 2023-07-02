@@ -26,6 +26,7 @@ function Create({products, customers}) {
         products: [
             {
                 product: '',
+                quantity:'',
                 unit: '',
                 feet: '',
                 inches: '',
@@ -50,6 +51,7 @@ function Create({products, customers}) {
     const addProduct = () => {
         let object = {
             product: '',
+            quantity:'',
             unit: '',
             feet: '',
             inches: '',
@@ -219,6 +221,24 @@ function Create({products, customers}) {
                                     </div>
                                 }
 
+                                    {
+                                    (productSelected.unit === 'Feet' || productSelected.unit === 'Inches') && <div className="mt-4">
+                                        <InputLabel htmlFor="quantity" value="Quantity"/>
+
+                                        <TextInput id="quantity" type="number" name="quantity"
+                                            value={
+                                                productSelected.quantity
+                                            }
+                                            className="mt-1 block w-full"
+                                            onChange={
+                                                (e) => {
+                                                    handleFormChange(e, index)
+                                                }
+                                            }
+                                            required/>
+
+                                    </div>
+                                }
                                     {
                                     productSelected.unit === 'Feet' && <div className="mt-4">
                                         <InputLabel htmlFor="feet" value="Feet"/>

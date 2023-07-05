@@ -24,11 +24,13 @@ return new class extends Migration
             $table->float('estimated_feets')->nullable();
             $table->float('estimated_inches')->nullable();
             $table->float('estimated_kgs')->nullable();
+            $table->float('estimated_total_kgs')->nullable();
             $table->float('estimated_amount')->nullable();
             $table->integer('final_quantity')->nullable();
             $table->float('final_feets')->nullable();
             $table->float('final_inches')->nullable();
             $table->float('final_kgs')->nullable();
+            $table->float('final_total_kgs')->nullable();
             $table->float('final_amount');
             $table->timestamps();
         });

@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/estimate/{estimate}/convert',[EstimateController::class,'convertCreate'])->name('estimate.convert.create');
     Route::post('/estimate-convert',[EstimateController::class,'convertStore'])->name('estimate.convert.store');
     Route::get('estimate/{estimate}/show',[EstimateController::class,'show'])->name('estimate.show');
+    Route::get('estimate/{estimate}/invoice',[EstimateController::class,'invoice'])->name('estimate.invoice');
     Route::get('estimate/{estimate}/edit',[EstimateController::class,'edit'])->name('estimate.edit');
     Route::post('estimate/{estimate}/update',[EstimateController::class,'update'])->name('estimate.update');
     Route::post('estimate/{estimate}/destroy',[EstimateController::class,'destroy'])->name('estimate.destroy');
@@ -63,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/bill/create',[BillController::class,'create'])->name('bill.create');
     Route::post('/bill',[BillController::class,'store'])->name('bill.store');
     Route::get('/bill/{bill}/show',[BillController::class,'show'])->name('bill.show');
+    Route::get('/bill/{bill}/invoice',[BillController::class,'invoice'])->name('bill.invoice');
     Route::get('/bill/{bill}/edit',[BillController::class,'edit'])->name('bill.edit');
     Route::post('/bill/{bill}/update',[BillController::class,'update'])->name('bill.update');
     Route::post('/bill/{bill}/destroy',[BillController::class,'destroy'])->name('bill.destroy');

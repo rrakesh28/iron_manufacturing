@@ -42,6 +42,12 @@ function Show({estimate}) {
                                     Kgs
                                 </th>
                                 <th scope="col" className="px-6 py-3">
+                                    Total Kgs
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                   Price Per Kg 
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     amount
                                 </th>
                             </tr>
@@ -70,6 +76,14 @@ function Show({estimate}) {
                                         {
                                         product.kgs
                                     } </td>
+                                     <td className="px-6 py-4">
+                                        {
+                                        product.total_kgs
+                                    } </td>
+                                     <td className="px-6 py-4">
+                                        {
+                                        product.price_per_kg
+                                    } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                        {product.amount}
                                     </td>
@@ -77,6 +91,10 @@ function Show({estimate}) {
                         })
                         } </tbody>
                     </table>
+                </div>
+
+                <div className="flex justify-center">
+                    <Link href={route('estimate.invoice',{estimate:estimate})} className='block mt-2 bg-blue-600 text-white px-6 py-2 rounded-lg'>Invoice</Link>
                 </div>
 
             </div>

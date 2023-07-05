@@ -125,8 +125,7 @@ function Convert({estimate}) {
                                     </div>
 
 
-                                    {
-                                    productSelected.unit_selected === 'Feet' && <div className="mt-4">
+                                    <div className="mt-4">
                                         <InputLabel htmlFor="Quantity" value="Quantity"/>
 
                                         <TextInput id="final_quantity" type="number" name="final_quantity"
@@ -141,7 +140,7 @@ function Convert({estimate}) {
                                             }
                                             required/>
                                     </div>
-                                }
+                                
                                     {
                                     productSelected.unit_selected === 'Feet' && <div className="mt-4">
                                         <InputLabel htmlFor="feet" value="Feet"/>

@@ -63,6 +63,7 @@ class EstimateController extends Controller
                     $inches = $product['inches'];
                     $kgsPerFeet = $product['product']['in_kgs'];
                     $price_per_kg = $product['product']['price_per_kg'];
+                    $total_kgs = ($feets * $kgsPerFeet) + (($inches/12) * $kgsPerFeet);
                     $answer = (($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity'];
                     $total += $answer;
 
@@ -77,6 +78,7 @@ class EstimateController extends Controller
                     $estimateProduct->quantity = $product['quantity'];
                     $estimateProduct->feets = $product['feet'];
                     $estimateProduct->inches = $product['inches'];
+                    $estimateProduct->total_kgs = $total_kgs;
                     $estimateProduct->amount = $answer;
                     $estimateProduct->save();
                 }
@@ -97,6 +99,7 @@ class EstimateController extends Controller
                     $estimateProduct->feets = $product['feet'];
                     $estimateProduct->inches = $product['inches'];
                     $estimateProduct->kgs = $product['kgs'];
+                    $estimateProduct->total_kgs = $product['kgs'];
                     $estimateProduct->amount = $answer;
                     $estimateProduct->save();
                 }
@@ -171,6 +174,7 @@ class EstimateController extends Controller
                 $inches = $product['final_inches'];
                 $kgsPerFeet = $product['in_kgs'];
                 $price_per_kg = $product['price_per_kg'];
+                $total_kgs = ($feets * $kgsPerFeet) + (($inches/12) * $kgsPerFeet);
                 $answer = (($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['final_quantity'];
                 $total += $answer;
 
@@ -185,17 +189,19 @@ class EstimateController extends Controller
                 $billProducts->estimated_quantity = $product['quantity'];
                 $billProducts->estimated_feets = $product['feets'];
                 $billProducts->estimated_inches = $product['inches'];
+                $billProducts->estimated_total_kgs = $product['total_kgs'];
                 $billProducts->estimated_amount = $product['amount'];
                 $billProducts->final_quantity = $product['final_quantity'];
                 $billProducts->final_feets = $product['final_feets'];
                 $billProducts->final_inches = $product['final_inches'];
+                $billProducts->final_total_kgs = $total_kgs;
                 $billProducts->final_amount = $answer;
                 $billProducts->save();
             }
             if ($product['unit_selected'] == 'Kgs') {
 
                 $price_per_kg = $product['price_per_kg'];
-                $answer = $product['final_kgs'] * $price_per_kg;
+                $answer = ($product['final_kgs'] * $price_per_kg) * $product['final_quantity'];
                 $total += $answer;
 
                 $billProducts = new EstimateProducts();
@@ -220,7 +226,7 @@ class EstimateController extends Controller
         return redirect(route('bill.show', ['bill' => $bill->id]));
     }
 
-    public function invoice(){
-        return Inertia::render('Estimate/Invoice');
+    public function invoice(Estimate $estimate){
+        return Inertia::render('Estimate/Invoice',compact('estimate'));
     }
 }

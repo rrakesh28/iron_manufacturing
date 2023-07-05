@@ -223,7 +223,7 @@ function Create({products, customers}) {
                                     </div>
                                 }
 
-                                    {(productSelected.unit === 'Feet' || productSelected.unit === 'Inches' ) &&<div className="mt-4">
+                                    <div className="mt-4">
                                         <InputLabel htmlFor="quantity" value="Quantity"/>
 
                                         <TextInput id="quantity" type="number" name="quantity"
@@ -238,7 +238,7 @@ function Create({products, customers}) {
                                             }
                                             required/>
 
-                                    </div>}
+                                    </div>
 
 
                                 {

@@ -1,8 +1,11 @@
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Invoice({bill}) {
+    const [date,setDate] = useState(null)
     useEffect(()=>{
+        const date = new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'});
+        setDate(date)
         window.print();
     },[])
     return (
@@ -20,6 +23,7 @@ function Invoice({bill}) {
                 <div className='mt-10'>
                     <div className="flex gap-4">
                         <div>
+                            <p>Date:{date}</p>
                             <p>
                                 <span>Bill: {
                                     bill.bill_id
@@ -138,6 +142,7 @@ function Invoice({bill}) {
                 <div className='mt-10'>
                     <div className="flex gap-4">
                         <div>
+                            <p>Date:{date}</p>
                             <p>
                                 <span>Bill: {
                                     bill.bill_id

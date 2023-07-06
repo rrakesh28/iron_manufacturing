@@ -64,7 +64,7 @@ class EstimateController extends Controller
                     $kgsPerFeet = $product['product']['in_kgs'];
                     $price_per_kg = $product['product']['price_per_kg'];
                     $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * ($product['quantity']);
-                    $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']) * ($total_kgs * $product['loading_charges']);
+                    $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']) + ($total_kgs * $product['loading_charges']);
                     $final_amount = $answer - ($answer * ($product['discount'] / 100));
                     $total += $final_amount;
 
@@ -176,9 +176,11 @@ class EstimateController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Estimate $estimate)
     {
-        //
+       $estimate->estimateProducts()->delete();
+       
+       $estimate->delete();
     }
 
     public function convertCreate(Estimate $estimate)

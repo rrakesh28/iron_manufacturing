@@ -173,9 +173,10 @@ class BillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Bill $bill)
     {
-        //
+        $bill->billProducts()->delete();
+        $bill->delete();
     }
 
     public function invoice(Bill $bill)

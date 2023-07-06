@@ -39,7 +39,7 @@ function Show({bill}) {
                                     Product Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                   Estimated Quantity 
+                                    Estimated Quantity
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Estimated Feet
@@ -54,10 +54,19 @@ function Show({bill}) {
                                     Estimated Total Kgs
                                 </th>
                                 <th scope="col" className="px-6 py-3">
+                                    Estimated Loading Charges
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Estimated Discount
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     Estimated amount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                   Bill Quantity 
+                                    Estimated Total Amount
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Bill Quantity
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Bill Feet
@@ -72,10 +81,19 @@ function Show({bill}) {
                                     Bill Total Kgs
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                   Price Per Kg 
+                                    Price Per Kg
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Bill Loading Charges
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Bill Discount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Bill amount
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Bill Total amount
                                 </th>
                             </tr>
                         </thead>
@@ -107,39 +125,30 @@ function Show({bill}) {
                                         {
                                         product.estimated_total_kgs
                                     } </td>
+                                    <td className="px-6 py-4">
+                                        {
+                                        product.estimated_loading_charges
+                                    } </td>
+                                    <td className="px-6 py-4">
+                                        {
+                                        product.estimated_discount
+                                    } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         {
                                         product.estimated_amount
                                     } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        product.final_quantity
-                                    } </td>
-
-                                    <td className="px-6 py-4">
-                                        {
-                                        product.final_feets
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        product.final_inches
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        product.final_kgs
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        product.final_total_kgs
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        product.price_per_kg
-                                    } </td>
-                                    <td className="px-6 py-4 flex gap-2 items-center">
-                                        {
-                                        product.final_amount
-                                    } </td>
+                                    <td>{product.estimated_total_amount}</td>
+                                    <td>{product.final_quantity}</td>
+                                    <td>{product.final_feets}</td>
+                                    <td>{product.final_inches}</td>
+                                    <td>{product.final_kgs}</td>
+                                    <td>{product.final_total_kgs}</td>
+                                    <td>{product.price_per_kg}</td>
+                                    <td>{product.final_loading_charges}</td>
+                                    <td>{product.final_discount}</td>
+                                    <td>{product.final_amount}</td>
+                                    <td>{product.final_total_amount}</td>
+                                    
                                 </tr>
                         })
                         } </tbody>
@@ -147,7 +156,10 @@ function Show({bill}) {
                 </div>
 
                 <div className="flex justify-center">
-                    <Link href={route('bill.invoice',{bill:bill})} className='block mt-2 bg-blue-600 text-white px-6 py-2 rounded-lg'>Invoice</Link>
+                    <Link href={
+                            route('bill.invoice', {bill: bill})
+                        }
+                        className='block mt-2 bg-blue-600 text-white px-6 py-2 rounded-lg'>Invoice</Link>
                 </div>
             </div>
         </AppLayout>

@@ -17,7 +17,7 @@ class BillController extends Controller
     public function index()
     {
         $bills = Bill::all();
-        return Inertia::render('Bill/Index',compact('bills'));
+        return Inertia::render('Bill/Index', compact('bills'));
     }
 
     /**
@@ -45,7 +45,7 @@ class BillController extends Controller
         } while (Bill::where('bill_id', $bill_id)->exists());
 
 
-        $bill= new Bill();
+        $bill = new Bill();
         $bill->customer_id = $request->customer;
         $bill->bill_id = $bill_id;
         $bill->final_amount = 0;
@@ -60,30 +60,10 @@ class BillController extends Controller
                     $inches = $product['inches'];
                     $kgsPerFeet = $product['product']['in_kgs'];
                     $price_per_kg = $product['product']['price_per_kg'];
-                    $total_kgs = ($feets * $kgsPerFeet) + (($inches/12) * $kgsPerFeet);
-                    $answer = (($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity'];
-                    $total += $answer;
-
-                    $billProduct= new BillsProduct();
-                    $billProduct->bill_id = $bill->id;
-                    $billProduct->product_id = $product['product']['id'];
-                    $billProduct->product_name = $product['product']['name'];
-                    $billProduct->unit_type = $product['product']['unit_type'];
-                    $billProduct->in_kgs = $product['product']['in_kgs'];
-                    $billProduct->price_per_kg = $product['product']['price_per_kg'];
-                    $billProduct->unit_selected = $product['unit'];
-                    $billProduct->final_feets = $product['feet'];
-                    $billProduct->final_inches = $product['inches'];
-                    $billProduct->final_amount = $answer;
-                    $billProduct->final_kgs = $product['kgs'];
-                    $billProduct->final_total_kgs = $total_kgs;
-                    $billProduct->save();
-                }
-                if ($product['unit'] == 'Kgs') {
-
-                    $price_per_kg = $product['product']['price_per_kg'];
-                    $answer = ($product['kgs'] * $price_per_kg) * $product['quantity'];
-                    $total += $answer;
+                    $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * $product['quantity'];
+                    $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']) + ($total_kgs * $product['loading_charges']);
+                    $final_amount = $answer - ($answer * ($product['discount'] / 100));
+                    $total += $final_amount;
 
                     $billProduct = new BillsProduct();
                     $billProduct->bill_id = $bill->id;
@@ -93,11 +73,68 @@ class BillController extends Controller
                     $billProduct->in_kgs = $product['product']['in_kgs'];
                     $billProduct->price_per_kg = $product['product']['price_per_kg'];
                     $billProduct->unit_selected = $product['unit'];
+                    $billProduct->final_quantity = $product['quantity'];
+                    $billProduct->final_loading_charges = $product['loading_charges'];
+                    $billProduct->final_feets = $product['feet'];
+                    $billProduct->final_inches = $product['inches'];
+                    $billProduct->final_discount = $product['discount'];
+                    $billProduct->final_amount = $answer;
+                    $billProduct->final_total_amount = $final_amount;
+                    $billProduct->final_kgs = $product['kgs'];
+                    $billProduct->final_total_kgs = $total_kgs;
+                    $billProduct->save();
+                }
+                if ($product['unit'] == 'Kgs') {
+
+                    $price_per_kg = $product['product']['price_per_kg'];
+                    $answer = (($product['kgs'] * $price_per_kg) * $product['quantity']) + (($product['kgs'] * $product['quantity']) * $product['loading_charges']);
+                    $final_amount = $answer - ($answer * ($product['discount'] / 100));
+                    $total += $final_amount;
+
+                    $billProduct = new BillsProduct();
+                    $billProduct->bill_id = $bill->id;
+                    $billProduct->product_id = $product['product']['id'];
+                    $billProduct->product_name = $product['product']['name'];
+                    $billProduct->unit_type = $product['product']['unit_type'];
+                    $billProduct->in_kgs = $product['product']['in_kgs'];
+                    $billProduct->price_per_kg = $product['product']['price_per_kg'];
+                    $billProduct->unit_selected = $product['unit'];
+                    $billProduct->final_quantity = $product['quantity'];
+                    $billProduct->final_loading_charges = $product['loading_charges'];
                     $billProduct->final_feets = $product['feet'];
                     $billProduct->final_inches = $product['inches'];
                     $billProduct->final_kgs = $product['kgs'];
-                    $billProduct->final_total_kgs = $product['kgs'];
+                    $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    $billProduct->final_discount = $product['discount'];
                     $billProduct->final_amount = $answer;
+                    $billProduct->final_total_amount = $final_amount;
+                    $billProduct->save();
+                }
+            } else {
+                if ($product['unit'] == 'Kgs') {
+
+                    $price_per_kg = $product['product']['price_per_kg'];
+                    $answer = (($product['kgs'] * $price_per_kg) * $product['quantity']) + (($product['kgs'] * $product['quantity']) * $product['loading_charges']);
+                    $final_amount = $answer - ($answer * ($product['discount'] / 100));
+                    $total += $final_amount;
+
+                    $billProduct = new BillsProduct();
+                    $billProduct->bill_id = $bill->id;
+                    $billProduct->product_id = $product['product']['id'];
+                    $billProduct->product_name = $product['product']['name'];
+                    $billProduct->unit_type = $product['product']['unit_type'];
+                    $billProduct->in_kgs = $product['product']['in_kgs'];
+                    $billProduct->price_per_kg = $product['product']['price_per_kg'];
+                    $billProduct->unit_selected = $product['unit'];
+                    $billProduct->final_quantity = $product['quantity'];
+                    $billProduct->final_loading_charges = $product['loading_charges'];
+                    $billProduct->final_feets = $product['feet'];
+                    $billProduct->final_inches = $product['inches'];
+                    $billProduct->final_kgs = $product['kgs'];
+                    $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    $billProduct->final_discount = $product['discount'];
+                    $billProduct->final_amount = $answer;
+                    $billProduct->final_total_amount = $final_amount;
                     $billProduct->save();
                 }
             }
@@ -114,7 +151,7 @@ class BillController extends Controller
      */
     public function show(Bill $bill)
     {
-        return Inertia::render('Bill/Show',compact('bill'));
+        return Inertia::render('Bill/Show', compact('bill'));
     }
 
     /**
@@ -141,7 +178,8 @@ class BillController extends Controller
         //
     }
 
-    public function invoice(Bill $bill){
-        return Inertia::render('Bill/Invoice',compact('bill'));
+    public function invoice(Bill $bill)
+    {
+        return Inertia::render('Bill/Invoice', compact('bill'));
     }
 }

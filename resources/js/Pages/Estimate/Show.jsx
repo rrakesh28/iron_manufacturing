@@ -45,10 +45,19 @@ function Show({estimate}) {
                                     Total Kgs
                                 </th>
                                 <th scope="col" className="px-6 py-3">
+                                   Loading Charges 
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                    Price Per Kg 
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    amount
+                                    Amount
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Discount
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Final Amount
                                 </th>
                             </tr>
                         </thead>
@@ -82,10 +91,22 @@ function Show({estimate}) {
                                     } </td>
                                      <td className="px-6 py-4">
                                         {
+                                        product.loading_charges
+                                    } </td>
+                                     <td className="px-6 py-4">
+                                        {
                                         product.price_per_kg
                                     } </td>
+                                     <td className="px-6 py-4">
+                                        {
+                                        product.amount
+                                    } </td>
+                                     <td className="px-6 py-4">
+                                        {
+                                        product.discount
+                                    } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
-                                       {product.amount}
+                                       {product.final_amount}
                                     </td>
                                 </tr>
                         })

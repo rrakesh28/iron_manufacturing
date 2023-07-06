@@ -47,7 +47,12 @@ function Invoice({bill}) {
                                 <th>Feets</th>
                                 <th>Inches</th>
                                 <th>Kgs</th>
+                                <th>Total Kgs</th>
+                                <th>Price Per Kgs</th>
+                                <th>Loading Charges</th>
                                 <th>Amount</th>
+                                <th>Discount</th>
+                                <th>Final Amount</th>
                             </tr>
                         </thead>
                         <tbody> {
@@ -73,14 +78,39 @@ function Invoice({bill}) {
                                         {
                                         product.final_kgs
                                     }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.final_total_kgs
+                                    }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.price_per_kg
+                                    }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.final_loading_charges
+                                    }</td>
                                     <th className='text-center'>
                                         {
                                         product.final_amount
+                                    }</th>
+                                    <th className='text-center'>
+                                        {
+                                        product.final_discount
+                                    }</th>
+                                    <th className='text-center'>
+                                        {
+                                        product.final_total_amount
                                     }</th>
                                 </tr>
                         })
                         }
                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -109,8 +139,8 @@ function Invoice({bill}) {
                     <div className="flex gap-4">
                         <div>
                             <p>
-                                <span>bill: {
-                                    bill.estimate_id
+                                <span>Bill: {
+                                    bill.bill_id
                                 }</span>
                             </p>
                         </div>
@@ -135,7 +165,12 @@ function Invoice({bill}) {
                                 <th>Feets</th>
                                 <th>Inches</th>
                                 <th>Kgs</th>
+                                <th>Total Kgs</th>
+                                <th>Price Per Kgs</th>
+                                <th>Loading Charges</th>
                                 <th>Amount</th>
+                                <th>Discount</th>
+                                <th>Final Amount</th>
                             </tr>
                         </thead>
                         <tbody> {
@@ -161,14 +196,39 @@ function Invoice({bill}) {
                                         {
                                         product.final_kgs
                                     }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.final_total_kgs
+                                    }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.price_per_kg
+                                    }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.final_loading_charges
+                                    }</td>
                                     <th className='text-center'>
                                         {
                                         product.final_amount
+                                    }</th>
+                                    <th className='text-center'>
+                                        {
+                                        product.final_discount
+                                    }</th>
+                                    <th className='text-center'>
+                                        {
+                                        product.final_total_amount
                                     }</th>
                                 </tr>
                         })
                         }
                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -181,8 +241,7 @@ function Invoice({bill}) {
                             </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
+                </div>            </div>
 
         </div>
     )

@@ -20,12 +20,15 @@ return new class extends Migration
             $table->float('in_kgs')->nullable();
             $table->float('price_per_kg');
             $table->string('unit_selected');
+            $table->float('loading_charges');
             $table->string('quantity')->nullable();
             $table->float('feets')->nullable();
             $table->float('inches')->nullable();
             $table->float('kgs')->nullable();
             $table->float('total_kgs')->nullable();
-            $table->float('amount');
+            $table->float('discount');
+            $table->double('amount');
+            $table->double('final_amount');
             $table->timestamps();
         });
     }

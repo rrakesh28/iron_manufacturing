@@ -20,18 +20,24 @@ return new class extends Migration
             $table->float('in_kgs');
             $table->float('price_per_kg');
             $table->string('unit_selected');
+            $table->string('estimated_loading_charges')->nullable();
             $table->integer('estimated_quantity')->nullable();
             $table->float('estimated_feets')->nullable();
             $table->float('estimated_inches')->nullable();
             $table->float('estimated_kgs')->nullable();
             $table->float('estimated_total_kgs')->nullable();
-            $table->float('estimated_amount')->nullable();
+            $table->float('estimated_discount')->nullable();
+            $table->double('estimated_amount')->nullable();
+            $table->double('estimated_final_amount')->nullable();
+            $table->float('final_loading_charges');
             $table->integer('final_quantity')->nullable();
             $table->float('final_feets')->nullable();
             $table->float('final_inches')->nullable();
             $table->float('final_kgs')->nullable();
             $table->float('final_total_kgs')->nullable();
-            $table->float('final_amount');
+            $table->float('final_discount');
+            $table->double('final_amount');
+            $table->double('final_total_amount');
             $table->timestamps();
         });
     }

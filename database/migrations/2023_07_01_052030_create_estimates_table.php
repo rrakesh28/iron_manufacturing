@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id');
             $table->string('estimate_id');
-            $table->float('total_amount');
+            $table->double('total_amount');
             $table->timestamps();
         });
     }

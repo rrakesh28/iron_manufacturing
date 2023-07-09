@@ -95,7 +95,7 @@ function Create({products, customers}) {
                 </p>
             </div>
             <div className='mt-10 px-[2rem]'>
-                <div className="bg-white w-[30rem] p-[2rem]">
+                <div className="bg-white w-[50rem] p-[2rem]">
                     <form onSubmit={submit}>
                         <div className="mt-4">
                             <InputLabel htmlFor="customer" value="Customer"/>
@@ -155,7 +155,8 @@ function Create({products, customers}) {
                         customer && data.products.map((productSelected, index) => {
                             return (
 
-                                <div key={index}>
+                                <div className='grid grid-cols-3 gap-4'
+                                    key={index}>
                                     <div className="mt-4">
                                         <InputLabel htmlFor="product" value="Product"/>
 
@@ -185,11 +186,11 @@ function Create({products, customers}) {
                                     </div>
 
                                     {
-                                    productSelected.product && <div className="mt-4">
+                                    (productSelected.product && productSelected.product.unit_type !== 'Unit') && <div className="mt-4">
                                         <InputLabel htmlFor="unit" value="Unit"/>
                                         <div className="flex gap-4 flex-wrap">
                                             {
-                                            productSelected.product.unit_type === 'Feet' && <div className='flex gap-4'>
+                                            (productSelected.product.unit_type === 'Feet') && <div className='flex gap-4'>
 
                                                 <div className="flex items-center gap-2">
                                                     <input type="radio" name="unit" id="unit" value='Feet'
@@ -243,24 +244,6 @@ function Create({products, customers}) {
                                             required/>
 
                                     </div>
-
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="loading_charges" value="Loading Charges"/>
-
-                                    <select name="loading_charges" id="loading_charges" className='w-full border rounded-lg'
-                                        onChange={
-                                            (e) => {
-                                                handleFormChange(e, index)
-                                            }
-                                        }
-                                        required>
-                                        <option value="" selected disabled>
-                                            Select Loading Charges</option>
-                                        <option value="0.5">0.5</option>
-                                        <option value="0.6">0.6</option>
-                                    </select>
-
-                                </div>
 
                                 <div className="mt-4">
                                     <InputLabel htmlFor="discount" value="Discount"/>
@@ -327,7 +310,7 @@ function Create({products, customers}) {
                             productSelected.unit === 'Kgs' && <div className="mt-4">
                                 <InputLabel htmlFor="kgs" value="Kgs"/>
 
-                                <TextInput id="kgs" type="number" name="kgs"
+                                <TextInput id="kgs" type="number" step="0.01" name="kgs"
                                     value={
                                         productSelected.kgs
                                     }
@@ -345,12 +328,15 @@ function Create({products, customers}) {
                                     className="mt-2"/>
                             </div>
                         }
-                            <div className="flex justify-end">
-                                <button type='button'
-                                    onClick={
-                                        (e) => removeProduct(index)
-                                    }
-                                    className="px-4 py-2 bg-red-600 text-white">X</button>
+                            <div>
+
+                                <div className="flex justify-end">
+                                    <button type='button'
+                                        onClick={
+                                            (e) => removeProduct(index)
+                                        }
+                                        className="px-4 py-2 bg-red-600 text-white">X</button>
+                                </div>
                             </div>
                         </div>
                             )

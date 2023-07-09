@@ -10,11 +10,11 @@ import {Head, Link, useForm} from '@inertiajs/react'
 import Select from 'react-select'
 import axios from 'axios';
 
-function Edit({products, estimate}) {
+function Edit({bill}) {
 
-    console.log(estimate)
+    console.log(bill)
 
-    const [customer, setCusomter] = useState(estimate.customer);
+    const [customer, setCusomter] = useState(bill.customer);
     const {
         data,
         setData,
@@ -22,15 +22,7 @@ function Edit({products, estimate}) {
         processing,
         errors,
         reset
-    } = useForm({customer: estimate.customer.id, products: estimate.estimate_products});
-
-
-    const handleProductSelect = (event, index) => {
-        let product = JSON.parse(event.target.value)
-        let products = [...data.products]
-        products[index][event.target.name] = product
-        setData('products', products)
-    }
+    } = useForm({customer: bill.customer.id, products: bill.bill_products});
 
     const handleFormChange = (event, index) => {
         let products = [...data.products]
@@ -38,39 +30,16 @@ function Edit({products, estimate}) {
         setData('products', products)
     }
 
-    const addProduct = () => {
-        let object = {
-            product: '',
-            unit: '',
-            feet: '',
-            inches: '',
-            kgs: ''
-        }
-
-        setData('products', [
-            ...data.products,
-            object
-        ])
-    }
-
-
-    const getCustomer = (event) => {
-        setData('customer', event.value)
-        axios.get(route('customer.get', {customer: event.value})).then((res) => {
-            setCusomter(res.data)
-        })
-    }
-
     const submit = (e) => {
         e.preventDefault();
-        post(route('estimate.update',{estimate:estimate}));
+        post(route('bill.update',{bill:bill}));
     }
     return (
         <AppLayout>
             <Head title='Create Estimate'/>
             <div className="mt-5 px-5">
                 <p className='text-[1.5rem] font-bold'>
-                    Edit Estimate
+                    Edit Bill
                 </p>
             </div>
             <div className='mt-10 px-[2rem]'>
@@ -128,9 +97,9 @@ function Edit({products, estimate}) {
                                     <div className="mt-4">
                                         <InputLabel htmlFor="quantity" value="Quantity"/>
 
-                                        <TextInput id="quantity" type="number" name="quantity"
+                                        <TextInput id="quantity" type="number" name="final_quantity"
                                             value={
-                                                productSelected.quantity
+                                                productSelected.final_quantity
                                             }
                                             className="mt-1 block w-full"
                                             onChange={
@@ -149,9 +118,9 @@ function Edit({products, estimate}) {
                                     <div className="mt-4">
                                         <InputLabel htmlFor="discount" value="Discount"/>
 
-                                        <TextInput id="discount" type="number" name="discount"
+                                        <TextInput id="discount" type="number" name="final_discount"
                                             value={
-                                                productSelected.discount
+                                                productSelected.final_discount
                                             }
                                             className="mt-1 block w-full"
                                             onChange={
@@ -168,13 +137,15 @@ function Edit({products, estimate}) {
                                     </div>
 
 
+
+
                                     {
                                     productSelected.unit_selected === 'Feet' && <div className="mt-4">
                                         <InputLabel htmlFor="feet" value="Feet"/>
 
-                                        <TextInput id="feet" type="number" name="feet"
+                                        <TextInput id="feet" type="number" name="final_feets"
                                             value={
-                                                productSelected.feets
+                                                productSelected.final_feets
                                             }
                                             className="mt-1 block w-full"
                                             onChange={
@@ -194,9 +165,9 @@ function Edit({products, estimate}) {
                                     (productSelected.unit_selected === 'Feet' || productSelected.unit_selected === 'Inches') && <div className="mt-4">
                                         <InputLabel htmlFor="inches" value="Inches"/>
 
-                                        <TextInput id="inches" type="number" name="inches"
+                                        <TextInput id="inches" type="number" name="final_inches"
                                             value={
-                                                productSelected.inches
+                                                productSelected.final_inches
                                             }
                                             className="mt-1 block w-full"
                                             onChange={
@@ -216,9 +187,9 @@ function Edit({products, estimate}) {
                                     productSelected.unit_selected === 'Kgs' && <div className="mt-4">
                                         <InputLabel htmlFor="kgs" value="Kgs"/>
 
-                                        <TextInput id="kgs" type="number" name="kgs"
+                                        <TextInput id="kgs" type="number" name="final_kgs"
                                             value={
-                                                productSelected.kgs
+                                                productSelected.final_kgs
                                             }
                                             className="mt-1 block w-full"
                                             onChange={

@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('estimates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id');
-            $table->string('estimate_id');
+            $table->unsignedBigInteger('estimate_id')->default(1000)->unique();
+            $table->float('total_kgs');
+            $table->float('loading_charges');
+            $table->float('crimping_charges');
             $table->double('total_amount');
             $table->timestamps();
         });

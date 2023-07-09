@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 function Invoice({estimate}) {
-    const [date, setDate] = useState(null)
-    useEffect(() => {
-        const date = new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'});
-        setDate(date)
-        // window.print();
+    useEffect(() => { // window.print();
     }, [])
     return (
         <div className='p-5'>
@@ -22,9 +18,11 @@ function Invoice({estimate}) {
                 <div className='mt-10'>
                     <div className="flex gap-4">
                         <div>
-                            <p>Invoice Date: {date}</p>
+                            <p>Invoice Date: {
+                                estimate.created_at.slice(0, 10)
+                            }</p>
                             <p>
-                                <span>Estimate: {
+                                <span>Estimate: EST{
                                     estimate.estimate_id
                                 }</span>
                             </p>
@@ -52,7 +50,7 @@ function Invoice({estimate}) {
                                 <th>Kgs</th>
                                 <th>Total Kgs</th>
                                 <th>Price Per Kgs</th>
-                                <th>Loading Charges</th>
+                                <th>Price Per Unit</th>
                                 <th>Amount</th>
                                 <th>Discount</th>
                                 <th>Final Amount</th>
@@ -89,10 +87,11 @@ function Invoice({estimate}) {
                                         {
                                         product.price_per_kg
                                     }</td>
-                                    <th className='text-center'>
+
+                                    <td className='text-center'>
                                         {
-                                        product.loading_charges
-                                    }</th>
+                                        product.price_per_unit
+                                    }</td>
                                     <th className='text-center'>
                                         {
                                         product.amount
@@ -108,6 +107,41 @@ function Invoice({estimate}) {
                                 </tr>
                         })
                         }
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Total Kgs</td>
+                                <td className='text-center'>
+                                    {
+                                    estimate.total_kgs
+                                }</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Loading Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    estimate.loading_charges
+                                }</td>
+                            </tr>
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Crimping Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    estimate.crimping_charges
+                                }</td>
+                            </tr>
                             <tr>
                                 <td></td>
                                 <td></td>

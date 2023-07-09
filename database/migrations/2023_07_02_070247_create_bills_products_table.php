@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('product_id');
             $table->string('product_name');
             $table->string('unit_type');
-            $table->float('in_kgs');
-            $table->float('price_per_kg');
+            $table->float('in_kgs')->nullable();
+            $table->float('price_per_kg')->nullable();
+            $table->float('price_per_unit')->nullable();
             $table->string('unit_selected');
-            $table->string('estimated_loading_charges')->nullable();
             $table->integer('estimated_quantity')->nullable();
             $table->float('estimated_feets')->nullable();
             $table->float('estimated_inches')->nullable();
@@ -29,7 +29,6 @@ return new class extends Migration
             $table->float('estimated_discount')->nullable();
             $table->double('estimated_amount')->nullable();
             $table->double('estimated_final_amount')->nullable();
-            $table->float('final_loading_charges');
             $table->integer('final_quantity')->nullable();
             $table->float('final_feets')->nullable();
             $table->float('final_inches')->nullable();

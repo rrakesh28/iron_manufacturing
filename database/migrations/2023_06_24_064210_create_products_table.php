@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('unit_type');
             $table->float('in_kgs')->nullable();
-            $table->float('price_per_kg');
+            $table->float('price_per_kg')->nullable();
+            $table->float('price_per_unit')->nullable();
             $table->timestamps();
         });
     }

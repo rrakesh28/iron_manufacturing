@@ -1,11 +1,20 @@
-
 import React from 'react'
 import AppLayout from '@/Layouts/AppLayout'
 import {Head, Link} from '@inertiajs/react'
+import axios from 'axios'
 
 function Index({estimates}) {
 
-   console.log(estimates) 
+    const handleDelete = (event, estimate) => {
+        event.preventDefault();
+
+        if (confirm('Are you sure you want to delete this estimate?')) {
+            axios.post(route('estimate.destroy',{estimate:estimate})).then((res)=>{
+                window.location.reload()
+            })
+        }
+    }
+
     return (
         <AppLayout>
             <Head title='Customers'/>
@@ -24,7 +33,7 @@ function Index({estimates}) {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
-                                   Estimate Id 
+                                    Estimate Id
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Full Name
@@ -70,10 +79,19 @@ function Index({estimates}) {
                                             }
                                             className='text-blue-600 hover:underline'>Convert</Link>
                                         <Link href={
+                                                route('estimate.edit', {estimate: estimate})
+                                            }
+                                            className='text-blue-600 hover:underline'>Edit</Link>
+                                        <button href={
                                                 route('estimate.destroy', {estimate: estimate})
                                             }
                                             method='post'
-                                            className='text-red-600 hover:underline'>Delete</Link>
+                                            onClick={
+                                                (e) => {
+                                                    handleDelete(e, estimate)
+                                                }
+                                            }
+                                            className='text-red-600 hover:underline'>Delete</button>
                                     </td>
                                 </tr>
                         })

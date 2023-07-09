@@ -4,7 +4,15 @@ import {Head, Link} from '@inertiajs/react'
 
 function Index({bills}) {
 
-    console.log(bills)
+    const handleDelete = (event, bill) => {
+        event.preventDefault();
+
+        if (confirm('Are you sure you want to delete this estimate?')) {
+            axios.post(route('bill.destroy',{bill:bill})).then((res)=>{
+                window.location.reload()
+            })
+        }
+    }
     return (
         <AppLayout>
             <Head title='Customers'/>
@@ -71,11 +79,20 @@ function Index({bills}) {
                                                 route('bill.show', {bill: bill})
                                             }
                                             className='text-blue-600 hover:underline'>Show</Link>
-                                        <Link href={
+                                             <Link href={
+                                                route('bill.edit', {bill: bill})
+                                            }
+                                            className='text-blue-600 hover:underline'>Edit</Link>
+                                              <Link href={
+                                                route('bill.editWeight', {bill: bill})
+                                            }
+                                            className='text-blue-600 hover:underline'>Edit Weight</Link>
+                                        <button href={
                                                 route('bill.destroy', {bill: bill})
                                             }
                                             method='post'
-                                            className='text-red-600 hover:underline'>Delete</Link>
+                                            onClick={(e)=>{handleDelete(e,bill)}}
+                                            className='text-red-600 hover:underline'>Delete</button>
                                     </td>
                                 </tr>
                         })

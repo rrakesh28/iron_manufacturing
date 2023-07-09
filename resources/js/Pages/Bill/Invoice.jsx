@@ -1,13 +1,8 @@
-
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 
 function Invoice({bill}) {
-    const [date,setDate] = useState(null)
-    useEffect(()=>{
-        const date = new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'});
-        setDate(date)
-        window.print();
-    },[])
+    useEffect(() => { // window.print();
+    }, [])
     return (
         <div className='p-5'>
             <div>
@@ -23,9 +18,11 @@ function Invoice({bill}) {
                 <div className='mt-10'>
                     <div className="flex gap-4">
                         <div>
-                            <p>Date:{date}</p>
+                            <p>Date:{
+                                bill.created_at.slice(0, 10)
+                            }</p>
                             <p>
-                                <span>Bill: {
+                                <span>Bill: BIL{
                                     bill.bill_id
                                 }</span>
                             </p>
@@ -53,7 +50,7 @@ function Invoice({bill}) {
                                 <th>Kgs</th>
                                 <th>Total Kgs</th>
                                 <th>Price Per Kgs</th>
-                                <th>Loading Charges</th>
+                                <th>Price Per Unit</th>
                                 <th>Amount</th>
                                 <th>Discount</th>
                                 <th>Final Amount</th>
@@ -92,7 +89,7 @@ function Invoice({bill}) {
                                     }</td>
                                     <td className='text-center'>
                                         {
-                                        product.final_loading_charges
+                                        product.price_per_unit
                                     }</td>
                                     <th className='text-center'>
                                         {
@@ -109,6 +106,41 @@ function Invoice({bill}) {
                                 </tr>
                         })
                         }
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Total Kgs</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_total_kgs
+                                }</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Loading Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_loading_charges
+                                }</td>
+                            </tr>
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Crimping Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_crimping_charges
+                                }</td>
+                            </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -142,7 +174,9 @@ function Invoice({bill}) {
                 <div className='mt-10'>
                     <div className="flex gap-4">
                         <div>
-                            <p>Date:{date}</p>
+                            <p>Date:{
+                                bill.created_at.slice(0, 10)
+                            }</p>
                             <p>
                                 <span>Bill: {
                                     bill.bill_id
@@ -172,7 +206,7 @@ function Invoice({bill}) {
                                 <th>Kgs</th>
                                 <th>Total Kgs</th>
                                 <th>Price Per Kgs</th>
-                                <th>Loading Charges</th>
+                                <th>Price Per Unit</th>
                                 <th>Amount</th>
                                 <th>Discount</th>
                                 <th>Final Amount</th>
@@ -211,7 +245,7 @@ function Invoice({bill}) {
                                     }</td>
                                     <td className='text-center'>
                                         {
-                                        product.final_loading_charges
+                                        product.price_per_unit
                                     }</td>
                                     <th className='text-center'>
                                         {
@@ -228,6 +262,41 @@ function Invoice({bill}) {
                                 </tr>
                         })
                         }
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Total Kgs</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_total_kgs
+                                }</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Loading Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_loading_charges
+                                }</td>
+                            </tr>
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Crimping Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_crimping_charges
+                                }</td>
+                            </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -246,7 +315,8 @@ function Invoice({bill}) {
                             </tr>
                         </tbody>
                     </table>
-                </div>            </div>
+                </div>
+            </div>
 
         </div>
     )

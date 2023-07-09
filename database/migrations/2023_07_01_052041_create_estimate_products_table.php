@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('unit_type');
             $table->float('in_kgs')->nullable();
-            $table->float('price_per_kg');
+            $table->float('price_per_kg')->nullable();
+            $table->float('price_per_unit')->nullable();
             $table->string('unit_selected');
-            $table->float('loading_charges');
             $table->string('quantity')->nullable();
             $table->float('feets')->nullable();
             $table->float('inches')->nullable();

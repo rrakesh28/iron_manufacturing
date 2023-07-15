@@ -81,6 +81,7 @@ class ProductController extends Controller
             $product->in_kgs = $request->in_kgs;
         }
         $product->price_per_kg = $request->price_per_kg;
+        $product->price_per_unit = $request->price_per_unit;
         $product->save();
 
         if($product){

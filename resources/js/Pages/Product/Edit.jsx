@@ -16,11 +16,17 @@ function Edit({product}) {
         processing,
         errors,
         reset
-    } = useForm({product_name: product.name, unit_type: product.unit_type, in_kgs: product.in_kgs, price_per_kg: product.price_per_kg});
+    } = useForm({
+        product_name: product.name,
+        unit_type: product.unit_type,
+        in_kgs: product.in_kgs,
+        price_per_kg: product.price_per_kg,
+        price_per_unit: product.price_per_unit
+    });
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('product.update',{product:product}));
+        post(route('product.update', {product: product}));
     }
     return (
         <AppLayout>
@@ -80,6 +86,19 @@ function Edit({product}) {
                                         required/>
                                     <span>Kgs</span>
                                 </div>
+                                <div className='flex gap-2 items-center'>
+                                    <input type="radio" name="unit_type" id="unit_type" value="Unit"
+                                        checked={
+                                            data.unit_type === "Unit"
+                                        }
+                                        onChange={
+                                            (e) => {
+                                                setData('unit_type', e.target.value)
+                                            }
+                                        }
+                                        required/>
+                                    <span>Unit</span>
+                                </div>
                             </div>
 
                             <InputError message={
@@ -107,7 +126,28 @@ function Edit({product}) {
                                 className="mt-2"/>
                         </div>
                     }
-                        <div className="mt-4">
+
+                        {
+                        data.unit_type === 'Unit' && <div className="mt-4">
+                            <InputLabel htmlFor="price_per_unit" value="Price Per Unit"/>
+
+                            <TextInput id="price_per_unit" type="number" name="price_per_unit"
+                                value={
+                                    data.price_per_unit
+                                }
+                                className="mt-1 block w-full"
+                                onChange={
+                                    (e) => setData('price_per_unit', e.target.value)
+                                }
+                                required/>
+
+                            <InputError message={
+                                    errors.price_per_unit
+                                }
+                                className="mt-2"/>
+                        </div>
+                    }
+                        {(data.unit_type === 'Feet' || data.unit_type === 'Kgs') && <div className="mt-4">
                             <InputLabel htmlFor="price_per_kg" value="Price Per Kg"/>
 
                             <TextInput id="price_per_kg" type="number" name="price_per_kg"
@@ -126,7 +166,7 @@ function Edit({product}) {
                                     errors.price_per_kg
                                 }
                                 className="mt-2"/>
-                        </div>
+                        </div>}
                         <PrimaryButton className="mt-5"
                             disabled={processing}>
                             Submit

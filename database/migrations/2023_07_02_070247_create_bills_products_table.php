@@ -34,6 +34,7 @@ return new class extends Migration
             $table->float('final_inches')->nullable();
             $table->float('final_kgs')->nullable();
             $table->float('final_total_kgs')->nullable();
+            $table->string('color')->nullable();
             $table->float('final_discount');
             $table->double('final_amount');
             $table->double('final_total_amount');

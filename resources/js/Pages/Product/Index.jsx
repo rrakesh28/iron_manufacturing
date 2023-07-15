@@ -3,6 +3,16 @@ import AppLayout from '@/Layouts/AppLayout'
 import {Head, Link} from '@inertiajs/react'
 
 function Index({products}) {
+
+    const handleDelete = (event, product) => {
+        event.preventDefault();
+
+        if (confirm('Are you sure you want to delete this estimate?')) {
+            axios.post(route('product.destroy', {product: product})).then((res) => {
+                window.location.reload()
+            })
+        }
+    }
     return (
         <AppLayout>
             <Head title='Products'/>
@@ -62,11 +72,16 @@ function Index({products}) {
                                                 route('product.edit', {product: product})
                                             }
                                             className='text-blue-600 hover:underline'>Edit</Link>
-                                        <Link href={
+                                        <button href={
                                                 route('product.destroy', {product: product})
                                             }
                                             method='post'
-                                            className='text-red-600 hover:underline'>Delete</Link>
+                                            onClick={
+                                                (e) => {
+                                                    handleDelete(e, product)
+                                                }
+                                            }
+                                            className='text-red-600 hover:underline'>Delete</button>
                                     </td>
                                 </tr>
                         })

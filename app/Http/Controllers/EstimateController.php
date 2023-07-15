@@ -88,6 +88,7 @@ class EstimateController extends Controller
                     $estimateProduct->unit_selected = $product['unit'];
                     $estimateProduct->quantity = $product['quantity'];
                     $estimateProduct->feets = $product['feet'];
+                    $estimateProduct->color = $product['color'];
                     $estimateProduct->inches = $product['inches'];
                     $estimateProduct->total_kgs = $total_kgs;
                     $estimateProduct->discount = $product['discount'];
@@ -283,6 +284,63 @@ class EstimateController extends Controller
 
     public function convertCreate(Estimate $estimate)
     {
+
+        $bill_id = 1000;
+
+        $lastRecord = Bill::latest()->first();
+
+        if ($lastRecord) {
+            $bill_id = $lastRecord->bill_id + 1;
+        }
+        $customer = $estimate->customer;
+        $bill = new bill();
+        $bill->customer_id = $customer->id;
+        $bill->bill_id = $bill_id;
+        $bill->estimated_total_kgs = $estimate->total_kgs;
+        $bill->estimated_loading_charges = $estimate->loading_charges;
+        $bill->estimated_crimping_charges = $estimate->crimping_charges;
+        $bill->estimated_total_amount = $estimate->total_amount;
+        $bill->final_total_kgs = $estimate->total_kgs;
+        $bill->final_loading_charges = $estimate->loading_charges;
+        $bill->final_crimping_charges = $estimate->crimping_charges;
+        $bill->final_amount = $estimate->total_amount;
+        $bill->save();
+
+        $total = 0;
+
+        $products = $estimate->estimateProducts;
+
+        foreach ($products as $product) {
+                $billProducts = new BillsProduct();
+                $billProducts->bill_id = $bill->id;
+                $billProducts->product_id = $product->product_id;
+                $billProducts->product_name = $product->product_name;
+                $billProducts->unit_type = $product->unit_type;
+                $billProducts->in_kgs = $product->in_kgs;
+                $billProducts->price_per_kg = $product->price_per_kg;
+                $billProducts->unit_selected = $product->unit_selected;
+                $billProducts->estimated_quantity = $product->quantity;
+                $billProducts->estimated_feets = $product->feets;
+                $billProducts->estimated_inches = $product->inches;
+                $billProducts->estimated_total_kgs = $product->total_kgs;
+                $billProducts->estimated_discount = $product->discount;
+                $billProducts->estimated_amount = $product->amount;
+                $billProducts->estimated_final_amount = $product->final_amount;
+
+                $billProducts->color = $product->color;
+                $billProducts->final_quantity = $product->quantity;
+                $billProducts->final_feets = $product->feets;
+                $billProducts->final_inches = $product->inches;
+                $billProducts->final_total_kgs = $product->total_kgs;
+                $billProducts->final_discount = $product->discount;
+                $billProducts->final_amount = $product->amount;
+                $billProducts->final_total_amount = $product->final_amount;
+                $billProducts->save();
+           
+        }
+
+        return redirect(route('bill.show', ['bill' => $bill->id]));
+
         return Inertia::render('Estimate/Convert', compact('estimate'));
     }
 
@@ -369,8 +427,9 @@ class EstimateController extends Controller
 
     public function addCrimpingCharges(Request $request, Estimate $estimate)
     {
+        $total_amount = $estimate->total_amount - $estimate->crimping_charges + $request->crimping_charges;
         $estimate->crimping_charges = $estimate->crimping_charges + $request->crimping_charges;
-        $estimate->total_amount = $estimate->total_amount + $request->crimping_charges;
+        $estimate->total_amount = $total_amount;
         if ($estimate->save()) {
             return 1;
         } else {
@@ -380,8 +439,9 @@ class EstimateController extends Controller
 
     public function addLoadingCharges(Request $request, Estimate $estimate)
     {
-        $estimate->loading_charges = $request->loading_charges;
-        $estimate->total_amount = $estimate->total_amount + ($estimate->total_kgs * $request->loading_charges);
+        $total_amount = $estimate->total_amount - $estimate->loading_charges + ($estimate->total_kgs * $request->loading_charges);
+        $estimate->loading_charges = ($estimate->total_kgs * $request->loading_charges);
+        $estimate->total_amount = $total_amount;
         if ($estimate->save()) {
             return 1;
         } else {

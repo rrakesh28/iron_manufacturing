@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react'
 
 function Invoice({estimate}) {
-    useEffect(() => { // window.print();
+    useEffect(() => { 
+        window.print();
     }, [])
     return (
         <div className='p-5'>
             <div>
-
-                <div className="flex justify-center">
-                    <p>Estimate Copy</p>
-                </div>
                 <div>
                     <p>INVOICE</p>
                     <p>HMT</p>
@@ -28,7 +25,7 @@ function Invoice({estimate}) {
                             </p>
                         </div>
                     </div>
-                    <div>
+                    <div className='flex gap-2'>
                         <p>Customer Details:</p>
                         <p className="font-bold">
                             {
@@ -44,6 +41,7 @@ function Invoice({estimate}) {
                         <thead>
                             <tr className='border-b border-t border-black'>
                                 <th>Product</th>
+                                <th>Color</th>
                                 <th>Quantity</th>
                                 <th>Feets</th>
                                 <th>Inches</th>
@@ -62,6 +60,10 @@ function Invoice({estimate}) {
                                     <td className='text-center'>
                                         {
                                         product.product_name
+                                    }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.color
                                     }</td>
                                     <td className='text-center'>
                                         {
@@ -112,6 +114,7 @@ function Invoice({estimate}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td className='text-center font-bold'>Total Kgs</td>
                                 <td className='text-center'>
                                     {
@@ -131,6 +134,7 @@ function Invoice({estimate}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
                                 <td></td>
@@ -143,6 +147,7 @@ function Invoice({estimate}) {
                                 }</td>
                             </tr>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

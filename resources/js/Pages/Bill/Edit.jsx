@@ -95,6 +95,13 @@ function Edit({bill}) {
                                     </div>
 
                                     <div className="mt-4">
+                                        <InputLabel htmlFor="product" value="Color:"/>
+                                        <p>{
+                                            productSelected.color
+                                        }</p>
+                                    </div>
+
+                                    <div className="mt-4">
                                         <InputLabel htmlFor="quantity" value="Quantity"/>
 
                                         <TextInput id="quantity" type="number" name="final_quantity"

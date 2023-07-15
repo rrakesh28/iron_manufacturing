@@ -1,27 +1,27 @@
 import React from 'react'
-import AppLayout from '@/Layouts/AppLayout'
+import PurchasesLayout from '@/Layouts/PurchasesLayout';
 import {Head, Link} from '@inertiajs/react'
 
-function Index({bills}) {
+function Index({inventory}) {
 
-    const handleDelete = (event, bill) => {
+    const handleDelete = (event, inventory) => {
         event.preventDefault();
 
-        if (confirm('Are you sure you want to delete this estimate?')) {
-            axios.post(route('bill.destroy', {bill: bill})).then((res) => {
+        if (confirm('Are you sure you want to delete this inventory?')) {
+            axios.post(route('inventory.destroy', {inventory: inventory})).then((res) => {
                 window.location.reload()
             })
         }
     }
     return (
-        <AppLayout>
-            <Head title='Customers'/>
+        <PurchasesLayout>
+            <Head title='Inventory'/>
             <div className="mt-5 px-5">
                 <p className='text-[1.5rem] font-bold'>
-                    Bills
+                    Inventory
                 </p>
                 <Link href={
-                        route('bill.create')
+                        route('inventory.create')
                     }
                     className='bg-blue-700 text-sm px-6 py-2 rounded-lg text-white'>Create</Link>
             </div>
@@ -34,19 +34,25 @@ function Index({bills}) {
                                     Date
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Bill Id
+                                    Coil Code
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Full Name
+                                    Weight
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Phone Number
+                                    Thickeness
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Estimated Amount
+                                    Color
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Total Amount
+                                    Grade
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Company
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Cost
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Actions
@@ -54,53 +60,57 @@ function Index({bills}) {
                             </tr>
                         </thead>
                         <tbody> {
-                            bills ?. map((bill, key) => {
+                            inventory ?. map((item, key) => {
                                 return <tr key={key}
                                     className="bg-white border-b ">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
-                                        bill.created_at.slice(0,10)
+                                        item.created_at.slice(0, 10)
                                     } </th>
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
-                                        bill.bill_id
+                                        item.coil_code
                                     } </th>
                                     <td className="px-6 py-4">
                                         {
-                                        bill.customer.full_name
+                                        item.weight
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        bill.customer.mobile_number
+                                        item.thickness
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        bill.estimated_amount
+                                        item.color
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        bill.final_amount
+                                        item.grade
+                                    } </td>
+                                    <td className="px-6 py-4">
+                                        {
+                                        item.company
+                                    } </td>
+                                    <td className="px-6 py-4">
+                                        {
+                                        item.cost
                                     } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         <Link href={
-                                                route('bill.show', {bill: bill})
+                                                route('inventory.show', {inventory: item})
                                             }
                                             className='text-blue-600 hover:underline'>Show</Link>
                                         <Link href={
-                                                route('bill.edit', {bill: bill})
+                                                route('inventory.edit', {inventory: item})
                                             }
                                             className='text-blue-600 hover:underline'>Edit</Link>
-                                        <Link href={
-                                                route('bill.editWeight', {bill: bill})
-                                            }
-                                            className='text-blue-600 hover:underline'>Edit Weight</Link>
                                         <button href={
-                                                route('bill.destroy', {bill: bill})
+                                                route('inventory.destroy', {inventory: item})
                                             }
                                             method='post'
                                             onClick={
                                                 (e) => {
-                                                    handleDelete(e, bill)
+                                                    handleDelete(e, item)
                                                 }
                                             }
                                             className='text-red-600 hover:underline'>Delete</button>
@@ -112,7 +122,7 @@ function Index({bills}) {
                 </div>
 
             </div>
-        </AppLayout>
+        </PurchasesLayout>
     )
 }
 

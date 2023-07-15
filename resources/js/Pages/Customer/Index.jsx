@@ -3,6 +3,18 @@ import AppLayout from '@/Layouts/AppLayout'
 import {Head, Link} from '@inertiajs/react'
 
 function Index({customers}) {
+
+    const handleDelete = (event, customer) => {
+        event.preventDefault();
+
+        if (confirm('Are you sure you want to delete this estimate?')) {
+            axios.post(route('customer.destroy', {customer: customer})).then((res) => {
+                window.location.reload()
+            })
+        }
+    }
+
+
     return (
         <AppLayout>
             <Head title='Customers'/>
@@ -69,11 +81,16 @@ function Index({customers}) {
                                                 route('customer.edit', {customer: customer})
                                             }
                                             className='text-blue-600 hover:underline'>Edit</Link>
-                                        <Link href={
-                                                route('customer.destroy', {customer: customer})
+                                        <button href={
+                                                route('cusomter.destroy', {product: product})
                                             }
                                             method='post'
-                                            className='text-red-600 hover:underline'>Delete</Link>
+                                            onClick={
+                                                (e) => {
+                                                    handleDelete(e, customer)
+                                                }
+                                            }
+                                            className='text-red-600 hover:underline'>Delete</button>
                                     </td>
                                 </tr>
                         })

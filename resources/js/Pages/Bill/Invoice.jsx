@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react'
 
 function Invoice({bill}) {
-    useEffect(() => { // window.print();
+    useEffect(() => { 
+        window.print();
     }, [])
     return (
         <div className='p-5'>
             <div>
-
-                <div className="flex justify-center">
-                    <p>Bill Copy</p>
-                </div>
                 <div>
                     <p>INVOICE</p>
                     <p>HMT</p>
@@ -28,7 +25,7 @@ function Invoice({bill}) {
                             </p>
                         </div>
                     </div>
-                    <div>
+                    <div className='flex gap-2'>
                         <p>Customer Details:</p>
                         <p className="font-bold">
                             {
@@ -44,6 +41,7 @@ function Invoice({bill}) {
                         <thead>
                             <tr className='border-b border-t border-black'>
                                 <th>Product</th>
+                                <th>Color</th>
                                 <th>Quantity</th>
                                 <th>Feets</th>
                                 <th>Inches</th>
@@ -62,6 +60,10 @@ function Invoice({bill}) {
                                     <td className='text-center'>
                                         {
                                         product.product_name
+                                    }</td>
+                                     <td className='text-center'>
+                                        {
+                                        product.color
                                     }</td>
                                     <td className='text-center'>
                                         {
@@ -111,6 +113,7 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td className='text-center font-bold'>Total Kgs</td>
                                 <td className='text-center'>
                                     {
@@ -130,6 +133,7 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
                                 <td></td>
@@ -142,6 +146,7 @@ function Invoice({bill}) {
                                 }</td>
                             </tr>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -162,10 +167,6 @@ function Invoice({bill}) {
                 </div>
             </div>
             <div className='mt-10'>
-
-                <div className="flex justify-center">
-                    <p>Original Copy</p>
-                </div>
                 <div>
                     <p>INVOICE</p>
                     <p>HMT</p>
@@ -184,7 +185,7 @@ function Invoice({bill}) {
                             </p>
                         </div>
                     </div>
-                    <div>
+                    <div className='flex gap-2'>
                         <p>Customer Details:</p>
                         <p className="font-bold">
                             {
@@ -200,6 +201,7 @@ function Invoice({bill}) {
                         <thead>
                             <tr className='border-b border-t border-black'>
                                 <th>Product</th>
+                                <th>Color</th>
                                 <th>Quantity</th>
                                 <th>Feets</th>
                                 <th>Inches</th>
@@ -218,6 +220,10 @@ function Invoice({bill}) {
                                     <td className='text-center'>
                                         {
                                         product.product_name
+                                    }</td>
+                                    <td className='text-center'>
+                                        {
+                                        product.color
                                     }</td>
                                     <td className='text-center'>
                                         {
@@ -267,6 +273,7 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td className='text-center font-bold'>Total Kgs</td>
                                 <td className='text-center'>
                                     {
@@ -286,6 +293,7 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
                                 <td></td>
@@ -298,6 +306,7 @@ function Invoice({bill}) {
                                 }</td>
                             </tr>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

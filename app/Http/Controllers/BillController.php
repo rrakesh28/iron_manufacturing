@@ -316,8 +316,9 @@ class BillController extends Controller
 
     public function addCrimpingCharges(Request $request, Bill $bill)
     {
-        $bill->final_crimping_charges = $bill->final_crimping_charges + $request->crimping_charges;
-        $bill->final_amount = $bill->final_amount + $request->crimping_charges;
+        $total_amount = $bill->final_amount - $bill->crimping_charges + $request->crimping_charges;
+        $bill->final_crimping_charges = $request->crimping_charges;
+        $bill->final_amount = $total_amount;
         if ($bill->save()) {
             return 1;
         } else {
@@ -327,8 +328,9 @@ class BillController extends Controller
 
     public function addLoadingCharges(Request $request, Bill $bill)
     {
-        $bill->final_loading_charges = $request->loading_charges;
-        $bill->final_amount = $bill->final_amount + ($bill->final_total_kgs * $request->loading_charges);
+        $total_amount = $bill->final_amount - $bill->final_loading_charges + ($bill->final_total_kgs * $request->loading_charges);
+        $bill->final_loading_charges = $bill->final_total_kgs * $request->loading_charges;
+        $bill->final_amount = $total_amount;
         if ($bill->save()) {
             return 1;
         } else {

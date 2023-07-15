@@ -228,6 +228,40 @@ function Create({products, customers}) {
                                     </div>
                                 }
 
+                                    {
+                                    productSelected.unit === 'Feet' && <div className="mt-4">
+                                        <InputLabel htmlFor="color" value="Color"/>
+
+                                        <select name="color" id="color" className='w-full border rounded-lg'
+                                            onChange={
+                                                (e) => {
+                                                    handleFormChange(e, index)
+                                                }
+                                            }
+                                            required>
+                                            <option value="" selected disabled>Select Color</option>
+                                            <option value="light blue ">light blue
+                                            </option>
+                                            <option value="nova blue">nova blue</option>
+                                            <option value="torquoise blue">torquoise blue</option>
+                                            <option value="taraus blue">taraus blue</option>
+                                            <option value="graphite gray">graphite gray</option>
+                                            <option value="haif white">haif white</option>
+                                            <option value="orange">orange</option>
+                                            <option value="mist green">mist green</option>
+                                            <option value="brick red">brick red</option>
+                                            <option value="terracotta">terracotta</option>
+                                            <option value="yellow">yellow</option>
+                                            <option value="red">red</option>
+                                            <option value="dark green">dark green</option>
+                                        </select>
+                                        <InputError message={
+                                                errors.feet
+                                            }
+                                            className="mt-2"/>
+                                    </div>
+                                }
+
                                     <div className="mt-4">
                                         <InputLabel htmlFor="quantity" value="Quantity"/>
 

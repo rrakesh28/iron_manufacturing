@@ -26,6 +26,7 @@ return new class extends Migration
             $table->float('inches')->nullable();
             $table->float('kgs')->nullable();
             $table->float('total_kgs')->nullable();
+            $table->string('color')->nullable();
             $table->float('discount');
             $table->double('amount');
             $table->double('final_amount');

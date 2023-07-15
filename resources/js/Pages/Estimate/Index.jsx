@@ -32,6 +32,9 @@ function Index({estimates}) {
                     <table className="w-full text-sm text-left text-gray-500 ">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
+                                 <th scope="col" className="px-6 py-3">
+                                    Date
+                                </th>
                                 <th scope="col" className="px-6 py-3">
                                     Estimate Id
                                 </th>
@@ -53,6 +56,10 @@ function Index({estimates}) {
                             estimates ?. map((estimate, key) => {
                                 return <tr key={key}
                                     className="bg-white border-b ">
+                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                        {
+                                        estimate.created_at.slice(0,10)
+                                    } </th>
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
                                         estimate.estimate_id

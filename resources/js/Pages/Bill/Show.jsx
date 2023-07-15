@@ -77,6 +77,9 @@ function Show({bill}) {
                                     Product Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
+                                    Color
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     Estimated Quantity
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -139,6 +142,10 @@ function Show({bill}) {
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
                                         product.product_name
+                                    } </th>
+                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                        {
+                                        product.color
                                     } </th>
                                     <td className="px-6 py-4">
                                         {
@@ -216,6 +223,7 @@ function Show({bill}) {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">Total Kgs</td>
@@ -245,6 +253,7 @@ function Show({bill}) {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
@@ -261,6 +270,7 @@ function Show({bill}) {
                                 } </td>
                             </tr>
                             <tr className="bg-white border-b ">
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>

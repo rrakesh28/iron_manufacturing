@@ -13,13 +13,8 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('coil_code');
-            $table->integer('weight');
-            $table->integer('thickness');
-            $table->string("color");
-            $table->string("grade");
-            $table->string('company');
-            $table->integer('cost');
+            $table->foreignId('product_id');
+            $table->string('unit_type');
             $table->timestamps();
         });
     }

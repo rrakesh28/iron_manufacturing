@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\InventoryLog;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -23,7 +24,8 @@ class InventoryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Inventory/Create');
+        $products = Product::all();
+        return Inertia::render('Inventory/Create',compact('products'));
     }
 
     /**
@@ -31,22 +33,23 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        $request->validate([
+            'product_id'=> ['required','unique:'.Inventory::class],
+        ]);
 
         $inventory = new Inventory();
-        $inventory->coil_code = $request->coil_code;
-        $inventory->weight = $request->weight;
-        $inventory->thickness = $request->thickness;
-        $inventory->color = $request->color;
-        $inventory->grade = $request->grade;
-        $inventory->company = $request->company;
-        $inventory->cost = $request->cost;
+        $inventory->product_id = $request->product_id;
+        $inventory->unit_type = $request->unit_type;
         $inventory->save();
+
 
         $inventoryLog = new InventoryLog();
         $inventoryLog->inventory_id = $inventory->id;
-        $inventoryLog->stock = $request->quantity;
+        $inventoryLog->weight = $request->weight;
+        $inventoryLog->quantity = $request->quantity;
+        $inventoryLog->log_type = 'in';
         $inventoryLog->save();
+
 
         return redirect(route('inventory.index'));
     }
@@ -56,7 +59,27 @@ class InventoryController extends Controller
      */
     public function show(Inventory $inventory)
     {
-        //
+        if($inventory->unit_type == 'Weight'){
+            $balance = InventoryLog::where('inventory_id',$inventory->id)->where('log_type','in')->sum('weight') - InventoryLog::where('inventory_id',$inventory->id)->where('log_type','out')->sum('weight');
+        }else{
+            $balance = InventoryLog::where('inventory_id',$inventory->id)->where('log_type','in')->sum('quantity') - InventoryLog::where('inventory_id',$inventory->id)->where('log_type','out')->sum('quantity');
+        }
+        return Inertia::render('Inventory/Show',compact('inventory','balance'));
+    }
+
+    public function add(Inventory $inventory,Request $request){
+        // dd($inventory->id);
+        $inventoryLog = new InventoryLog();
+        $inventoryLog->inventory_id = $inventory->id;
+        if($inventory->unit_type == 'Weight'){
+            $inventoryLog->weight = $request->in;
+        }else{
+            $inventoryLog->quantity = $request->in;
+        }
+        $inventoryLog->log_type = 'in';
+        $inventoryLog->save();
+
+        return redirect(route('inventory.show',['inventory'=>$inventory->id]));
     }
 
     /**

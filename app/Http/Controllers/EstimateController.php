@@ -7,6 +7,8 @@ use App\Models\BillsProduct;
 use App\Models\Customer;
 use App\Models\Estimate;
 use App\Models\EstimateProducts;
+use App\Models\Inventory;
+use App\Models\InventoryLog;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -311,32 +313,45 @@ class EstimateController extends Controller
         $products = $estimate->estimateProducts;
 
         foreach ($products as $product) {
-                $billProducts = new BillsProduct();
-                $billProducts->bill_id = $bill->id;
-                $billProducts->product_id = $product->product_id;
-                $billProducts->product_name = $product->product_name;
-                $billProducts->unit_type = $product->unit_type;
-                $billProducts->in_kgs = $product->in_kgs;
-                $billProducts->price_per_kg = $product->price_per_kg;
-                $billProducts->unit_selected = $product->unit_selected;
-                $billProducts->estimated_quantity = $product->quantity;
-                $billProducts->estimated_feets = $product->feets;
-                $billProducts->estimated_inches = $product->inches;
-                $billProducts->estimated_total_kgs = $product->total_kgs;
-                $billProducts->estimated_discount = $product->discount;
-                $billProducts->estimated_amount = $product->amount;
-                $billProducts->estimated_final_amount = $product->final_amount;
+            $billProducts = new BillsProduct();
+            $billProducts->bill_id = $bill->id;
+            $billProducts->product_id = $product->product_id;
+            $billProducts->product_name = $product->product_name;
+            $billProducts->unit_type = $product->unit_type;
+            $billProducts->in_kgs = $product->in_kgs;
+            $billProducts->price_per_kg = $product->price_per_kg;
+            $billProducts->unit_selected = $product->unit_selected;
+            $billProducts->estimated_quantity = $product->quantity;
+            $billProducts->estimated_feets = $product->feets;
+            $billProducts->estimated_inches = $product->inches;
+            $billProducts->estimated_total_kgs = $product->total_kgs;
+            $billProducts->estimated_discount = $product->discount;
+            $billProducts->estimated_amount = $product->amount;
+            $billProducts->estimated_final_amount = $product->final_amount;
 
-                $billProducts->color = $product->color;
-                $billProducts->final_quantity = $product->quantity;
-                $billProducts->final_feets = $product->feets;
-                $billProducts->final_inches = $product->inches;
-                $billProducts->final_total_kgs = $product->total_kgs;
-                $billProducts->final_discount = $product->discount;
-                $billProducts->final_amount = $product->amount;
-                $billProducts->final_total_amount = $product->final_amount;
-                $billProducts->save();
-           
+            $billProducts->color = $product->color;
+            $billProducts->final_quantity = $product->quantity;
+            $billProducts->final_feets = $product->feets;
+            $billProducts->final_inches = $product->inches;
+            $billProducts->final_total_kgs = $product->total_kgs;
+            $billProducts->final_discount = $product->discount;
+            $billProducts->final_amount = $product->amount;
+            $billProducts->final_total_amount = $product->final_amount;
+            $billProducts->save();
+
+            $inventory = Inventory::where('product_id', $product->product->id)->first();
+            if($inventory){
+                $inventoryLog = new InventoryLog();
+                $inventoryLog->inventory_id = $inventory->id;
+                $inventoryLog->bill_id = $bill_id;
+                if ($inventory->unit_type == 'Weight') {
+                    $inventoryLog->weight = $product->total_kgs;
+                } else {
+                    $inventoryLog->quantity = $product->quantity;
+                }   
+                $inventoryLog->log_type = 'out';
+                $inventoryLog->save();
+            }
         }
 
         return redirect(route('bill.show', ['bill' => $bill->id]));

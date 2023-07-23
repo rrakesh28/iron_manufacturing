@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     use HasFactory;
+
+    protected $with = ['product','logs'];
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
+
+    public function logs(){
+        return $this->hasMany(InventoryLog::class);
+    }
 }

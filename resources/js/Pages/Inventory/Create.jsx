@@ -1,12 +1,12 @@
 import React from 'react'
-import PurchasesLayout from '@/Layouts/PurchasesLayout'
+import AppLayout from '@/Layouts/AppLayout'
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import PrimaryButton from '@/Components/PrimaryButton';
 import {Head, Link, useForm} from '@inertiajs/react'
 
-function Create() {
+function Create({products}) {
 
     const {
         data,
@@ -16,14 +16,10 @@ function Create() {
         errors,
         reset
     } = useForm({
-        coil_code: '',
-        weight: '',
-        thickness: '',
-        quantity: '',
-        color: '',
-        grade: '',
-        company: '',
-        cost: ''
+        product_id:'',
+        unit_type:'',
+        weight:'',
+        quantity:'',
     });
 
     const submit = (e) => {
@@ -31,7 +27,7 @@ function Create() {
         post(route('inventory.store'));
     }
     return (
-        <PurchasesLayout>
+        <AppLayout>
             <Head title='Create Product'/>
             <div className="mt-5 px-5">
                 <p className='text-[1.5rem] font-bold'>
@@ -42,28 +38,46 @@ function Create() {
                 <div className="bg-white w-[30rem] p-[2rem]">
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                            <InputLabel htmlFor="coil_code" value="Coil Code"/>
+                            <InputLabel htmlFor="Product" value="Product"/>
 
-                            <TextInput id="coil_code" type="text" name="coil_code"
-                                value={
-                                    data.coil_code
-                                }
-                                className="mt-1 block w-full"
-                                onChange={
-                                    (e) => setData('coil_code', e.target.value)
-                                }
-                                required/>
+                            <select name="product" id="product" className='w-full border rounded-lg' onChange={(e)=>{setData('product_id',e.target.value)}}>
+                                <option value="" selected disabled>Select a Product</option>
+                                {products.map((product,index)=>{
+                                    return <option value={product.id}>{product.name}</option>
+                                })}
+                            </select>
+
                             <InputError message={
-                                    errors.coil_code
+                                    errors.product_id
                                 }
                                 className="mt-2"/>
                         </div>
+
                         <div className="mt-4">
+                            <InputLabel htmlFor="unit_type" value="Unit Type" />
+
+                            <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2">
+                                    <input type="radio" value="Weight" name="unit_type" id="unit_type" onChange={(e)=>{setData('unit_type',e.target.value)}}/>
+                                    <span>Weight</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <input type="radio" value="Quantity" name="unit_type" id="unit_type" onChange={(e)=>{setData('unit_type',e.target.value)}} />
+                                    <span>Quantity</span>
+                                </div>
+                            </div>
+
+                            <InputError message={errors.unit_type} className='mt-2' />
+                        </div>
+
+                     
+         
+                        {data.unit_type === 'Weight' && <div className="mt-4">
                             <InputLabel htmlFor="weight" value="Weight"/>
 
                             <TextInput id="weight" type="number" name="weight"
                                 value={
-                                    data.weight
+                                    data.cost
                                 }
                                 className="mt-1 block w-full"
                                 onChange={
@@ -75,31 +89,12 @@ function Create() {
                                     errors.weight
                                 }
                                 className="mt-2"/>
-                        </div>
+                        </div>}
+                        
+                        {data.unit_type === 'Quantity' && <div className="mt-4">
+                            <InputLabel htmlFor="quanity" value="Quantity"/>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="thickness" value="Thickness"/>
-
-                            <TextInput id="thickness" type="number" name="thickness"
-                                value={
-                                    data.thickness
-                                }
-                                className="mt-1 block w-full"
-                                onChange={
-                                    (e) => setData('thickness', e.target.value)
-                                }
-                                required/>
-
-                            <InputError message={
-                                    errors.thickness
-                                }
-                                className="mt-2"/>
-                        </div>
-
-                        <div className="mt-4">
-                            <InputLabel htmlFor="Quantity" value="Quantity"/>
-
-                            <TextInput id="quantity" type="number" name="quantity"
+                            <TextInput id="quantity" type="number" name="cost"
                                 value={
                                     data.quantity
                                 }
@@ -113,80 +108,7 @@ function Create() {
                                     errors.quantity
                                 }
                                 className="mt-2"/>
-                        </div>
-
-                        <div className="mt-4">
-                            <InputLabel htmlFor="color" value="Color"/>
-
-                            <TextInput id="color" type="text" name="color"
-                                value={
-                                    data.color
-                                }
-                                className="mt-1 block w-full"
-                                onChange={
-                                    (e) => setData('color', e.target.value)
-                                }
-                                required/>
-
-                            <InputError message={
-                                    errors.color
-                                }
-                                className="mt-2"/>
-                        </div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="grade" value="Grade"/>
-
-                            <TextInput id="grade" type="text" name="grade"
-                                value={
-                                    data.grade
-                                }
-                                className="mt-1 block w-full"
-                                onChange={
-                                    (e) => setData('grade', e.target.value)
-                                }
-                                required/>
-
-                            <InputError message={
-                                    errors.grade
-                                }
-                                className="mt-2"/>
-                        </div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="company" value="Company"/>
-
-                            <TextInput id="company" type="text" name="company"
-                                value={
-                                    data.company
-                                }
-                                className="mt-1 block w-full"
-                                onChange={
-                                    (e) => setData('company', e.target.value)
-                                }
-                                required/>
-
-                            <InputError message={
-                                    errors.color
-                                }
-                                className="mt-2"/>
-                        </div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="cost" value="Cost"/>
-
-                            <TextInput id="cost" type="number" name="cost"
-                                value={
-                                    data.cost
-                                }
-                                className="mt-1 block w-full"
-                                onChange={
-                                    (e) => setData('cost', e.target.value)
-                                }
-                                required/>
-
-                            <InputError message={
-                                    errors.cost
-                                }
-                                className="mt-2"/>
-                        </div>
+                        </div>}
 
 
                         <PrimaryButton className="mt-5"
@@ -196,7 +118,7 @@ function Create() {
                     </form>
                 </div>
             </div>
-        </PurchasesLayout>
+        </AppLayout>
     )
 }
 

@@ -97,16 +97,17 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/conversion/create',[ConversionController::class,'create'])->name('conversion.create');
     Route::post('/conversion',[ConversionController::class,'store'])->name('conversion.store');
+    
+    Route::get('/inventory',[InventoryController::class,'index'])->name('inventory.index');
+    Route::get('/inventory/create',[InventoryController::class,'create'])->name('inventory.create');
+    Route::post('/inventory',[InventoryController::class,'store'])->name('inventory.store');
+    Route::post('/inventory/{inventory}/add',[InventoryController::class,'add'])->name('inventory.add');
+    Route::get('/inventory/{inventory}/show',[InventoryController::class,'show'])->name('inventory.show');
+    Route::get('/inventory/{inventory}/edit',[InventoryController::class,'edit'])->name('inventory.edit');
+    Route::post('/inventory/{inventory}/update',[InventoryController::class,'update'])->name('inventory.update');
+    Route::post('/inventory/{inventory}/destroy',[InventoryController::class,'destroy'])->name('inventory.destroy');
 });
 
-
-Route::get('/inventory',[InventoryController::class,'index'])->name('inventory.index');
-Route::get('/inventory/create',[InventoryController::class,'create'])->name('inventory.create');
-Route::post('/inventory',[InventoryController::class,'store'])->name('inventory.store');
-Route::get('/inventory/{inventory}/show',[InventoryController::class,'show'])->name('inventory.show');
-Route::get('/inventory/{inventory}/edit',[InventoryController::class,'edit'])->name('inventory.edit');
-Route::post('/inventory/{inventory}/update',[InventoryController::class,'update'])->name('inventory.update');
-Route::post('/inventory/{inventory}/destroy',[InventoryController::class,'destroy'])->name('inventory.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

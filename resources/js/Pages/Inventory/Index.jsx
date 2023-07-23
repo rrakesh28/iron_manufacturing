@@ -1,9 +1,10 @@
 import React from 'react'
-import PurchasesLayout from '@/Layouts/PurchasesLayout';
+// import PurchasesLayout from '@/Layouts/PurchasesLayout';
+import AppLayout from '@/Layouts/AppLayout';
 import {Head, Link} from '@inertiajs/react'
 
 function Index({inventory}) {
-
+    console.log(inventory)
     const handleDelete = (event, inventory) => {
         event.preventDefault();
 
@@ -14,7 +15,7 @@ function Index({inventory}) {
         }
     }
     return (
-        <PurchasesLayout>
+        <AppLayout>
             <Head title='Inventory'/>
             <div className="mt-5 px-5">
                 <p className='text-[1.5rem] font-bold'>
@@ -34,25 +35,10 @@ function Index({inventory}) {
                                     Date
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Coil Code
+                                    Product Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Weight
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Thickeness
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Color
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Grade
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Company
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Cost
+                                    Unit Type
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Actions
@@ -69,41 +55,17 @@ function Index({inventory}) {
                                     } </th>
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                         {
-                                        item.coil_code
+                                        item.product.name
                                     } </th>
                                     <td className="px-6 py-4">
                                         {
-                                        item.weight
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        item.thickness
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        item.color
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        item.grade
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        item.company
-                                    } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        item.cost
+                                        item.unit_type
                                     } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         <Link href={
                                                 route('inventory.show', {inventory: item})
                                             }
                                             className='text-blue-600 hover:underline'>Show</Link>
-                                        <Link href={
-                                                route('inventory.edit', {inventory: item})
-                                            }
-                                            className='text-blue-600 hover:underline'>Edit</Link>
                                         <button href={
                                                 route('inventory.destroy', {inventory: item})
                                             }
@@ -122,7 +84,7 @@ function Index({inventory}) {
                 </div>
 
             </div>
-        </PurchasesLayout>
+        </AppLayout>
     )
 }
 

@@ -81,10 +81,7 @@ function Index({customers}) {
                                                 route('customer.edit', {customer: customer})
                                             }
                                             className='text-blue-600 hover:underline'>Edit</Link>
-                                        <button href={
-                                                route('cusomter.destroy', {product: product})
-                                            }
-                                            method='post'
+                                        <button
                                             onClick={
                                                 (e) => {
                                                     handleDelete(e, customer)

@@ -142,14 +142,14 @@ class BillController extends Controller
                     if (!$inventory) {
                         $inventory = new Inventory();
                         $inventory->product_id = $product['product']['id'];
-                        $inventory->unit_type = 'Quantity';
+                        $inventory->unit_type = 'Weight';
                         $inventory->save();
                     }
                     $inventoryLog = new InventoryLog();
                     $inventoryLog->inventory_id = $inventory->id;
                     $inventoryLog->bill_id = $bill_id;
                     if ($inventory->unit_type == 'Weight') {
-                        $inventoryLog->weight = $total_kgs;
+                        $inventoryLog->weight = $product['kgs'] * $product['quantity'];
                     } else {
                         $inventoryLog->quantity = $product['quantity'];
                     }
@@ -222,13 +222,13 @@ class BillController extends Controller
                     if (!$inventory) {
                         $inventory = new Inventory();
                         $inventory->product_id = $product['product']['id'];
-                        $inventory->unit_type = 'Quantity';
+                        $inventory->unit_type = 'Weight';
                         $inventory->save();
                     }
                     $inventoryLog = new InventoryLog();
                     $inventoryLog->bill_id = $bill_id;
                     $inventoryLog->inventory_id = $inventory->id;
-                    $inventoryLog->quantity = $product['quantity'];
+                    $inventoryLog->weight = $product['kgs'] * $product['quantity'];
                     $inventoryLog->log_type = 'out';
                     $inventoryLog->save();
                 }
@@ -323,7 +323,7 @@ class BillController extends Controller
                 $inventory = Inventory::where('product_id', $product['id'])->first();
                 $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
                 if ($inventory->unit_type == 'Weight') {
-                    $inventoryLog->weight = $total_kgs;
+                    $inventoryLog->weight = $product['final_kgs'] * $product['final_quantity'];
                 } else {
                     $inventoryLog->quantity = $product['final_quantity'];
                 }

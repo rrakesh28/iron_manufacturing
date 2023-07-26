@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('estimate/{estimate}/destroy',[EstimateController::class,'destroy'])->name('estimate.destroy');
     Route::post('estimate/{estimate}/addCrimpingCharges',[EstimateController::class,'addCrimpingCharges'])->name('estimate.addCrimpingCharges');
     Route::post('estimate/{estimate}/addLoadingCharges',[EstimateController::class,'addLoadingCharges'])->name('estimate.addLoadingCharges');
+    Route::post('estimate/{estimate}/addDiscount',[EstimateController::class,'addDiscount'])->name('estimate.addDiscount');
     
     Route::get('/bill',[BillController::class,'index'])->name('bill.index');
     Route::get('/bill/create',[BillController::class,'create'])->name('bill.create');
@@ -73,6 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/bill/{bill}/destroy',[BillController::class,'destroy'])->name('bill.destroy');
     Route::post('bill/{bill}/addCrimpingCharges',[BillController::class,'addCrimpingCharges'])->name('bill.addCrimpingCharges');
     Route::post('bill/{bill}/addLoadingCharges',[BillController::class,'addLoadingCharges'])->name('bill.addLoadingCharges');
+    Route::post('bill/{bill}/addDiscount',[BillController::class,'addDiscount'])->name('bill.addDiscount');
     Route::get('bill/{bill}/editWeight',[BillController::class,'editWeight'])->name('bill.editWeight');
     Route::post('bill/{bill}/updateWeight',[BillController::class,'updateWeight'])->name('bill.updateWeight');
     

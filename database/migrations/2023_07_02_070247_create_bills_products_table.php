@@ -26,7 +26,6 @@ return new class extends Migration
             $table->float('estimated_inches')->nullable();
             $table->float('estimated_kgs')->nullable();
             $table->float('estimated_total_kgs')->nullable();
-            $table->float('estimated_discount')->nullable();
             $table->double('estimated_amount')->nullable();
             $table->double('estimated_final_amount')->nullable();
             $table->integer('final_quantity')->nullable();
@@ -35,7 +34,6 @@ return new class extends Migration
             $table->float('final_kgs')->nullable();
             $table->float('final_total_kgs')->nullable();
             $table->string('color')->nullable();
-            $table->float('final_discount');
             $table->double('final_amount');
             $table->double('final_total_amount');
             $table->timestamps();

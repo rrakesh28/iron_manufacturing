@@ -16,9 +16,11 @@ function Show({bill}) {
 
     const [showCrimpingCharges, setShowCrimpingCharges] = useState(false)
     const [showLoadingCharges, setShowLoadingCharges] = useState(false)
+    const [showDiscount, setShowDiscount] = useState(false)
 
     const [crimpingCharges, setCrimpingCharges] = useState(null)
     const [loadingCharges, setLoadingCharges] = useState(null)
+    const [discount, setDiscount] = useState(null)
 
     const addCrimpingCharges = (e) => {
         e.preventDefault()
@@ -35,6 +37,17 @@ function Show({bill}) {
         axios.post(route('bill.addLoadingCharges', {
             bill: bill,
             loading_charges: loadingCharges
+        })).then((res) => {
+            window.location.reload();
+        })
+    }
+
+    const addDiscount = (e) => {
+        e.preventDefault();
+
+        axios.post(route('bill.addDiscount',{
+            bill:bill,
+            discount: discount
         })).then((res) => {
             window.location.reload();
         })
@@ -95,9 +108,6 @@ function Show({bill}) {
                                     Estimated Total Kgs
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Estimated Discount
-                                </th>
-                                <th scope="col" className="px-6 py-3">
                                     Estimated amount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -123,9 +133,6 @@ function Show({bill}) {
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Price Per Unit
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Bill Discount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Bill amount
@@ -167,10 +174,6 @@ function Show({bill}) {
                                         {
                                         product.estimated_loading_charges
                                     } </td>
-                                    <td className="px-6 py-4">
-                                        {
-                                        product.estimated_discount
-                                    } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         {
                                         product.estimated_amount
@@ -200,9 +203,6 @@ function Show({bill}) {
                                         product.price_per_unit
                                     }</td>
                                     <td>{
-                                        product.final_discount
-                                    }</td>
-                                    <td>{
                                         product.final_amount
                                     }</td>
                                     <td>{
@@ -223,7 +223,6 @@ function Show({bill}) {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">Total Kgs</td>
@@ -231,7 +230,6 @@ function Show({bill}) {
                                     {
                                     bill.final_total_kgs
                                 } </td>
-                                <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">
@@ -243,8 +241,6 @@ function Show({bill}) {
                                 } </td>
                             </tr>
                             <tr className="bg-white border-b ">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
@@ -279,6 +275,29 @@ function Show({bill}) {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <td className="px-6 py-4"></td>
+                                <td className="px-6 py-4"></td>
+                                <td className="px-6 py-4"></td>
+                                <td className="px-6 py-4"></td>
+                                <td className="px-6 py-4"></td>
+                                <td className="px-6 py-4"></td>
+                                <td className="px-6 py-4"></td>
+                                <td className="px-6 py-4">
+                                   Discount 
+                                </td>
+                                <td className="px-6 py-4 flex gap-2 items-center">
+                                    {
+                                    bill.final_discount
+                                } </td>
+                            </tr>
+                            <tr className="bg-white border-b ">
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <td className="px-6 py-4"></td>
@@ -303,11 +322,51 @@ function Show({bill}) {
                 <div className="flex gap-2 justify-center">
                 <button onClick={()=>{setShowCrimpingCharges(true)}} className='block mt-2 bg-blue-600 text-white px-6 py-2 rounded-lg'>Crimping Charges</button>
                 <button onClick={()=>{setShowLoadingCharges(true)}} className='block mt-2 bg-blue-600 text-white px-6 py-2 rounded-lg'>Loading Charges</button>
+                <button onClick={()=>{setShowDiscount(true)}} className='block mt-2 bg-blue-600 text-white px-6 py-2 rounded-lg'>Add Discount</button>
                     <Link href={
                             route('bill.invoice', {bill: bill})
                         }
                         className='block mt-2 bg-blue-600 text-white px-6 py-2 rounded-lg'>Invoice</Link>
-                </div><Modal show={showCrimpingCharges}
+                </div>
+                <Modal show={showDiscount}
+                    onClose={
+                        () => {
+                            setShowDiscount(false)
+                        }
+                }>
+                    <form onSubmit={addDiscount}
+                        className="p-6">
+                        <h2 className="text-lg font-medium text-gray-900">
+                            Add Discount
+                        </h2>
+
+                        <div className="mt-6">
+                            <InputLabel htmlFor="discount" value="Discount" className="sr-only"/>
+
+                            <TextInput id="discount" type="number" name="discount"
+                                onChange={
+                                    (e) => setDiscount(e.target.value)
+                                }
+                                className="mt-1 block w-3/4"
+                                isFocused
+                                required
+                                placeholder="Add Discount"/>
+                        </div>
+
+                        <div className="mt-6 flex justify-end">
+                            <SecondaryButton onClick={
+                                () => {
+                                    setShowDiscount(false)
+                                }
+                            }>Cancel</SecondaryButton>
+
+                            <PrimaryButton className="ml-3">
+                                Submit
+                            </PrimaryButton>
+                        </div>
+                    </form>
+                </Modal>
+                <Modal show={showCrimpingCharges}
                     onClose={
                         () => {
                             setShowCrimpingCharges(false)

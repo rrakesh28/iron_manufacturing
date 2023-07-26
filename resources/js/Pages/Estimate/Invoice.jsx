@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 function Invoice({estimate}) {
     useEffect(() => { 
-        window.print();
+        // window.print();
     }, [])
     return (
         <div className='p-5'>
@@ -50,7 +50,6 @@ function Invoice({estimate}) {
                                 <th>Price Per Kgs</th>
                                 <th>Price Per Unit</th>
                                 <th>Amount</th>
-                                <th>Discount</th>
                                 <th>Final Amount</th>
                             </tr>
                         </thead>
@@ -100,10 +99,6 @@ function Invoice({estimate}) {
                                     }</th>
                                     <th className='text-center'>
                                         {
-                                        product.discount
-                                    }</th>
-                                    <th className='text-center'>
-                                        {
                                         product.final_amount
                                     }</th>
                                 </tr>
@@ -144,6 +139,23 @@ function Invoice({estimate}) {
                                 <td className='text-center'>
                                     {
                                     estimate.crimping_charges
+                                }</td>
+                            </tr>
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Discount</td>
+                                <td className='text-center'>
+                                    {
+                                    estimate.discount
                                 }</td>
                             </tr>
                             <tr>

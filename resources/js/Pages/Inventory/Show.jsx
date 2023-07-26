@@ -130,7 +130,7 @@ function Show({ inventory, balance }) {
                                     scope="row"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 ></th>
-                                <td className="px-6 py-4">{balance}</td>
+                                <td className="px-6 py-4">{balance.toFixed(2)}</td>
                                 <td></td>
                             </tr>
                         </tbody>

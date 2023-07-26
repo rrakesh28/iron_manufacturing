@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('total_kgs');
             $table->float('loading_charges');
             $table->float('crimping_charges');
+            $table->float('discount');
             $table->double('total_amount');
             $table->timestamps();
         });

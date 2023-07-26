@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('inventory_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('inventory_id');
-            $table->integer('weight')->nullable();
+            $table->float('weight')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('log_type')->default('out');
             $table->foreignId('bill_id')->nullable();

@@ -45,7 +45,7 @@ class InventoryController extends Controller
 
         $inventoryLog = new InventoryLog();
         $inventoryLog->inventory_id = $inventory->id;
-        $inventoryLog->weight = $request->weight;
+        $inventoryLog->weight = round($request->weight,2);
         $inventoryLog->quantity = $request->quantity;
         $inventoryLog->log_type = 'in';
         $inventoryLog->save();
@@ -72,7 +72,7 @@ class InventoryController extends Controller
         $inventoryLog = new InventoryLog();
         $inventoryLog->inventory_id = $inventory->id;
         if($inventory->unit_type == 'Weight'){
-            $inventoryLog->weight = $request->in;
+            $inventoryLog->weight = round($request->in,2);
         }else{
             $inventoryLog->quantity = $request->in;
         }
@@ -110,8 +110,10 @@ class InventoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Inventory $inventory)
     {
-        //
+       $inventory->logs()->delete();
+       
+       $inventory->delete();
     }
 }

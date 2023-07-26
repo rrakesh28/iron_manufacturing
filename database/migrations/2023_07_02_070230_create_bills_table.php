@@ -18,10 +18,12 @@ return new class extends Migration
             $table->float('estimated_total_kgs')->nullable();
             $table->float('estimated_loading_charges')->nullable();
             $table->float('estimated_crimping_charges')->nullable();
+            $table->float('estimated_discount')->nullable();
             $table->double('estimated_total_amount')->nullable();
             $table->float('final_total_kgs');
             $table->float('final_crimping_charges');
             $table->float('final_loading_charges');
+            $table->float('final_discount');
             $table->double('final_amount');
             $table->timestamps();
         });

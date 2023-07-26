@@ -27,7 +27,6 @@ function Create({products, customers}) {
                 product: '',
                 quantity: '',
                 loading_charges: 0,
-                discount: '',
                 unit: '',
                 feet: '',
                 inches: '',
@@ -246,22 +245,6 @@ function Create({products, customers}) {
 
                                     </div>
 
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="discount" value="Discount"/>
-
-                                    <TextInput id="discount" type="number" name="discount"
-                                        value={
-                                            productSelected.discount
-                                        }
-                                        className="mt-1 block w-full"
-                                        onChange={
-                                            (e) => {
-                                                handleFormChange(e, index)
-                                            }
-                                        }
-                                        required/>
-
-                                </div>
 
                             {
                             productSelected.unit === 'Feet' && <div className="mt-4">

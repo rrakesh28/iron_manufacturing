@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 function Invoice({bill}) {
     useEffect(() => { 
-        window.print();
+        // window.print();
     }, [])
     return (
         <div className='p-5'>
@@ -12,7 +12,7 @@ function Invoice({bill}) {
                     <p>HMT</p>
                 </div>
 
-                <div className='mt-10'>
+                <div className='mt-2'>
                     <div className="flex gap-4">
                         <div>
                             <p>Date:{
@@ -50,7 +50,6 @@ function Invoice({bill}) {
                                 <th>Price Per Kgs</th>
                                 <th>Price Per Unit</th>
                                 <th>Amount</th>
-                                <th>Discount</th>
                                 <th>Final Amount</th>
                             </tr>
                         </thead>
@@ -99,10 +98,6 @@ function Invoice({bill}) {
                                     }</th>
                                     <th className='text-center'>
                                         {
-                                        product.final_discount
-                                    }</th>
-                                    <th className='text-center'>
-                                        {
                                         product.final_total_amount
                                     }</th>
                                 </tr>
@@ -121,7 +116,6 @@ function Invoice({bill}) {
                                 }</td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Loading Charges</td>
                                 <td className='text-center'>
                                     {
@@ -138,15 +132,29 @@ function Invoice({bill}) {
                                 <td className='text-center'></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Crimping Charges</td>
                                 <td className='text-center'>
                                     {
                                     bill.final_crimping_charges
                                 }</td>
                             </tr>
-                            <tr>
+                            <tr className='border-b border-black'>
                                 <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Discount</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_discount
+                                }</td>
+                            </tr>
+                            <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -172,7 +180,7 @@ function Invoice({bill}) {
                     <p>HMT</p>
                 </div>
 
-                <div className='mt-10'>
+                <div className='mt-2'>
                     <div className="flex gap-4">
                         <div>
                             <p>Date:{
@@ -210,7 +218,6 @@ function Invoice({bill}) {
                                 <th>Price Per Kgs</th>
                                 <th>Price Per Unit</th>
                                 <th>Amount</th>
-                                <th>Discount</th>
                                 <th>Final Amount</th>
                             </tr>
                         </thead>
@@ -259,10 +266,6 @@ function Invoice({bill}) {
                                     }</th>
                                     <th className='text-center'>
                                         {
-                                        product.final_discount
-                                    }</th>
-                                    <th className='text-center'>
-                                        {
                                         product.final_total_amount
                                     }</th>
                                 </tr>
@@ -281,7 +284,6 @@ function Invoice({bill}) {
                                 }</td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Loading Charges</td>
                                 <td className='text-center'>
                                     {
@@ -298,15 +300,29 @@ function Invoice({bill}) {
                                 <td className='text-center'></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Crimping Charges</td>
                                 <td className='text-center'>
                                     {
                                     bill.final_crimping_charges
                                 }</td>
                             </tr>
-                            <tr>
+                            <tr className='border-b border-black'>
                                 <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Discount</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_discount
+                                }</td>
+                            </tr>
+                            <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>

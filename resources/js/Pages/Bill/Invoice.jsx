@@ -49,7 +49,6 @@ function Invoice({bill}) {
                                 <th>Total Kgs</th>
                                 <th>Price Per Kgs</th>
                                 <th>Price Per Unit</th>
-                                <th>Amount</th>
                                 <th>Final Amount</th>
                             </tr>
                         </thead>
@@ -94,11 +93,7 @@ function Invoice({bill}) {
                                     }</td>
                                     <th className='text-center'>
                                         {
-                                        product.final_amount
-                                    }</th>
-                                    <th className='text-center'>
-                                        {
-                                        product.final_total_amount
+                                        product.amount
                                     }</th>
                                 </tr>
                         })
@@ -115,7 +110,6 @@ function Invoice({bill}) {
                                     bill.final_total_kgs
                                 }</td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Loading Charges</td>
                                 <td className='text-center'>
                                     {
@@ -130,7 +124,6 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
-                                <td></td>
                                 <td></td>
                                 <td className='text-center font-bold'>Crimping Charges</td>
                                 <td className='text-center'>
@@ -147,7 +140,6 @@ function Invoice({bill}) {
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Discount</td>
                                 <td className='text-center'>
                                     {
@@ -163,11 +155,10 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Total</td>
                                 <td className='text-center'>
                                     {
-                                    bill.final_amount
+                                    bill.amount
                                 }</td>
                             </tr>
                         </tbody>
@@ -217,7 +208,6 @@ function Invoice({bill}) {
                                 <th>Total Kgs</th>
                                 <th>Price Per Kgs</th>
                                 <th>Price Per Unit</th>
-                                <th>Amount</th>
                                 <th>Final Amount</th>
                             </tr>
                         </thead>
@@ -262,10 +252,6 @@ function Invoice({bill}) {
                                     }</td>
                                     <th className='text-center'>
                                         {
-                                        product.final_amount
-                                    }</th>
-                                    <th className='text-center'>
-                                        {
                                         product.final_total_amount
                                     }</th>
                                 </tr>
@@ -283,7 +269,6 @@ function Invoice({bill}) {
                                     bill.final_total_kgs
                                 }</td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Loading Charges</td>
                                 <td className='text-center'>
                                     {
@@ -298,7 +283,6 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
-                                <td></td>
                                 <td></td>
                                 <td className='text-center font-bold'>Crimping Charges</td>
                                 <td className='text-center'>
@@ -315,7 +299,6 @@ function Invoice({bill}) {
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Discount</td>
                                 <td className='text-center'>
                                     {
@@ -331,11 +314,10 @@ function Invoice({bill}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Total</td>
                                 <td className='text-center'>
                                     {
-                                    bill.final_amount
+                                    bill.amount
                                 }</td>
                             </tr>
                         </tbody>

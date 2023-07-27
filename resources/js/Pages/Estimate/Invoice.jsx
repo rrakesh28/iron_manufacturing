@@ -49,7 +49,6 @@ function Invoice({estimate}) {
                                 <th>Total Kgs</th>
                                 <th>Price Per Kgs</th>
                                 <th>Price Per Unit</th>
-                                <th>Amount</th>
                                 <th>Final Amount</th>
                             </tr>
                         </thead>
@@ -97,10 +96,6 @@ function Invoice({estimate}) {
                                         {
                                         product.amount
                                     }</th>
-                                    <th className='text-center'>
-                                        {
-                                        product.final_amount
-                                    }</th>
                                 </tr>
                         })
                         }
@@ -115,7 +110,6 @@ function Invoice({estimate}) {
                                     {
                                     estimate.total_kgs
                                 }</td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td className='text-center font-bold'>Loading Charges</td>
@@ -134,7 +128,6 @@ function Invoice({estimate}) {
                                 <td className='text-center'></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Crimping Charges</td>
                                 <td className='text-center'>
                                     {
@@ -149,7 +142,6 @@ function Invoice({estimate}) {
                                 <td></td>
                                 <td className='text-center font-bold'></td>
                                 <td className='text-center'></td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td className='text-center font-bold'>Discount</td>
@@ -168,11 +160,10 @@ function Invoice({estimate}) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td className='text-center font-bold'>Total</td>
                                 <td className='text-center'>
                                     {
-                                    estimate.total_amount
+                                    estimate.amount
                                 }</td>
                             </tr>
                         </tbody>

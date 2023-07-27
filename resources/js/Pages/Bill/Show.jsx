@@ -77,7 +77,7 @@ function Show({bill}) {
                         bill.estimated_amount
                     }</p>
                     <p>Final Total: {
-                        bill.final_amount
+                        bill.amount
                     }</p>
                 </div>
             </div>
@@ -108,9 +108,6 @@ function Show({bill}) {
                                     Estimated Total Kgs
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Estimated amount
-                                </th>
-                                <th scope="col" className="px-6 py-3">
                                     Estimated Total Amount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -133,9 +130,6 @@ function Show({bill}) {
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Price Per Unit
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Bill amount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Bill Total amount
@@ -174,10 +168,6 @@ function Show({bill}) {
                                         {
                                         product.estimated_loading_charges
                                     } </td>
-                                    <td className="px-6 py-4 flex gap-2 items-center">
-                                        {
-                                        product.estimated_amount
-                                    } </td>
                                     <td>{
                                         product.estimated_total_amount
                                     }</td>
@@ -203,9 +193,6 @@ function Show({bill}) {
                                         product.price_per_unit
                                     }</td>
                                     <td>{
-                                        product.final_amount
-                                    }</td>
-                                    <td>{
                                         product.final_total_amount
                                     }</td>
 
@@ -222,7 +209,6 @@ function Show({bill}) {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">Total Kgs</td>
@@ -230,7 +216,6 @@ function Show({bill}) {
                                     {
                                     bill.final_total_kgs
                                 } </td>
-                                <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">
                                     Loading Charges
@@ -255,8 +240,6 @@ function Show({bill}) {
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
-                                <td className="px-6 py-4"></td>
-                                <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">
                                     Crimping Charges
                                 </td>
@@ -266,8 +249,6 @@ function Show({bill}) {
                                 } </td>
                             </tr>
                             <tr className="bg-white border-b ">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
@@ -298,8 +279,6 @@ function Show({bill}) {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "></th>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
@@ -312,7 +291,7 @@ function Show({bill}) {
                                 </td>
                                 <td className="px-6 py-4 flex gap-2 items-center">
                                     {
-                                    bill.final_amount
+                                    bill.amount
                                 } </td>
                             </tr>
                         </tbody>

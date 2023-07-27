@@ -75,7 +75,7 @@ function Show({ estimate }) {
                     <p>Name: {estimate.customer.full_name}</p>
                     <p>Number: {estimate.customer.mobile_number}</p>
                     <p>Company: {estimate.customer.company}</p>
-                    <p>Total: {estimate.total_amount}</p>
+                    <p>Total: {estimate.amount}</p>
                 </div>
             </div>
             <div className="mt-10 px-[2rem]">
@@ -109,9 +109,6 @@ function Show({ estimate }) {
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Price Per Unit
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Amount
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Final Amount
@@ -159,11 +156,8 @@ function Show({ estimate }) {
                                         <td className="px-6 py-4">
                                             {product.price_per_unit}{" "}
                                         </td>
-                                        <td className="px-6 py-4">
-                                            {product.amount}{" "}
-                                        </td>
                                         <td className="px-6 py-4 flex gap-2 items-center">
-                                            {product.final_amount}{" "}
+                                            {product.amount}{" "}
                                         </td>
                                     </tr>
                                 );
@@ -188,7 +182,6 @@ function Show({ estimate }) {
                                     {estimate.total_kgs}{" "}
                                 </td>
                                 <td className="px-6 py-4"></td>
-                                <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">Loading Charges</td>
                                 <td className="px-6 py-4 flex gap-2 items-center">
                                     {estimate.loading_charges}{" "}
@@ -207,7 +200,6 @@ function Show({ estimate }) {
                                     scope="row"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 ></th>
-                                <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
@@ -236,7 +228,6 @@ function Show({ estimate }) {
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
-                                <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4">Discount</td>
                                 <td className="px-6 py-4 flex gap-2 items-center">
                                     {estimate.discount}{" "}
@@ -255,7 +246,6 @@ function Show({ estimate }) {
                                     scope="row"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 ></th>
-                                <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>
                                 <td className="px-6 py-4"></td>

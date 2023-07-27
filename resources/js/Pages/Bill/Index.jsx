@@ -3,7 +3,7 @@ import AppLayout from '@/Layouts/AppLayout'
 import {Head, Link} from '@inertiajs/react'
 
 function Index({bills}) {
-
+    console.log(bills)
     const handleDelete = (event, bill) => {
         event.preventDefault();
 
@@ -79,7 +79,7 @@ function Index({bills}) {
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        bill.final_amount
+                                        bill.amount
                                     } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         <Link href={

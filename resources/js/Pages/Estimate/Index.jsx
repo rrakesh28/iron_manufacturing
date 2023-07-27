@@ -4,7 +4,7 @@ import {Head, Link} from '@inertiajs/react'
 import axios from 'axios'
 
 function Index({estimates}) {
-
+    // console.log(estimates)
     const handleDelete = (event, estimate) => {
         event.preventDefault();
 
@@ -74,7 +74,7 @@ function Index({estimates}) {
                                     } </td>
                                     <td className="px-6 py-4">
                                         {
-                                        estimate.total_amount
+                                        estimate.amount
                                     } </td>
                                     <td className="px-6 py-4 flex gap-2 items-center">
                                         <Link href={

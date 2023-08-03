@@ -12,9 +12,17 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $customers = Customer::all();
+        if ($request->search) {
+            $search = $request->search;
+            $customers = Customer::where('full_name','LIKE','%'.$search.'%')->orWhere('mobile_number','LIKE','%'.$search.'%')->orWhere('email','%'.$search.'%')->orWhere('company','%'.$search.'%')->get();
+        }
+
+        if ($request->wantsJson()) {
+            return $customers;
+        }
         return Inertia::render('Customer/Index', compact('customers'));
     }
 

@@ -19,9 +19,26 @@ class EstimateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $estimates = Estimate::all();
+        $estimates = Estimate::paginate(1);
+
+        if ($request->search) {
+            $search = $request->search;
+            $estimates = Estimate::where('estimate_id','LIKE','%'.$search.'%')
+                ->orWhere('created_at','LIKE','%'.$search.'%')
+                ->orWhereHas('customer', function ($query) use ($search) {
+                    $query->where('full_name','LIKE','%'.$search.'%')
+                        ->orWhere('email','LIKE','%'.$search.'%')
+                        ->orWhere('company','LIKE','%'.$search.'%')
+                        ->orWhere('mobile_number','LIKE','%'.$search.'%');
+                })
+                ->get();
+        }
+
+        if($request->wantsJson()){
+            return $estimates;
+        }
         return Inertia::render('Estimate/Index', compact('estimates'));
     }
 
@@ -261,7 +278,7 @@ class EstimateController extends Controller
             }
         }
 
-        $estimate->total_amount = $estimate->loading_charges + $estimate->crimping_charges + round(($total-$estimate->discount), 2);
+        $estimate->total_amount = $estimate->loading_charges + $estimate->crimping_charges + round(($total - $estimate->discount), 2);
         $estimate->totaL_kgs = $total_estimate_kgs;
         $estimate->save();
 
@@ -334,16 +351,16 @@ class EstimateController extends Controller
             $billProducts->save();
 
             $inventory = Inventory::where('product_id', $product->product_id)->first();
-            if($inventory){
+            if ($inventory) {
                 $inventoryLog = new InventoryLog();
-                if($inventoryLog){
+                if ($inventoryLog) {
                     $inventoryLog->inventory_id = $inventory->id;
                     $inventoryLog->bill_id = $bill_id;
                     if ($inventory->unit_type == 'Weight') {
                         $inventoryLog->weight = $product->total_kgs;
                     } else {
                         $inventoryLog->quantity = $product->quantity;
-                    }   
+                    }
                     $inventoryLog->log_type = 'out';
                     $inventoryLog->save();
                 }
@@ -460,15 +477,15 @@ class EstimateController extends Controller
         }
     }
 
-    public function addDiscount(Request $request,Estimate $estimate)
+    public function addDiscount(Request $request, Estimate $estimate)
     {
-        $sum = EstimateProducts::where('estimate_id',$estimate->id)->sum('final_amount');
-        $total_amount = ($sum + $estimate->loading_charges + $estimate->crimping_charges ) - $request->discount;
+        $sum = EstimateProducts::where('estimate_id', $estimate->id)->sum('final_amount');
+        $total_amount = ($sum + $estimate->loading_charges + $estimate->crimping_charges) - $request->discount;
         $estimate->discount = $request->discount;
         $estimate->total_amount = $total_amount;
-        if($estimate->save()){
+        if ($estimate->save()) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }

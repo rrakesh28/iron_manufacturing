@@ -16,9 +16,26 @@ class BillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $bills = Bill::all();
+
+        if ($request->search) {
+            $search = $request->search;
+            $bills = Bill::where('bill_id','LIKE','%'.$search.'%')
+                ->orWhere('created_at','LIKE','%'.$search.'%')
+                ->orWhereHas('customer', function ($query) use ($search) {
+                    $query->where('full_name','LIKE','%'.$search.'%')
+                        ->orWhere('email','LIKE','%'.$search.'%')
+                        ->orWhere('company','LIKE','%'.$search.'%')
+                        ->orWhere('mobile_number','LIKE', '%'.$search.'%');
+                })
+                ->get();
+        }
+
+        if($request->wantsJson()){
+            return $bills;
+        }
         return Inertia::render('Bill/Index', compact('bills'));
     }
 
@@ -389,7 +406,7 @@ class BillController extends Controller
                 $price_per_kg = $product['price_per_kg'];
                 $answer = $product['final_total_kgs'] * $price_per_kg;
                 $total_bill_kgs += $product['final_total_kgs'];
-                $final_amount = $answer - ($answer * ($product['final_discount'] / 100));
+                $final_amount = $answer;
                 $total += $final_amount;
 
                 $billProduct = BillsProduct::where('id', $product['id'])->first();

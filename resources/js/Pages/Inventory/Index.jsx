@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import PurchasesLayout from '@/Layouts/PurchasesLayout';
 import AppLayout from "@/Layouts/AppLayout";
 import { Head, Link } from "@inertiajs/react";
+import TextInput from "@/Components/TextInput";
+import axios from "axios";
 
 function Index({ inventory }) {
     console.log(inventory);
+
+
+    const [search,setSearch] = useState(null)
+    const [inventoryData,setInventoryData] = useState(inventory)
+    
+    useEffect(() => {
+        axios.get(route('inventory.index',{search:search})).then((res)=>{
+            setInventoryData(res.data)
+            console.log(res.data)
+        })
+    }, [search])
+    
+
+
     const handleDelete = (event, inventory) => {
         event.preventDefault();
 
@@ -21,12 +37,19 @@ function Index({ inventory }) {
             <Head title="Inventory" />
             <div className="mt-5 px-5">
                 <p className="text-[1.5rem] font-bold">Inventory</p>
-                <Link
-                    href={route("inventory.create")}
-                    className="bg-blue-700 text-sm px-6 py-2 rounded-lg text-white"
-                >
-                    Create
-                </Link>
+                <div className="flex justify-between">
+                    <div>
+                        <Link
+                            href={route("inventory.create")}
+                            className="bg-blue-700 text-sm px-6 py-2 rounded-lg text-white"
+                        >
+                            Create
+                        </Link>
+                    </div>
+                    <div>
+                        <TextInput type="text" onChange={(e)=>setSearch(e.target.value)} />
+                    </div>
+                </div>
             </div>
             <div className="mt-10 px-[2rem]">
                 <div className="relative overflow-x-auto">
@@ -58,7 +81,7 @@ function Index({ inventory }) {
                         </thead>
                         <tbody>
                             {" "}
-                            {inventory?.map((item, key) => {
+                            {inventoryData?.map((item, key) => {
                                 return (
                                     <tr
                                         key={key}

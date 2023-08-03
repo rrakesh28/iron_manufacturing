@@ -103,6 +103,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory',[InventoryController::class,'index'])->name('inventory.index');
     Route::get('/inventory/create',[InventoryController::class,'create'])->name('inventory.create');
     Route::post('/inventory',[InventoryController::class,'store'])->name('inventory.store');
+    Route::get('/inventory/getLogs',[InventoryController::class,'getLogs'])->name('inventory.getLogs');
     Route::post('/inventory/{inventory}/add',[InventoryController::class,'add'])->name('inventory.add');
     Route::get('/inventory/{inventory}/show',[InventoryController::class,'show'])->name('inventory.show');
     Route::get('/inventory/{inventory}/edit',[InventoryController::class,'edit'])->name('inventory.edit');

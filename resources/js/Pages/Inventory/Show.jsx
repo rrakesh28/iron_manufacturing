@@ -6,12 +6,25 @@ import TextInput from "@/Components/TextInput";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { useEffect } from "react";
 
 function Show({ inventory, balance }) {
     console.log(inventory);
 
     const [showModal, setShowModal] = useState(false);
 
+
+    const [search,setSearch] = useState(null)
+    const [inventoryLogs,setInventoryLogs] = useState(inventory.logs)
+
+    useEffect(() => {
+        axios.get(route('inventory.getLogs',{inventory:inventory.id,search:search})).then((res)=>{
+            // console.log(res.data)
+            setInventoryLogs(res.data)
+        })
+    }, [search])
+    
+    
     const { data, setData, post, processing, errors, reset } = useForm({
         in: "",
     });
@@ -72,6 +85,10 @@ function Show({ inventory, balance }) {
                         Add Quantity
                     </button>
                 </div>
+
+                <div>
+                    <TextInput type="text" onChange={(e)=>setSearch(e.target.value)} />
+                </div>
                 <div className="relative overflow-x-auto mt-10">
                     <table className="w-full text-sm text-left text-gray-500 ">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
@@ -92,7 +109,7 @@ function Show({ inventory, balance }) {
                         </thead>
                         <tbody>
                             {" "}
-                            {inventory.logs?.map((item, key) => {
+                            {inventoryLogs?.map((item, key) => {
                                 return (
                                     <tr
                                         key={key}

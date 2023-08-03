@@ -13,10 +13,34 @@ class InventoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $inventory = Inventory::all();
-        return Inertia::render('Inventory/Index',compact('inventory'));
+
+        if($request->search){
+            $search = $request->search;
+            $inventory = Inventory::where('created_at','LIKE','%'.$search.'%')->orWhereHas('product',function($query) use ($search){
+                $query->where('name','LIKE','%'.$search.'%');
+            })->get();
+        }
+        if ($request->wantsJson()) {
+            return $inventory;
+        }
+
+        return Inertia::render('Inventory/Index', compact('inventory'));
+    }
+
+    public function getLogs(Request $request){
+
+        if ($request->search) {
+            $logs = InventoryLog::where('created_at', 'LIKE', '%' . $request->search . '%')->where('inventory_id', $request->inventory)->get();
+        }else{
+            $logs = InventoryLog::where('inventory_id', $request->inventory)->get();
+        }
+
+        if ($request->wantsJson()) {
+            return $logs;
+        }
     }
 
     /**
@@ -25,7 +49,7 @@ class InventoryController extends Controller
     public function create()
     {
         $products = Product::all();
-        return Inertia::render('Inventory/Create',compact('products'));
+        return Inertia::render('Inventory/Create', compact('products'));
     }
 
     /**
@@ -34,7 +58,7 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_id'=> ['required','unique:'.Inventory::class],
+            'product_id' => ['required', 'unique:' . Inventory::class],
         ]);
 
         $inventory = new Inventory();
@@ -45,7 +69,7 @@ class InventoryController extends Controller
 
         $inventoryLog = new InventoryLog();
         $inventoryLog->inventory_id = $inventory->id;
-        $inventoryLog->weight = round($request->weight,2);
+        $inventoryLog->weight = round($request->weight, 2);
         $inventoryLog->quantity = $request->quantity;
         $inventoryLog->log_type = 'in';
         $inventoryLog->save();
@@ -59,27 +83,28 @@ class InventoryController extends Controller
      */
     public function show(Inventory $inventory)
     {
-        if($inventory->unit_type == 'Weight'){
-            $balance = InventoryLog::where('inventory_id',$inventory->id)->where('log_type','in')->sum('weight') - InventoryLog::where('inventory_id',$inventory->id)->where('log_type','out')->sum('weight');
-        }else{
-            $balance = InventoryLog::where('inventory_id',$inventory->id)->where('log_type','in')->sum('quantity') - InventoryLog::where('inventory_id',$inventory->id)->where('log_type','out')->sum('quantity');
+        if ($inventory->unit_type == 'Weight') {
+            $balance = InventoryLog::where('inventory_id', $inventory->id)->where('log_type', 'in')->sum('weight') - InventoryLog::where('inventory_id', $inventory->id)->where('log_type', 'out')->sum('weight');
+        } else {
+            $balance = InventoryLog::where('inventory_id', $inventory->id)->where('log_type', 'in')->sum('quantity') - InventoryLog::where('inventory_id', $inventory->id)->where('log_type', 'out')->sum('quantity');
         }
-        return Inertia::render('Inventory/Show',compact('inventory','balance'));
+        return Inertia::render('Inventory/Show', compact('inventory', 'balance'));
     }
 
-    public function add(Inventory $inventory,Request $request){
+    public function add(Inventory $inventory, Request $request)
+    {
         // dd($inventory->id);
         $inventoryLog = new InventoryLog();
         $inventoryLog->inventory_id = $inventory->id;
-        if($inventory->unit_type == 'Weight'){
-            $inventoryLog->weight = round($request->in,2);
-        }else{
+        if ($inventory->unit_type == 'Weight') {
+            $inventoryLog->weight = round($request->in, 2);
+        } else {
             $inventoryLog->quantity = $request->in;
         }
         $inventoryLog->log_type = 'in';
         $inventoryLog->save();
 
-        return redirect(route('inventory.show',['inventory'=>$inventory->id]));
+        return redirect(route('inventory.show', ['inventory' => $inventory->id]));
     }
 
     /**
@@ -87,7 +112,7 @@ class InventoryController extends Controller
      */
     public function edit(Inventory $inventory)
     {
-        return Inertia::render('Inventory/Edit',compact('inventory'));
+        return Inertia::render('Inventory/Edit', compact('inventory'));
     }
 
     /**
@@ -112,8 +137,8 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
-       $inventory->logs()->delete();
-       
-       $inventory->delete();
+        $inventory->logs()->delete();
+
+        $inventory->delete();
     }
 }

@@ -12,9 +12,17 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::all();
+        if($request->search){
+            $search = $request->search;
+            $products = Product::where('name','LIKE','%'.$search.'%')->get();
+        }
+
+        if($request->wantsJson()){
+            return $products;
+        }
         return Inertia::render('Product/Index',compact('products'));
     }
 

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
-
+import './print.css';
 function Invoice({bill}) {
     useEffect(() => { 
-        // window.print();
+        window.print();
     }, [])
     return (
         <div className='p-5'>

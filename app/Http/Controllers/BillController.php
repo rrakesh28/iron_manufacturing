@@ -44,13 +44,20 @@ class BillController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        $productsData = Product::all();
         $customersData = Customer::all();
         $customers = array();
+        $products = array();
         foreach ($customersData as $customer) {
             $data = array('value' => $customer->id, 'label' => $customer->mobile_number . '(' . $customer->company . ')');
             array_push($customers, $data);
         }
+
+        foreach($productsData as $product){
+            $data = array('value'=>$product->id,'label'=>$product->name);
+            array_push($products,$data);
+        }
+
         return Inertia::render('Bill/Create', compact('products', 'customers'));
     }
 
@@ -422,7 +429,7 @@ class BillController extends Controller
                         if ($inventory->unit_type == 'Weight') {
                             $inventoryLog->weight = round($product['final_total_kgs'],2);
                         } else {
-                            $inventoryLog->quantity = $product['quantity'];
+                            $inventoryLog->quantity = $product['final_quantity'];
                         }
                         $inventoryLog->log_type = 'out';
                         $inventoryLog->save();

@@ -21,7 +21,7 @@ class EstimateController extends Controller
      */
     public function index(Request $request)
     {
-        $estimates = Estimate::paginate(1);
+        $estimates = Estimate::get();
 
         if ($request->search) {
             $search = $request->search;
@@ -47,12 +47,18 @@ class EstimateController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        $productsData = Product::all();
         $customersData = Customer::all();
         $customers = array();
+        $products = array();
         foreach ($customersData as $customer) {
             $data = array('value' => $customer->id, 'label' => $customer->mobile_number . '(' . $customer->company . ')');
             array_push($customers, $data);
+        }
+
+        foreach($productsData as $product){
+            $data = array('value'=>$product->id,'label'=>$product->name);
+            array_push($products,$data);
         }
         return Inertia::render('Estimate/Create', compact('products', 'customers'));
     }
@@ -62,7 +68,6 @@ class EstimateController extends Controller
      */
     public function store(Request $request)
     {
-
         $estimate_id = 1000;
 
         $lastRecord = Estimate::latest()->first();
@@ -90,7 +95,7 @@ class EstimateController extends Controller
                     $feets = $product['feet'];
                     $inches = $product['inches'];
                     $kgsPerFeet = $product['product']['in_kgs'];
-                    $price_per_kg = $product['product']['price_per_kg'];
+                    $price_per_kg = $product['price_per_kg'];
                     $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * ($product['quantity']);
                     $total_estimate_kgs += $total_kgs;
                     $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']);
@@ -104,7 +109,7 @@ class EstimateController extends Controller
                     $estimateProduct->product_name = $product['product']['name'];
                     $estimateProduct->unit_type = $product['product']['unit_type'];
                     $estimateProduct->in_kgs = $product['product']['in_kgs'];
-                    $estimateProduct->price_per_kg = $product['product']['price_per_kg'];
+                    $estimateProduct->price_per_kg = $product['price_per_kg'];
                     $estimateProduct->unit_selected = $product['unit'];
                     $estimateProduct->quantity = $product['quantity'];
                     $estimateProduct->feets = $product['feet'];
@@ -117,7 +122,7 @@ class EstimateController extends Controller
                 }
                 if ($product['unit'] == 'Kgs') {
 
-                    $price_per_kg = $product['product']['price_per_kg'];
+                    $price_per_kg = $product['price_per_kg'];
                     $total_estimate_kgs += $product['kgs'] * $product['quantity'];
                     $answer = (($product['kgs'] * $price_per_kg) * $product['quantity']);
                     $final_amount = $answer;
@@ -129,7 +134,7 @@ class EstimateController extends Controller
                     $estimateProduct->product_name = $product['product']['name'];
                     $estimateProduct->unit_type = $product['product']['unit_type'];
                     $estimateProduct->in_kgs = $product['product']['in_kgs'];
-                    $estimateProduct->price_per_kg = $product['product']['price_per_kg'];
+                    $estimateProduct->price_per_kg = $product['price_per_kg'];
                     $estimateProduct->unit_selected = $product['unit'];
                     $estimateProduct->quantity = $product['quantity'];
                     $estimateProduct->feets = $product['feet'];
@@ -163,7 +168,7 @@ class EstimateController extends Controller
             } else {
                 if ($product['unit'] == 'Kgs') {
 
-                    $price_per_kg = $product['product']['price_per_kg'];
+                    $price_per_kg = $product['price_per_kg'];
                     $total_estimate_kgs += $product['kgs'] * $product['quantity'];
                     $answer = (($product['kgs'] * $price_per_kg) * $product['quantity']);
                     $final_amount = $answer;
@@ -175,7 +180,7 @@ class EstimateController extends Controller
                     $estimateProduct->product_name = $product['product']['name'];
                     $estimateProduct->unit_type = $product['product']['unit_type'];
                     $estimateProduct->in_kgs = $product['product']['in_kgs'];
-                    $estimateProduct->price_per_kg = $product['product']['price_per_kg'];
+                    $estimateProduct->price_per_kg = $product['price_per_kg'];
                     $estimateProduct->unit_selected = $product['unit'];
                     $estimateProduct->quantity = $product['quantity'];
                     $estimateProduct->feets = $product['feet'];

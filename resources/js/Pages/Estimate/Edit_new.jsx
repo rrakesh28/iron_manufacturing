@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import AppLayout from "@/Layouts/AppLayout";
 import InputError from "@/Components/InputError";
@@ -10,20 +11,22 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import Select from "react-select";
 import axios from "axios";
 
-function Create({ products, customers }) {
-    const [customer, setCusomter] = useState(null);
+function Create({ products, estimate}) {
+    console.log(estimate)
+    const [customer, setCusomter] = useState(estimate.customer);
     const { data, setData, post, processing, errors, reset } = useForm({
         customer: "",
         products: [
             {
                 product: "",
-                price_per_kgs: "",
-                loading_charges: "",
+                price_per_kg: "",
                 quantity: "",
+                loading_charges: 0,
                 unit: "",
                 feet: "",
                 inches: "",
                 kgs: "",
+                color: "",
             },
         ],
     });
@@ -54,8 +57,8 @@ function Create({ products, customers }) {
     const addProduct = () => {
         let object = {
             product: "",
-            price_per_kg: "",
-            loading_charges: "",
+            price_per_kg:'',
+            loading_charges: 0,
             discount: "",
             quantity: "",
             unit: "",
@@ -86,13 +89,13 @@ function Create({ products, customers }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("bill.store"));
+        post(route("estimate.store"));
     };
     return (
         <AppLayout>
             <Head title="Create Estimate" />
             <div className="mt-5 px-5">
-                <p className="text-[1.5rem] font-bold">Create Bill</p>
+                <p className="text-[1.5rem] font-bold">Create Estimate</p>
             </div>
             <div className="mt-10 px-[2rem]">
                 <div className="bg-white w-[50rem] p-[2rem]">
@@ -158,7 +161,7 @@ function Create({ products, customers }) {
                             data.products.map((productSelected, index) => {
                                 return (
                                     <div
-                                        className="grid grid-cols-3 gap-4"
+                                        className="grid grid-cols-3 gap-4 "
                                         key={index}
                                     >
                                         <div className="mt-4">
@@ -274,6 +277,25 @@ function Create({ products, customers }) {
                                                 </div>
                                             )}
 
+                                        <div className="mt-4">
+                                            <InputLabel
+                                                htmlFor="quantity"
+                                                value="Quantity"
+                                            />
+
+                                            <TextInput
+                                                id="quantity"
+                                                type="number"
+                                                name="quantity"
+                                                value={productSelected.quantity}
+                                                className="mt-1 block w-full"
+                                                onChange={(e) => {
+                                                    handleFormChange(e, index);
+                                                }}
+                                                required
+                                            />
+                                        </div>
+
                                         {productSelected.unit === "Feet" && (
                                             <div className="mt-4">
                                                 <InputLabel
@@ -301,7 +323,7 @@ function Create({ products, customers }) {
                                                         Select Color
                                                     </option>
                                                     <option value="light blue ">
-                                                        light blue
+                                                        light blue{" "}
                                                     </option>
                                                     <option value="nova blue">
                                                         nova blue
@@ -349,25 +371,6 @@ function Create({ products, customers }) {
                                                 />
                                             </div>
                                         )}
-
-                                        <div className="mt-4">
-                                            <InputLabel
-                                                htmlFor="quantity"
-                                                value="Quantity"
-                                            />
-
-                                            <TextInput
-                                                id="quantity"
-                                                type="number"
-                                                name="quantity"
-                                                value={productSelected.quantity}
-                                                className="mt-1 block w-full"
-                                                onChange={(e) => {
-                                                    handleFormChange(e, index);
-                                                }}
-                                                required
-                                            />
-                                        </div>
 
                                         {productSelected.unit === "Feet" && (
                                             <div className="mt-4">

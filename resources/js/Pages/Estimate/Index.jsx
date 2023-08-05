@@ -3,7 +3,6 @@ import AppLayout from "@/Layouts/AppLayout";
 import { Head, Link } from "@inertiajs/react";
 import axios from "axios";
 import TextInput from "@/Components/TextInput";
-import {Pagination} from 'react-laravel-paginex'
 
 function Index({ estimates }) {
     // console.log(estimates)
@@ -85,7 +84,7 @@ function Index({ estimates }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {estimatesData.data?.map((estimate, key) => {
+                            {estimatesData?.map((estimate, key) => {
                                 return (
                                     <tr
                                         key={key}
@@ -158,7 +157,6 @@ function Index({ estimates }) {
                         </tbody>
                     </table>
                 </div>
-                <Pagination changePage={getData} data={estimatesData}/>
             </div>
         </AppLayout>
     );

@@ -122,30 +122,6 @@ function Edit({bill}) {
                                             className="mt-2"/>
                                     </div>
 
-                                    <div className="mt-4">
-                                        <InputLabel htmlFor="discount" value="Discount"/>
-
-                                        <TextInput id="discount" type="number" name="final_discount"
-                                            value={
-                                                productSelected.final_discount
-                                            }
-                                            className="mt-1 block w-full"
-                                            onChange={
-                                                (e) => {
-                                                    handleFormChange(e, index)
-                                                }
-                                            }
-                                            required/>
-
-                                        <InputError message={
-                                                errors.feet
-                                            }
-                                            className="mt-2"/>
-                                    </div>
-
-
-
-
                                     {
                                     productSelected.unit_selected === 'Feet' && <div className="mt-4">
                                         <InputLabel htmlFor="feet" value="Feet"/>

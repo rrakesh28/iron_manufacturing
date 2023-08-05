@@ -115,4 +115,9 @@ class ProductController extends Controller
 
         return redirect(route('product.index'));
     }
+
+
+    public function getProduct(Product $product){
+        return $product;
+    }
 }

@@ -7,24 +7,37 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useEffect } from "react";
+import axios from "axios";
 
 function Show({ inventory, balance }) {
     console.log(inventory);
 
     const [showModal, setShowModal] = useState(false);
 
+    const [from, setFrom] = useState(null);
+    const [to, setTo] = useState(null);
+    const [inventoryLogs, setInventoryLogs] = useState(inventory.logs);
 
-    const [search,setSearch] = useState(null)
-    const [inventoryLogs,setInventoryLogs] = useState(inventory.logs)
+    // useEffect(() => {
+    //     axios.get(route('inventory.getLogs',{inventory:inventory.id,search:search})).then((res)=>{
+    //         // console.log(res.data)
+    //         setInventoryLogs(res.data)
+    //     })
+    // }, [search])
 
-    useEffect(() => {
-        axios.get(route('inventory.getLogs',{inventory:inventory.id,search:search})).then((res)=>{
-            // console.log(res.data)
+    const search = (e) => {
+        e.preventDefault()
+        axios.get(
+            route("inventory.getLogs", {
+                inventory: inventory.id,
+                from: from,
+                to: to,
+            })
+        ).then((res)=>{
             setInventoryLogs(res.data)
         })
-    }, [search])
-    
-    
+    };
+
     const { data, setData, post, processing, errors, reset } = useForm({
         in: "",
     });
@@ -40,9 +53,9 @@ function Show({ inventory, balance }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('inventory.add',{inventory:inventory}),{
-            onSuccess: ()=> window.location.reload()
-        })
+        post(route("inventory.add", { inventory: inventory }), {
+            onSuccess: () => window.location.reload(),
+        });
     };
     return (
         <AppLayout>
@@ -86,9 +99,21 @@ function Show({ inventory, balance }) {
                     </button>
                 </div>
 
-                <div>
-                    <TextInput type="text" onChange={(e)=>setSearch(e.target.value)} />
-                </div>
+                <form onSubmit={search}>
+                    <div className="flex gap-2">
+                        <TextInput
+                            type="date"
+                            onChange={(e) => setFrom(e.target.value)}
+                            required
+                        />
+                        <TextInput
+                            type="date"
+                            onChange={(e) => setTo(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <PrimaryButton className="mt-2">Search</PrimaryButton>
+                </form>
                 <div className="relative overflow-x-auto mt-10">
                     <table className="w-full text-sm text-left text-gray-500 ">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
@@ -147,7 +172,9 @@ function Show({ inventory, balance }) {
                                     scope="row"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                 ></th>
-                                <td className="px-6 py-4">{balance.toFixed(2)}</td>
+                                <td className="px-6 py-4">
+                                    {balance.toFixed(2)}
+                                </td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -175,7 +202,7 @@ function Show({ inventory, balance }) {
                             type="number"
                             name="add"
                             className="mt-1 block w-3/4"
-                            onChange={(e) => setData('in',e.target.value)}
+                            onChange={(e) => setData("in", e.target.value)}
                             isFocused
                             required
                             placeholder="Add"

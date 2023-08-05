@@ -1,0 +1,10 @@
+@media print {
+  /* Hide the URL in the header and footer */
+  @page {
+    margin: 0;
+  }
+
+  body::after {
+    content: none;
+  }
+}

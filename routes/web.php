@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/{product}/edit',[ProductController::class,'edit'])->name('product.edit');
     Route::post('/product/{product}/update',[ProductController::class,'update'])->name('product.update');
     Route::post('/product/{product}/destroy',[ProductController::class,'destroy'])->name('product.destroy');
+    Route::get('/product/{product}/getproduct',[ProductController::class,'getProduct'])->name('product.get');
     
     Route::get('/customers',[CustomerController::class,'index'])->name('customer.index');
     Route::get('/customer/create',[CustomerController::class,'create'])->name('customer.create');

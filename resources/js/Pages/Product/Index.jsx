@@ -57,6 +57,9 @@ function Index({ products }) {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
+                                    Serial Number
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     Product name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -74,13 +77,15 @@ function Index({ products }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {" "}
                             {productsData.map((product, key) => {
                                 return (
                                     <tr
                                         key={key}
                                         className="bg-white border-b "
                                     >
+                                        <td className="px-6 py-4">
+                                            {key+1}
+                                        </td>
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "

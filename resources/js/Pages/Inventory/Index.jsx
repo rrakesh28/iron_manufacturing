@@ -57,6 +57,9 @@ function Index({ inventory }) {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
+                                   Serial Number 
+                                </th>
+                                <th scope="col" className="px-6 py-3">
                                     Date
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -87,6 +90,9 @@ function Index({ inventory }) {
                                         key={key}
                                         className="bg-white border-b "
                                     >
+                                        <td className="px-6 py-4">
+                                            {key+1}
+                                        </td>
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
@@ -103,10 +109,10 @@ function Index({ inventory }) {
                                             {item.unit_type}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {item.opening}
+                                            {item.opening.toFixed(2)}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {item.utilized}
+                                            {item.utilized.toFixed(2)}
                                         </td>
                                         <td className="px-6 py-4">
                                             {item.remaining.toFixed(2)}

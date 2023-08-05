@@ -32,11 +32,7 @@ class InventoryController extends Controller
 
     public function getLogs(Request $request){
 
-        if ($request->search) {
-            $logs = InventoryLog::where('created_at', 'LIKE', '%' . $request->search . '%')->where('inventory_id', $request->inventory)->get();
-        }else{
-            $logs = InventoryLog::where('inventory_id', $request->inventory)->get();
-        }
+        $logs = InventoryLog::whereBetween('created_at',[$request->from,$request->to])->where('inventory_id', $request->inventory)->get();
 
         if ($request->wantsJson()) {
             return $logs;

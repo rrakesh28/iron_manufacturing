@@ -15,24 +15,37 @@ class InventoryController extends Controller
      */
     public function index(Request $request)
     {
-        $inventory = Inventory::all();
 
-        if($request->search){
+        $openingTotal = 0;
+        $utilizedTotal = 0;
+        $remainingTotal = 0;
+
+        if ($request->search) {
             $search = $request->search;
-            $inventory = Inventory::where('created_at','LIKE','%'.$search.'%')->orWhereHas('product',function($query) use ($search){
-                $query->where('name','LIKE','%'.$search.'%');
+            $inventory = Inventory::where('created_at', 'LIKE', '%' . $search . '%')->orWhereHas('product', function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%');
             })->get();
+        } else {
+
+            $inventory = Inventory::all();
         }
         if ($request->wantsJson()) {
             return $inventory;
         }
 
-        return Inertia::render('Inventory/Index', compact('inventory'));
+        foreach ($inventory as $item) {
+            $openingTotal += $item->opening;
+            $utilizedTotal += $item->unitlized;
+            $remainingTotal += $item->remaining;
+        }
+
+        return Inertia::render('Inventory/Index', compact('inventory', 'openingTotal', 'utilizedTotal', 'remainingTotal'));
     }
 
-    public function getLogs(Request $request){
+    public function getLogs(Request $request)
+    {
 
-        $logs = InventoryLog::whereBetween('created_at',[$request->from,$request->to])->where('inventory_id', $request->inventory)->get();
+        $logs = InventoryLog::whereBetween('created_at', [$request->from, $request->to])->where('inventory_id', $request->inventory)->get();
 
         if ($request->wantsJson()) {
             return $logs;

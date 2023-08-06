@@ -4,22 +4,21 @@ import AppLayout from "@/Layouts/AppLayout";
 import { Head, Link } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import axios from "axios";
+import PrimaryButton from "@/Components/PrimaryButton";
+import SecondaryButton from "@/Components/SecondaryButton";
 
-function Index({ inventory }) {
+function Index({ inventory, openingTotal, utilizedTotal, remainingTotal }) {
     console.log(inventory);
 
+    const [search, setSearch] = useState(null);
+    const [inventoryData, setInventoryData] = useState(inventory);
 
-    const [search,setSearch] = useState(null)
-    const [inventoryData,setInventoryData] = useState(inventory)
-    
-    useEffect(() => {
-        axios.get(route('inventory.index',{search:search})).then((res)=>{
-            setInventoryData(res.data)
-            console.log(res.data)
-        })
-    }, [search])
-    
-
+    // useEffect(() => {
+    //     axios.get(route('inventory.index',{search:search})).then((res)=>{
+    //         setInventoryData(res.data)
+    //         console.log(res.data)
+    //     })
+    // }, [search])
 
     const handleDelete = (event, inventory) => {
         event.preventDefault();
@@ -47,7 +46,14 @@ function Index({ inventory }) {
                         </Link>
                     </div>
                     <div>
-                        <TextInput type="text" onChange={(e)=>setSearch(e.target.value)} />
+                        <form action="" method="get">
+                            <TextInput
+                                type="text"
+                                name="search"
+                            />
+                            <PrimaryButton>Submit</PrimaryButton>
+                            <a href={route('inventory.index')} className="border rounded-lg p-2">Clear</a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -57,7 +63,7 @@ function Index({ inventory }) {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
-                                   Serial Number 
+                                    Serial Number
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Date
@@ -90,9 +96,7 @@ function Index({ inventory }) {
                                         key={key}
                                         className="bg-white border-b "
                                     >
-                                        <td className="px-6 py-4">
-                                            {key+1}
-                                        </td>
+                                        <td className="px-6 py-4">{key + 1}</td>
                                         <th
                                             scope="row"
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
@@ -144,6 +148,22 @@ function Index({ inventory }) {
                                 );
                             })}{" "}
                         </tbody>
+                        <tr className="bg-white border-b ">
+                            <td className="px-6 py-4"></td>
+                            <th
+                                scope="row"
+                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                            ></th>
+                            <th
+                                scope="row"
+                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                            ></th>
+                            <td className="px-6 py-4"></td>
+                            <td className="px-6 py-4">{openingTotal}</td>
+                            <td className="px-6 py-4">{utilizedTotal}</td>
+                            <td className="px-6 py-4">{remainingTotal}</td>
+                            <td className="px-6 py-4 flex gap-2 items-center"></td>
+                        </tr>
                     </table>
                 </div>
             </div>

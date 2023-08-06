@@ -24,6 +24,7 @@ function Create({ products, customers }) {
                 feet: "",
                 inches: "",
                 kgs: "",
+                color:'',
             },
         ],
     });
@@ -62,6 +63,7 @@ function Create({ products, customers }) {
             feet: "",
             inches: "",
             kgs: "",
+            color:'',
         };
 
         setData("products", [...data.products, object]);

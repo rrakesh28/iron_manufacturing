@@ -22,18 +22,18 @@ class BillController extends Controller
 
         if ($request->search) {
             $search = $request->search;
-            $bills = Bill::where('bill_id','LIKE','%'.$search.'%')
-                ->orWhere('created_at','LIKE','%'.$search.'%')
+            $bills = Bill::where('bill_id', 'LIKE', '%' . $search . '%')
+                ->orWhere('created_at', 'LIKE', '%' . $search . '%')
                 ->orWhereHas('customer', function ($query) use ($search) {
-                    $query->where('full_name','LIKE','%'.$search.'%')
-                        ->orWhere('email','LIKE','%'.$search.'%')
-                        ->orWhere('company','LIKE','%'.$search.'%')
-                        ->orWhere('mobile_number','LIKE', '%'.$search.'%');
+                    $query->where('full_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%')
+                        ->orWhere('company', 'LIKE', '%' . $search . '%')
+                        ->orWhere('mobile_number', 'LIKE', '%' . $search . '%');
                 })
                 ->get();
         }
 
-        if($request->wantsJson()){
+        if ($request->wantsJson()) {
             return $bills;
         }
         return Inertia::render('Bill/Index', compact('bills'));
@@ -53,9 +53,9 @@ class BillController extends Controller
             array_push($customers, $data);
         }
 
-        foreach($productsData as $product){
-            $data = array('value'=>$product->id,'label'=>$product->name);
-            array_push($products,$data);
+        foreach ($productsData as $product) {
+            $data = array('value' => $product->id, 'label' => $product->name);
+            array_push($products, $data);
         }
 
         return Inertia::render('Bill/Create', compact('products', 'customers'));
@@ -119,12 +119,12 @@ class BillController extends Controller
                     $billProduct->save();
 
                     $inventory = Inventory::where('product_id', $product['product']['id'])->first();
-                    if($inventory){
+                    if ($inventory) {
                         $inventoryLog = new InventoryLog();
                         $inventoryLog->inventory_id = $inventory->id;
                         $inventoryLog->bill_id = $bill_id;
                         if ($inventory->unit_type == 'Weight') {
-                            $inventoryLog->weight = round($total_kgs,2);
+                            $inventoryLog->weight = round($total_kgs, 2);
                         } else {
                             $inventoryLog->quantity = $product['quantity'];
                         }
@@ -158,12 +158,12 @@ class BillController extends Controller
                     $billProduct->save();
 
                     $inventory = Inventory::where('product_id', $product['product']['id'])->first();
-                    if($inventory){
+                    if ($inventory) {
                         $inventoryLog = new InventoryLog();
                         $inventoryLog->inventory_id = $inventory->id;
                         $inventoryLog->bill_id = $bill_id;
                         if ($inventory->unit_type == 'Weight') {
-                            $inventoryLog->weight = round(($product['kgs'] * $product['quantity']),2);
+                            $inventoryLog->weight = round(($product['kgs'] * $product['quantity']), 2);
                         } else {
                             $inventoryLog->quantity = $product['quantity'];
                         }
@@ -193,7 +193,7 @@ class BillController extends Controller
                 $billProduct->save();
 
                 $inventory = Inventory::where('product_id', $product['product']['id'])->first();
-                if($inventory){
+                if ($inventory) {
                     $inventoryLog = new InventoryLog();
                     $inventoryLog->inventory_id = $inventory->id;
                     $inventoryLog->bill_id = $bill_id;
@@ -228,13 +228,13 @@ class BillController extends Controller
                     $billProduct->save();
 
                     $inventory = Inventory::where('product_id', $product['product']['id'])->first();
-                    if($inventory){
+                    if ($inventory) {
                         $inventoryLog = new InventoryLog();
                         $inventoryLog->bill_id = $bill_id;
                         $inventoryLog->inventory_id = $inventory->id;
-                        if($inventory->unit_type == 'Weight'){
-                            $inventoryLog->weight = round(($product['kgs'] * $product['quantity']),2);
-                        }else{
+                        if ($inventory->unit_type == 'Weight') {
+                            $inventoryLog->weight = round(($product['kgs'] * $product['quantity']), 2);
+                        } else {
                             $inventory->quantity = $product['quantity'];
                         }
                         $inventoryLog->log_type = 'out';
@@ -263,13 +263,199 @@ class BillController extends Controller
      */
     public function edit(Bill $bill)
     {
-        return Inertia::render('Bill/Edit', compact('bill'));
+        $productsData = Product::all();
+        $products = array();
+
+        foreach ($productsData as $product) {
+            $data = array('value' => $product->id, 'label' => $product->name);
+            array_push($products, $data);
+        }
+        return Inertia::render('Bill/Edit', compact('products', 'bill'));
+    }
+
+    public function update(Request $request, Bill $bill)
+    {
+        $total = 0;
+        $total_estimate_kgs = 0;
+
+        foreach ($request->products as $product) {
+            if ($product['product']['unit_type'] == 'Feet') {
+                if ($product['unit'] == 'Feet' || $product['unit'] == 'Inches') {
+                    $feets = $product['feet'];
+                    $inches = $product['inches'];
+                    $kgsPerFeet = $product['product']['in_kgs'];
+                    $price_per_kg = $product['price_per_kg'];
+                    $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * ($product['quantity']);
+                    $total_estimate_kgs += $total_kgs;
+                    $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']);
+                    $final_amount = $answer;
+                    $total += $final_amount;
+
+                    if (isset($product['id'])) {
+                        $billProduct = BillsProduct::where('id', $product['id'])->first();
+                    } else {
+                        $billProduct = new BillsProduct();
+                    }
+                    $billProduct->product_id = $product['product']['id'];
+                    $billProduct->product_name = $product['product']['name'];
+                    $billProduct->unit_type = $product['product']['unit_type'];
+                    $billProduct->in_kgs = $product['product']['in_kgs'];
+                    $billProduct->price_per_kg = $product['price_per_kg'];
+                    $billProduct->unit_selected = $product['unit'];
+                    $billProduct->final_quantity = $product['quantity'];
+                    $billProduct->final_feets = $product['feet'];
+                    $billProduct->color = $product['color'];
+                    $billProduct->final_inches = $product['inches'];
+                    $billProduct->final_kgs = $product['kgs'];
+                    $billProduct->final_total_kgs = $total_kgs;
+                    $billProduct->final_amount = round($answer, 2);
+                    $billProduct->final_total_amount = round($final_amount, 2);
+                    $billProduct->save();
+
+                    $inventory = Inventory::where('product_id', $product['id'])->first();
+                    if ($inventory) {
+                        $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
+                        if ($inventoryLog) {
+                            if ($inventory->unit_type == 'Weight') {
+                                $inventoryLog->weight = round($total_kgs, 2);
+                            } else {
+                                $inventoryLog->quantity = $product['final_quantity'];
+                            }
+                            $inventoryLog->log_type = 'out';
+                            $inventoryLog->save();
+                        }
+                    }
+                }
+                if ($product['unit'] == 'Kgs') {
+
+                    $price_per_kg = $product['price_per_kg'];
+                    $total_estimate_kgs += $product['kgs'] * $product['quantity'];
+                    $answer = (($product['kgs'] * $price_per_kg) * $product['quantity']);
+                    $final_amount = $answer;
+                    $total += $final_amount;
+
+                    if (isset($product['id'])) {
+                        $billProduct = BillsProduct::where('id', $product['id'])->first();
+                    } else {
+                        $billProduct = new BillsProduct();
+                    }
+                    $billProduct->product_id = $product['product']['id'];
+                    $billProduct->product_name = $product['product']['name'];
+                    $billProduct->unit_type = $product['product']['unit_type'];
+                    $billProduct->in_kgs = $product['product']['in_kgs'];
+                    $billProduct->price_per_kg = $product['price_per_kg'];
+                    $billProduct->unit_selected = $product['unit'];
+                    $billProduct->final_quantity = $product['quantity'];
+                    $billProduct->final_feets = $product['feet'];
+                    $billProduct->final_inches = $product['inches'];
+                    $billProduct->final_kgs = $product['kgs'];
+                    $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    $billProduct->final_amount = round($answer, 2);
+                    $billProduct->final_total_amount = round($final_amount, 2);
+                    $billProduct->save();
+                    $inventory = Inventory::where('product_id', $product['id'])->first();
+                    if ($inventory) {
+                        $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
+                        if ($inventoryLog) {
+                            if ($inventory->unit_type == 'Weight') {
+                                $inventoryLog->weight = round(($product['final_kgs'] * $product['final_quantity']), 2);
+                            } else {
+                                $inventoryLog->quantity = $product['final_quantity'];
+                            }
+                            $inventoryLog->log_type = 'out';
+                            $inventoryLog->save();
+                        }
+                    }
+                }
+            } else if ($product['product']['unit_type'] == 'Unit') {
+                $price_per_unit = $product['product']['price_per_unit'];
+                $answer = $price_per_unit * $product['quantity'];
+                $final_amount = $answer;
+                $total += $final_amount;
+
+
+                if (isset($product['id'])) {
+                    $billProduct = BillsProduct::where('id', $product['id'])->first();
+                } else {
+                    $billProduct = new BillsProduct();
+                }
+                $billProduct->product_id = $product['product']['id'];
+                $billProduct->product_name = $product['product']['name'];
+                $billProduct->unit_type = $product['product']['unit_type'];
+                $billProduct->price_per_unit = $product['product']['price_per_unit'];
+                $billProduct->unit_selected = "Unit";
+                $billProduct->final_quantity = $product['quantity'];
+                $billProduct->final_amount = round($answer, 2);
+                $billProduct->final_total_amount = round($final_amount, 2);
+                $billProduct->save();
+                $inventory = Inventory::where('product_id', $product['id'])->first();
+                if ($inventory) {
+                    $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
+                    if ($inventoryLog) {
+                        if ($inventory->unit_type == 'Weight') {
+                            $inventoryLog->weight = 0;
+                        } else {
+                            $inventoryLog->quantity = $product['final_quantity'];
+                        }
+                        $inventoryLog->log_type = 'out';
+                        $inventoryLog->save();
+                    }
+                }
+            } else {
+                if ($product['unit'] == 'Kgs') {
+
+                    $price_per_kg = $product['price_per_kg'];
+                    $total_estimate_kgs += $product['kgs'] * $product['quantity'];
+                    $answer = (($product['kgs'] * $price_per_kg) * $product['quantity']);
+                    $final_amount = $answer;
+                    $total += $final_amount;
+                    if (isset($product['id'])) {
+                        $billProduct = BillsProduct::where('id', $product['id'])->first();
+                    } else {
+                        $billProduct = new BillsProduct();
+                    }
+                    $billProduct->product_id = $product['product']['id'];
+                    $billProduct->product_name = $product['product']['name'];
+                    $billProduct->unit_type = $product['product']['unit_type'];
+                    $billProduct->in_kgs = $product['product']['in_kgs'];
+                    $billProduct->price_per_kg = $product['price_per_kg'];
+                    $billProduct->unit_selected = $product['unit'];
+                    $billProduct->final_quantity = $product['quantity'];
+                    $billProduct->final_feets = $product['feet'];
+                    $billProduct->final_inches = $product['inches'];
+                    $billProduct->final_kgs = $product['kgs'];
+                    $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    $billProduct->final_amount = round($answer, 2);
+                    $billProduct->final_total_amount = round($final_amount, 2);
+                    $billProduct->save();
+                    $inventory = Inventory::where('product_id', $product['id'])->first();
+                    if ($inventory) {
+                        $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
+                        if ($inventoryLog) {
+                            if ($inventory->unit_type == 'Weight') {
+                                $inventoryLog->weight = round(($product['final_kgs'] * $product['final_quantity']), 2);
+                            } else {
+                                $inventoryLog->quantity = $product['final_quantity'];
+                            }
+                            $inventoryLog->log_type = 'out';
+                            $inventoryLog->save();
+                        }
+                    }
+                }
+            }
+        }
+
+        $bill->final_amount = round($total, 2);
+        $bill->final_total_kgs= $total_estimate_kgs;
+        $bill->save();
+
+        return redirect(route('bill.show', ['bill' => $bill->id]));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bill $bill)
+    public function updateOld(Request $request, Bill $bill)
     {
         // dd($request->all());
         $total = 0;
@@ -300,11 +486,11 @@ class BillController extends Controller
 
 
                 $inventory = Inventory::where('product_id', $product['id'])->first();
-                if($inventory){
+                if ($inventory) {
                     $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
-                    if($inventoryLog){
+                    if ($inventoryLog) {
                         if ($inventory->unit_type == 'Weight') {
-                            $inventoryLog->weight = round($total_kgs,2);
+                            $inventoryLog->weight = round($total_kgs, 2);
                         } else {
                             $inventoryLog->quantity = $product['final_quantity'];
                         }
@@ -332,11 +518,11 @@ class BillController extends Controller
                 $billProduct->save();
 
                 $inventory = Inventory::where('product_id', $product['id'])->first();
-                if($inventory){
+                if ($inventory) {
                     $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
-                    if($inventoryLog){
+                    if ($inventoryLog) {
                         if ($inventory->unit_type == 'Weight') {
-                            $inventoryLog->weight = round(($product['final_kgs'] * $product['final_quantity']),2);
+                            $inventoryLog->weight = round(($product['final_kgs'] * $product['final_quantity']), 2);
                         } else {
                             $inventoryLog->quantity = $product['final_quantity'];
                         }
@@ -357,13 +543,13 @@ class BillController extends Controller
                 $estimateProduct->final_amount = round($answer, 2);
                 $estimateProduct->final_total_amount = round($final_amount, 2);
                 $estimateProduct->save();
- 
+
                 $inventory = Inventory::where('product_id', $product['id'])->first();
-                if($inventory){
+                if ($inventory) {
                     $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
-                    if($inventoryLog){
+                    if ($inventoryLog) {
                         if ($inventory->unit_type == 'Weight') {
-                            $inventoryLog->weight = round(($total_kgs),2);
+                            $inventoryLog->weight = round(($total_kgs), 2);
                         } else {
                             $inventoryLog->quantity = $product['final_quantity'];
                         }
@@ -387,7 +573,7 @@ class BillController extends Controller
     public function destroy(Bill $bill)
     {
 
-        InventoryLog::where('bill_id',$bill->id)->delete();
+        InventoryLog::where('bill_id', $bill->id)->delete();
         $bill->billProducts()->delete();
         $bill->delete();
     }
@@ -423,11 +609,11 @@ class BillController extends Controller
                 $billProduct->save();
 
                 $inventory = Inventory::where('product_id', $product['product_id'])->first();
-                if($inventory){
+                if ($inventory) {
                     $inventoryLog = InventoryLog::where('inventory_id', $inventory->id)->where('bill_id', $bill->bill_id)->first();
-                    if($inventoryLog){
+                    if ($inventoryLog) {
                         if ($inventory->unit_type == 'Weight') {
-                            $inventoryLog->weight = round($product['final_total_kgs'],2);
+                            $inventoryLog->weight = round($product['final_total_kgs'], 2);
                         } else {
                             $inventoryLog->quantity = $product['final_quantity'];
                         }
@@ -470,15 +656,23 @@ class BillController extends Controller
         }
     }
 
-    public function addDiscount(Request $request,Bill $bill){
-        $sum = BillsProduct::where('bill_id',$bill->id)->sum('final_total_amount');
+    public function addDiscount(Request $request, Bill $bill)
+    {
+        $sum = BillsProduct::where('bill_id', $bill->id)->sum('final_total_amount');
         $total_amount = ($sum + $bill->final_loading_charges + $bill->final_crimping_charges) - $request->discount;
         $bill->final_discount = $request->discount;
         $bill->final_amount = $total_amount;
-        if($bill->save()){
+        if ($bill->save()) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
+    }
+    public function deleteProduct(BillsProduct $product)
+    {
+        $inventory = Inventory::where('product_id',$product['id'])->first();
+        $bill = Bill::where('id',$product['bill_id'])->first();
+        InventoryLog::where('inventory_id',$inventory->id)->where('bill_id',$bill->id)->delete();
+        return $product->delete();
     }
 }

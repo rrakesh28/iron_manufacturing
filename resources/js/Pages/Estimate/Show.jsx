@@ -409,7 +409,7 @@ function Show({ estimate }) {
                                 type="number"
                                 step="0.1"
                                 min="0"
-                                max="1"
+                                max="2"
                                 name="loading_charges"
                                 onChange={(e) =>
                                     setLoadingCharges(e.target.value)

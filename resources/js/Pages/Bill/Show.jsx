@@ -399,7 +399,7 @@ function Show({bill}) {
                         <div className="mt-6">
                             <InputLabel htmlFor="loading_charges" value="Loading Charges" className="sr-only"/>
 
-                            <TextInput id="loading_charges" type="number" step="0.1" min="0" max="1" name="loading_charges"
+                            <TextInput id="loading_charges" type="number" step="0.1" min="0" max="2" name="loading_charges"
                                 onChange={
                                     (e) => setLoadingCharges(e.target.value)
                                 }

@@ -116,7 +116,7 @@ function Index({ inventory, openingTotal, utilizedTotal, remainingTotal }) {
                                             {item.opening.toFixed(2)}
                                         </td>
                                         <td className="px-6 py-4">
-                                            {item.utilized.toFixed(2)}
+                                            {item.utilized}
                                         </td>
                                         <td className="px-6 py-4">
                                             {item.remaining.toFixed(2)}

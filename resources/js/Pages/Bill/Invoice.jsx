@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import './print.css';
 function Invoice({bill}) {
     useEffect(() => { 
-        // window.print();
+        window.print();
     }, [])
     return (
         <div className='p-5'>
@@ -93,7 +93,7 @@ function Invoice({bill}) {
                                     }</td>
                                     <th className='text-center'>
                                         {
-                                        product.amount
+                                        product.final_total_amount
                                     }</th>
                                 </tr>
                         })
@@ -114,6 +114,21 @@ function Invoice({bill}) {
                                 <td className='text-center'>
                                     {
                                     bill.final_loading_charges
+                                }</td>
+                            </tr>
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Transport Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_transport_charges
                                 }</td>
                             </tr>
                             <tr className='border-b border-black'>
@@ -273,6 +288,21 @@ function Invoice({bill}) {
                                 <td className='text-center'>
                                     {
                                     bill.final_loading_charges
+                                }</td>
+                            </tr>
+                            <tr className='border-b border-black'>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td className='text-center font-bold'></td>
+                                <td className='text-center'></td>
+                                <td></td>
+                                <td className='text-center font-bold'>Transport Charges</td>
+                                <td className='text-center'>
+                                    {
+                                    bill.final_transport_charges
                                 }</td>
                             </tr>
                             <tr className='border-b border-black'>

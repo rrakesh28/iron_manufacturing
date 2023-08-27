@@ -672,6 +672,15 @@ class BillController extends Controller
         }
     }
 
+    public function addTransportCharges(Request $request,Bill $bill){
+        $bill->final_transport_charges = $request->transport_charges;
+        if($bill->save()){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
     public function addLoadingCharges(Request $request, Bill $bill)
     {
         $total_amount = ($bill->final_amount - $bill->final_loading_charges) + ($bill->final_total_kgs * $request->loading_charges);

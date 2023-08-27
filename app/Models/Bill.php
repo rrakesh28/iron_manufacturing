@@ -26,7 +26,7 @@ class Bill extends Model
     public function getAmountAttribute()
     {
         $sum = BillsProduct::where("bill_id", $this->id)->sum('final_total_amount');
-        return $sum + $this->final_loading_charges + $this->final_crimping_charges - $this->final_discount;
+        return $sum + $this->final_loading_charges + $this->final_crimping_charges + $this->final_transport_charges - $this->final_discount;
     }
 
     public function getCanEditAttribute()

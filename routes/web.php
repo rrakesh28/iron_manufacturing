@@ -8,12 +8,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Bill;
-use App\Models\BillsProduct;
-use App\Models\Customer;
-use App\Models\Estimate;
-use App\Models\Product;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,19 +21,6 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route::get('/', function () {
-    //     $productsCount = Product::count();
-    //     $customersCount = Customer::count();
-    //     $estimatesCount = Estimate::count();
-    //     $billsCount = Bill::count();
-    //     return Inertia::render('Index',compact('productsCount','customersCount','estimatesCount','billsCount'));
-    //     return Inertia::render('Welcome', [
-        //         'canLogin' => Route::has('login'),
-        //         'canRegister' => Route::has('register'),
-        //         'laravelVersion' => Application::VERSION,
-        //         'phpVersion' => PHP_VERSION,
-        //     ]);
-        // });
         
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -75,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/bill/{bill}/update',[BillController::class,'update'])->name('bill.update');
     Route::post('/bill/{bill}/destroy',[BillController::class,'destroy'])->name('bill.destroy');
     Route::post('bill/{bill}/addCrimpingCharges',[BillController::class,'addCrimpingCharges'])->name('bill.addCrimpingCharges');
+    Route::post('bill/{bill}/addTransportCharges',[BillController::class,'addTransportCharges'])->name('bill.addTransportCharges');
     Route::post('bill/{bill}/addLoadingCharges',[BillController::class,'addLoadingCharges'])->name('bill.addLoadingCharges');
     Route::post('bill/{bill}/addDiscount',[BillController::class,'addDiscount'])->name('bill.addDiscount');
     Route::get('bill/{bill}/editWeight',[BillController::class,'editWeight'])->name('bill.editWeight');

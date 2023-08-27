@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('final_total_kgs');
             $table->float('final_crimping_charges');
             $table->float('final_loading_charges');
+            $table->float('final_transport_charges');
             $table->float('final_discount');
             $table->double('final_amount');
             $table->timestamps();

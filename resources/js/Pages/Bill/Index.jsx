@@ -120,7 +120,7 @@ function Index({ bills }) {
                                             >
                                                 Show
                                             </Link>
-                                            {!bill.can_edit && <Link
+                                            {bill.can_edit && <Link
                                                 href={route("bill.edit", {
                                                     bill: bill,
                                                 })}

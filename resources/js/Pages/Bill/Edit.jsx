@@ -29,7 +29,7 @@ function Edit({ products, bill }) {
                 inches: product.final_inches,
                 color: product.color,
                 kgs: product.final_kgs,
-                weight: product.final_kgs,
+                weight: product.final_total_kgs,
                 id: product.id,
                 showProduct:true,
             })
@@ -75,7 +75,7 @@ function Edit({ products, bill }) {
 
         let object = {
             product: productFromList.product,
-            price_per_kg: productFromList.price_per_kgs,
+            price_per_kg: productFromList.price_per_kg,
             loading_charges: "",
             discount: "",
             quantity: "",
@@ -499,6 +499,38 @@ function Edit({ products, bill }) {
                                                         );
                                                     }}
                                                     required
+                                                />
+
+                                                <InputError
+                                                    message={errors.inches}
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        )}
+                                        {(productSelected.unit === "Feet" ||
+                                            productSelected.unit ===
+                                                "Inches") && (
+                                            <div className="mt-4">
+                                                <InputLabel
+                                                    htmlFor="Weight"
+                                                    value="Weight"
+                                                />
+
+                                                <TextInput
+                                                    id="weight"
+                                                    type="number"
+                                                    name="weight"
+                                                    step="0.01"
+                                                    value={
+                                                        productSelected.weight
+                                                    }
+                                                    className="mt-1 block w-full"
+                                                    onChange={(e) => {
+                                                        handleFormChange(
+                                                            e,
+                                                            index
+                                                        );
+                                                    }}
                                                 />
 
                                                 <InputError

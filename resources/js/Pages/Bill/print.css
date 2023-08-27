@@ -8,3 +8,11 @@
     content: none;
   }
 }
+
+tr{
+  margin-top: -5px;
+  font-size: 15px;
+}
+td{
+  margin-top: -5px;
+}

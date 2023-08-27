@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Profiler, useState } from "react";
 import AppLayout from "@/Layouts/AppLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -24,7 +24,9 @@ function Create({ products, customers }) {
                 feet: "",
                 inches: "",
                 kgs: "",
-                color:'',
+                color: "",
+                weight: "",
+                showProduct: true,
             },
         ],
     });
@@ -63,10 +65,41 @@ function Create({ products, customers }) {
             feet: "",
             inches: "",
             kgs: "",
-            color:'',
+            color: "",
+            weight: "",
+            showProduct: true,
         };
 
         setData("products", [...data.products, object]);
+    };
+
+    const addSameProduct = (index) => {
+        const productFromList = data.products[index];
+
+        let object = {
+            product: productFromList.product,
+            price_per_kg: productFromList.price_per_kg,
+            loading_charges: "",
+            discount: "",
+            quantity: "",
+            unit: "",
+            feet: "",
+            inches: "",
+            kgs: "",
+            color: "",
+            weight: "",
+            showProduct: false,
+        };
+        if (index >= 0 && index < data.products.length) {
+            const updatedProducts = [...data.products];
+
+            updatedProducts.splice(index + 1, 0, object);
+
+            setData({
+                ...data,
+                products: updatedProducts,
+            });
+        }
     };
 
     const removeProduct = (index) => {
@@ -163,7 +196,13 @@ function Create({ products, customers }) {
                                         className="grid grid-cols-3 gap-4"
                                         key={index}
                                     >
-                                        <div className="mt-4">
+                                        <div
+                                            className={`mt-4 ${
+                                                productSelected.showProduct
+                                                    ? ""
+                                                    : "opacity-0"
+                                            }`}
+                                        >
                                             <InputLabel
                                                 htmlFor="product"
                                                 value="Product"
@@ -431,6 +470,38 @@ function Create({ products, customers }) {
                                                 />
                                             </div>
                                         )}
+                                        {(productSelected.unit === "Feet" ||
+                                            productSelected.unit ===
+                                                "Inches") && (
+                                            <div className="mt-4">
+                                                <InputLabel
+                                                    htmlFor="Weight"
+                                                    value="Weight"
+                                                />
+
+                                                <TextInput
+                                                    id="weight"
+                                                    type="number"
+                                                    name="weight"
+                                                    step="0.01"
+                                                    value={
+                                                        productSelected.weight
+                                                    }
+                                                    className="mt-1 block w-full"
+                                                    onChange={(e) => {
+                                                        handleFormChange(
+                                                            e,
+                                                            index
+                                                        );
+                                                    }}
+                                                />
+
+                                                <InputError
+                                                    message={errors.inches}
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        )}
                                         {productSelected.unit === "Kgs" && (
                                             <div className="mt-4">
                                                 <InputLabel
@@ -460,7 +531,10 @@ function Create({ products, customers }) {
                                                 />
                                             </div>
                                         )}
-                                        {(productSelected.unit === "Kgs" || productSelected.unit === 'Feet' || productSelected.unit === 'Inches') && (
+                                        {(productSelected.unit === "Kgs" ||
+                                            productSelected.unit === "Feet" ||
+                                            productSelected.unit ===
+                                                "Inches") && (
                                             <div className="mt-4">
                                                 <InputLabel
                                                     htmlFor="price_per_kg"
@@ -472,7 +546,9 @@ function Create({ products, customers }) {
                                                     type="number"
                                                     step="0.01"
                                                     name="price_per_kg"
-                                                    value={productSelected.price_per_kg}
+                                                    value={
+                                                        productSelected.price_per_kg
+                                                    }
                                                     className="mt-1 block w-full"
                                                     onChange={(e) => {
                                                         handleFormChange(
@@ -484,13 +560,24 @@ function Create({ products, customers }) {
                                                 />
 
                                                 <InputError
-                                                    message={errors.price_per_kg}
+                                                    message={
+                                                        errors.price_per_kg
+                                                    }
                                                     className="mt-2"
                                                 />
                                             </div>
                                         )}
                                         <div>
-                                            <div className="flex justify-end">
+                                            <div className="flex gap-5 justify-end">
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) =>
+                                                        addSameProduct(index)
+                                                    }
+                                                    className="px-4 py-2 bg-green-600 text-white"
+                                                >
+                                                    +
+                                                </button>
                                                 <button
                                                     type="button"
                                                     onClick={(e) =>

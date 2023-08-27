@@ -120,22 +120,14 @@ function Index({ bills }) {
                                             >
                                                 Show
                                             </Link>
-                                            <Link
+                                            {!bill.can_edit && <Link
                                                 href={route("bill.edit", {
                                                     bill: bill,
                                                 })}
                                                 className="text-blue-600 hover:underline"
                                             >
                                                 Edit
-                                            </Link>
-                                            <Link
-                                                href={route("bill.editWeight", {
-                                                    bill: bill,
-                                                })}
-                                                className="text-blue-600 hover:underline"
-                                            >
-                                                Edit Weight
-                                            </Link>
+                                            </Link>}
                                             <button
                                                 href={route("bill.destroy", {
                                                     bill: bill,

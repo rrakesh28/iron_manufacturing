@@ -29,7 +29,9 @@ function Edit({ products, bill }) {
                 inches: product.final_inches,
                 color: product.color,
                 kgs: product.final_kgs,
+                weight: product.final_kgs,
                 id: product.id,
+                showProduct:true,
             })
         );
 
@@ -61,9 +63,40 @@ function Edit({ products, bill }) {
             color: "",
             inches: "",
             kgs: "",
+            weight:"",
+            showProduct:true
         };
 
         setData("products", [...data.products, object]);
+    };
+
+    const addSameProduct = (index) => {
+        const productFromList = data.products[index];
+
+        let object = {
+            product: productFromList.product,
+            price_per_kg: productFromList.price_per_kgs,
+            loading_charges: "",
+            discount: "",
+            quantity: "",
+            unit: "",
+            feet: "",
+            inches: "",
+            kgs: "",
+            color: "",
+            weight: "",
+            showProduct: false,
+        };
+        if (index >= 0 && index < data.products.length) {
+            const updatedProducts = [...data.products];
+
+            updatedProducts.splice(index + 1, 0, object);
+
+            setData({
+                ...data,
+                products: updatedProducts,
+            });
+        }
     };
 
     const handleProductSelect = (event, index) => {
@@ -184,7 +217,14 @@ function Edit({ products, bill }) {
                                         className="border-t-[2px] border-black mt-2 grid grid-cols-3 gap-4 "
                                         key={index}
                                     >
-                                        <div className="mt-4">
+                                        <div
+                                            className={`mt-4 ${
+                                                productSelected.showProduct
+                                                    ? ""
+                                                    : "opacity-0"
+                                            }`}
+                                        >
+                                            
                                             <InputLabel
                                                 htmlFor="product"
                                                 value="Product"
@@ -533,7 +573,16 @@ function Edit({ products, bill }) {
                                             </div>
                                         )}
                                         <div>
-                                            <div className="flex justify-end">
+                                            <div className="flex gap-5 justify-end">
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) =>
+                                                        addSameProduct(index)
+                                                    }
+                                                    className="px-4 py-2 bg-green-600 text-white"
+                                                >
+                                                    +
+                                                </button>
                                                 <button
                                                     type="button"
                                                     onClick={(e) =>

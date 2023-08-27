@@ -18,7 +18,7 @@ class BillController extends Controller
      */
     public function index(Request $request)
     {
-        $bills = Bill::all();
+        $bills = Bill::orderBy('created_at','DESC')->get();
 
         if ($request->search) {
             $search = $request->search;
@@ -30,6 +30,7 @@ class BillController extends Controller
                         ->orWhere('company', 'LIKE', '%' . $search . '%')
                         ->orWhere('mobile_number', 'LIKE', '%' . $search . '%');
                 })
+                ->orderBy('created_at','DESC')
                 ->get();
         }
 
@@ -67,6 +68,7 @@ class BillController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->all());
         $bill_id = 1000;
 
         $lastRecord = Bill::latest()->first();
@@ -91,13 +93,18 @@ class BillController extends Controller
         foreach ($request->products as $product) {
             if ($product['product']['unit_type'] == 'Feet') {
                 if ($product['unit'] == 'Feet' || $product['unit'] == 'Inches') {
-                    $feets = $product['feet'];
-                    $inches = $product['inches'];
-                    $kgsPerFeet = $product['product']['in_kgs'];
                     $price_per_kg = $product['price_per_kg'];
-                    $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * $product['quantity'];
-                    $total_bill_kgs += $total_kgs;
-                    $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']);
+                    if ($product['weight'] == '' || empty($product['weight']) || $product['weight'] == null) {
+                        $feets = $product['feet'];
+                        $inches = $product['inches'];
+                        $kgsPerFeet = $product['product']['in_kgs'];
+                        $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * $product['quantity'];
+                        $total_bill_kgs += $total_kgs;
+                        $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']);
+                    } else {
+                        $answer = $product['weight'] * $price_per_kg;
+                        $total_kgs = $product['weight'];
+                    }
                     $final_amount = $answer;
                     $total += $final_amount;
 
@@ -285,13 +292,19 @@ class BillController extends Controller
         foreach ($request->products as $product) {
             if ($product['product']['unit_type'] == 'Feet') {
                 if ($product['unit'] == 'Feet' || $product['unit'] == 'Inches') {
-                    $feets = $product['feet'];
-                    $inches = $product['inches'];
-                    $kgsPerFeet = $product['product']['in_kgs'];
                     $price_per_kg = $product['price_per_kg'];
-                    $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * ($product['quantity']);
-                    $total_estimate_kgs += $total_kgs;
-                    $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']);
+                    if ($product['weight'] == '' || empty($product['weight']) || $product['weight'] == null) {
+                        $feets = $product['feet'];
+                        $inches = $product['inches'];
+                        $kgsPerFeet = $product['product']['in_kgs'];
+                        $price_per_kg = $product['price_per_kg'];
+                        $total_kgs = (($feets * $kgsPerFeet) + (($inches / 12) * $kgsPerFeet)) * ($product['quantity']);
+                        $total_estimate_kgs += $total_kgs;
+                        $answer = ((($feets * $kgsPerFeet * $price_per_kg) + (($inches / 12) * $kgsPerFeet * $price_per_kg)) * $product['quantity']);
+                    } else {
+                        $answer = $product['weight'] * $price_per_kg;
+                        $total_kgs = $product['weight'];
+                    }
                     $final_amount = $answer;
                     $total += $final_amount;
 

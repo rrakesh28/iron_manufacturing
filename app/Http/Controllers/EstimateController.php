@@ -21,7 +21,7 @@ class EstimateController extends Controller
      */
     public function index(Request $request)
     {
-        $estimates = Estimate::get();
+        $estimates = Estimate::orderBy('created_at','DESC')->get();
 
         if ($request->search) {
             $search = $request->search;
@@ -33,6 +33,7 @@ class EstimateController extends Controller
                         ->orWhere('company', 'LIKE', '%' . $search . '%')
                         ->orWhere('mobile_number', 'LIKE', '%' . $search . '%');
                 })
+                ->orderBy('created_at','DESC')
                 ->get();
         }
 

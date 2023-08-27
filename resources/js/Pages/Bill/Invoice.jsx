@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import './print.css';
 function Invoice({bill}) {
     useEffect(() => { 
-        window.print();
+        // window.print();
     }, [])
     return (
         <div className='p-5'>
@@ -39,7 +39,7 @@ function Invoice({bill}) {
                 <div>
                     <table className='w-full'>
                         <thead>
-                            <tr className='border-b border-t border-black'>
+                            <tr className='border-b border-t border-black mt-[-5px]'>
                                 <th>Product</th>
                                 <th>Color</th>
                                 <th>Quantity</th>

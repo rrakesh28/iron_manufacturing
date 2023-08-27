@@ -34,10 +34,10 @@ class Bill extends Model
         $createdAt = Carbon::parse($this->created_at);
         $currentDate = Carbon::now();
 
-        if ($createdAt->diffInDays($currentDate) === 1) {
-            return true;
-        } else {
+        if ($createdAt->diffInDays($currentDate) > 0) {
             return false;
+        } else {
+            return true;
         }
     }
 }

@@ -17,14 +17,15 @@ function Create({ products, customers }) {
         products: [
             {
                 product: "",
-                price_per_kgs: "",
+                price_per_kg: "",
+                price_per_unit: "",
                 loading_charges: "",
                 quantity: "",
                 unit: "",
                 feet: "",
                 inches: "",
                 kgs: "",
-                color: "",
+                color: "a",
                 weight: "",
                 showProduct: true,
             },
@@ -44,6 +45,9 @@ function Create({ products, customers }) {
                 ) {
                     products[index]["price_per_kg"] = product.price_per_kg;
                 }
+                if (product.unit_type === "Unit") {
+                    products[index]["price_per_unit"] = product.price_per_unit;
+                }
                 setData("products", products);
             });
     };
@@ -58,14 +62,15 @@ function Create({ products, customers }) {
         let object = {
             product: "",
             price_per_kg: "",
+            price_per_unit: "",
             loading_charges: "",
             discount: "",
             quantity: "",
             unit: "",
             feet: "",
             inches: "",
-            kgs: "",
-            color: "",
+            kgs: 0,
+            color: "a",
             weight: "",
             showProduct: true,
         };
@@ -79,6 +84,7 @@ function Create({ products, customers }) {
         let object = {
             product: productFromList.product,
             price_per_kg: productFromList.price_per_kg,
+            price_per_unit: productFromList.price_per_unit,
             loading_charges: "",
             discount: "",
             quantity: "",
@@ -86,7 +92,7 @@ function Create({ products, customers }) {
             feet: "",
             inches: "",
             kgs: "",
-            color: "",
+            color: "a",
             weight: "",
             showProduct: false,
         };
@@ -315,82 +321,6 @@ function Create({ products, customers }) {
                                                 </div>
                                             )}
 
-                                        {productSelected.unit === "Feet" && (
-                                            <div className="mt-4">
-                                                <InputLabel
-                                                    htmlFor="color"
-                                                    value="Color"
-                                                />
-
-                                                <select
-                                                    name="color"
-                                                    id="color"
-                                                    className="w-full border rounded-lg"
-                                                    onChange={(e) => {
-                                                        handleFormChange(
-                                                            e,
-                                                            index
-                                                        );
-                                                    }}
-                                                    required
-                                                >
-                                                    <option
-                                                        value=""
-                                                        selected
-                                                        disabled
-                                                    >
-                                                        Select Color
-                                                    </option>
-                                                    <option value="light blue ">
-                                                        light blue
-                                                    </option>
-                                                    <option value="nova blue">
-                                                        nova blue
-                                                    </option>
-                                                    <option value="torquoise blue">
-                                                        torquoise blue
-                                                    </option>
-                                                    <option value="taraus blue">
-                                                        taraus blue
-                                                    </option>
-                                                    <option value="silver">
-                                                        silver
-                                                    </option>
-                                                    <option value="graphite gray">
-                                                        graphite gray
-                                                    </option>
-                                                    <option value="haif white">
-                                                        haif white
-                                                    </option>
-                                                    <option value="orange">
-                                                        orange
-                                                    </option>
-                                                    <option value="mist green">
-                                                        mist green
-                                                    </option>
-                                                    <option value="brick red">
-                                                        brick red
-                                                    </option>
-                                                    <option value="terracotta">
-                                                        terracotta
-                                                    </option>
-                                                    <option value="yellow">
-                                                        yellow
-                                                    </option>
-                                                    <option value="red">
-                                                        red
-                                                    </option>
-                                                    <option value="dark green">
-                                                        dark green
-                                                    </option>
-                                                </select>
-                                                <InputError
-                                                    message={errors.feet}
-                                                    className="mt-2"
-                                                />
-                                            </div>
-                                        )}
-
                                         <div className="mt-4">
                                             <InputLabel
                                                 htmlFor="quantity"
@@ -409,6 +339,68 @@ function Create({ products, customers }) {
                                                 required
                                             />
                                         </div>
+                                        {productSelected.product.unit_type ===
+                                            "Unit" && (
+                                            <div className="mt-4">
+                                                <InputLabel
+                                                    htmlFor="price_per_unit"
+                                                    value="Price Per Unit"
+                                                />
+
+                                                <TextInput
+                                                    id="price_per_unit"
+                                                    type="number"
+                                                    name="price_per_unit"
+                                                    value={
+                                                        productSelected.price_per_unit
+                                                    }
+                                                    className="mt-1 block w-full"
+                                                    onChange={(e) => {
+                                                        handleFormChange(
+                                                            e,
+                                                            index
+                                                        );
+                                                    }}
+                                                    required
+                                                />
+
+                                                <InputError
+                                                    message={
+                                                        errors.price_per_unit
+                                                    }
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        )}
+
+                                        {productSelected.unit === "Unit" && (
+                                            <div className="mt-4">
+                                                <InputLabel
+                                                    htmlFor="feet"
+                                                    value="Feet"
+                                                />
+
+                                                <TextInput
+                                                    id="feet"
+                                                    type="number"
+                                                    name="feet"
+                                                    value={productSelected.feet}
+                                                    className="mt-1 block w-full"
+                                                    onChange={(e) => {
+                                                        handleFormChange(
+                                                            e,
+                                                            index
+                                                        );
+                                                    }}
+                                                    required
+                                                />
+
+                                                <InputError
+                                                    message={errors.feet}
+                                                    className="mt-2"
+                                                />
+                                            </div>
+                                        )}
 
                                         {productSelected.unit === "Feet" && (
                                             <div className="mt-4">
@@ -472,36 +464,38 @@ function Create({ products, customers }) {
                                         )}
                                         {(productSelected.unit === "Feet" ||
                                             productSelected.unit ===
-                                                "Inches") && (
-                                            <div className="mt-4">
-                                                <InputLabel
-                                                    htmlFor="Weight"
-                                                    value="Weight"
-                                                />
+                                                "Inches") &&
+                                            productSelected.showProduct !==
+                                                false && (
+                                                <div className="mt-4">
+                                                    <InputLabel
+                                                        htmlFor="Weight"
+                                                        value="Weight"
+                                                    />
 
-                                                <TextInput
-                                                    id="weight"
-                                                    type="number"
-                                                    name="weight"
-                                                    step="0.01"
-                                                    value={
-                                                        productSelected.weight
-                                                    }
-                                                    className="mt-1 block w-full"
-                                                    onChange={(e) => {
-                                                        handleFormChange(
-                                                            e,
-                                                            index
-                                                        );
-                                                    }}
-                                                />
+                                                    <TextInput
+                                                        id="weight"
+                                                        type="number"
+                                                        name="weight"
+                                                        step="0.01"
+                                                        value={
+                                                            productSelected.weight
+                                                        }
+                                                        className="mt-1 block w-full"
+                                                        onChange={(e) => {
+                                                            handleFormChange(
+                                                                e,
+                                                                index
+                                                            );
+                                                        }}
+                                                    />
 
-                                                <InputError
-                                                    message={errors.inches}
-                                                    className="mt-2"
-                                                />
-                                            </div>
-                                        )}
+                                                    <InputError
+                                                        message={errors.inches}
+                                                        className="mt-2"
+                                                    />
+                                                </div>
+                                            )}
                                         {productSelected.unit === "Kgs" && (
                                             <div className="mt-4">
                                                 <InputLabel

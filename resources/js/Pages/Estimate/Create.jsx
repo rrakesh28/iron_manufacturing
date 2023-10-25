@@ -18,13 +18,15 @@ function Create({ products, customers }) {
             {
                 product: "",
                 price_per_kg: "",
+                price_per_unit: "",
                 quantity: "",
                 loading_charges: 0,
                 unit: "",
                 feet: "",
                 inches: "",
                 kgs: "",
-                color: "",
+                color: "a",
+                showProduct: true,
             },
         ],
     });
@@ -42,6 +44,9 @@ function Create({ products, customers }) {
                 ) {
                     products[index]["price_per_kg"] = product.price_per_kg;
                 }
+                if (product.unit_type === "Unit") {
+                    products[index]["price_per_unit"] = product.price_per_unit;
+                }
                 setData("products", products);
             });
     };
@@ -55,17 +60,49 @@ function Create({ products, customers }) {
     const addProduct = () => {
         let object = {
             product: "",
-            price_per_kg:'',
+            price_per_kg: "",
+            price_per_unit: "",
             loading_charges: 0,
             discount: "",
             quantity: "",
             unit: "",
             feet: "",
             inches: "",
-            kgs: "",
+            kgs: 0,
+            showProduct: true,
         };
 
         setData("products", [...data.products, object]);
+    };
+
+    const addSameProduct = (index) => {
+        const productFromList = data.products[index];
+
+        let object = {
+            product: productFromList.product,
+            price_per_kg: productFromList.price_per_kg,
+            price_per_unit: productFromList.price_per_unit,
+            loading_charges: "",
+            discount: "",
+            quantity: "",
+            unit: "",
+            feet: "",
+            inches: "",
+            kgs: "",
+            color: "a",
+            weight: "",
+            showProduct: false,
+        };
+        if (index >= 0 && index < data.products.length) {
+            const updatedProducts = [...data.products];
+
+            updatedProducts.splice(index + 1, 0, object);
+
+            setData({
+                ...data,
+                products: updatedProducts,
+            });
+        }
     };
 
     const removeProduct = (index) => {
@@ -162,7 +199,13 @@ function Create({ products, customers }) {
                                         className="grid grid-cols-3 gap-4 "
                                         key={index}
                                     >
-                                        <div className="mt-4">
+                                        <div
+                                            className={`mt-4 ${
+                                                productSelected.showProduct
+                                                    ? ""
+                                                    : "opacity-0"
+                                            }`}
+                                        >
                                             <InputLabel
                                                 htmlFor="product"
                                                 value="Product"
@@ -293,18 +336,22 @@ function Create({ products, customers }) {
                                                 required
                                             />
                                         </div>
-
-                                        {productSelected.unit === "Feet" && (
+                                        {productSelected.product.unit_type ===
+                                            "Unit" && (
                                             <div className="mt-4">
                                                 <InputLabel
-                                                    htmlFor="color"
-                                                    value="Color"
+                                                    htmlFor="price_per_unit"
+                                                    value="Price Per Unit"
                                                 />
 
-                                                <select
-                                                    name="color"
-                                                    id="color"
-                                                    className="w-full border rounded-lg"
+                                                <TextInput
+                                                    id="price_per_unit"
+                                                    type="number"
+                                                    name="price_per_unit"
+                                                    value={
+                                                        productSelected.price_per_unit
+                                                    }
+                                                    className="mt-1 block w-full"
                                                     onChange={(e) => {
                                                         handleFormChange(
                                                             e,
@@ -312,59 +359,12 @@ function Create({ products, customers }) {
                                                         );
                                                     }}
                                                     required
-                                                >
-                                                    <option
-                                                        value=""
-                                                        selected
-                                                        disabled
-                                                    >
-                                                        Select Color
-                                                    </option>
-                                                    <option value="light blue ">
-                                                        light blue{" "}
-                                                    </option>
-                                                    <option value="nova blue">
-                                                        nova blue
-                                                    </option>
-                                                    <option value="torquoise blue">
-                                                        torquoise blue
-                                                    </option>
-                                                    <option value="taraus blue">
-                                                        taraus blue
-                                                    </option>
-                                                    <option value="silver">
-                                                        silver
-                                                    </option>
-                                                    <option value="graphite gray">
-                                                        graphite gray
-                                                    </option>
-                                                    <option value="haif white">
-                                                        haif white
-                                                    </option>
-                                                    <option value="orange">
-                                                        orange
-                                                    </option>
-                                                    <option value="mist green">
-                                                        mist green
-                                                    </option>
-                                                    <option value="brick red">
-                                                        brick red
-                                                    </option>
-                                                    <option value="terracotta">
-                                                        terracotta
-                                                    </option>
-                                                    <option value="yellow">
-                                                        yellow
-                                                    </option>
-                                                    <option value="red">
-                                                        red
-                                                    </option>
-                                                    <option value="dark green">
-                                                        dark green
-                                                    </option>
-                                                </select>
+                                                />
+
                                                 <InputError
-                                                    message={errors.feet}
+                                                    message={
+                                                        errors.price_per_unit
+                                                    }
                                                     className="mt-2"
                                                 />
                                             </div>
@@ -459,7 +459,10 @@ function Create({ products, customers }) {
                                                 />
                                             </div>
                                         )}
-                                        {(productSelected.unit === "Kgs" || productSelected.unit === 'Feet' || productSelected.unit === 'Inches') && (
+                                        {(productSelected.unit === "Kgs" ||
+                                            productSelected.unit === "Feet" ||
+                                            productSelected.unit ===
+                                                "Inches") && (
                                             <div className="mt-4">
                                                 <InputLabel
                                                     htmlFor="price_per_kg"
@@ -471,7 +474,9 @@ function Create({ products, customers }) {
                                                     type="number"
                                                     step="0.01"
                                                     name="price_per_kg"
-                                                    value={productSelected.price_per_kg}
+                                                    value={
+                                                        productSelected.price_per_kg
+                                                    }
                                                     className="mt-1 block w-full"
                                                     onChange={(e) => {
                                                         handleFormChange(
@@ -483,13 +488,24 @@ function Create({ products, customers }) {
                                                 />
 
                                                 <InputError
-                                                    message={errors.price_per_kg}
+                                                    message={
+                                                        errors.price_per_kg
+                                                    }
                                                     className="mt-2"
                                                 />
                                             </div>
                                         )}
                                         <div>
-                                            <div className="flex justify-end">
+                                            <div className="flex justify-end gap-5">
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) =>
+                                                        addSameProduct(index)
+                                                    }
+                                                    className="px-4 py-2 bg-green-600 text-white"
+                                                >
+                                                    +
+                                                </button>
                                                 <button
                                                     type="button"
                                                     onClick={(e) =>

@@ -103,9 +103,6 @@ function Show({ bill }) {
                                     Product Name
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Color
-                                </th>
-                                <th scope="col" className="px-6 py-3">
                                     Estimated Quantity
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -162,12 +159,6 @@ function Show({ bill }) {
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                                         >
                                             {product.product_name}{" "}
-                                        </th>
-                                        <th
-                                            scope="row"
-                                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
-                                        >
-                                            {product.color}{" "}
                                         </th>
                                         <td className="px-6 py-4">
                                             {product.estimated_quantity}{" "}
@@ -490,7 +481,9 @@ function Show({ bill }) {
                                 type="number"
                                 step="0.01"
                                 name="transport_charges"
-                                onChange={(e) => setTransportCharges(e.target.value)}
+                                onChange={(e) =>
+                                    setTransportCharges(e.target.value)
+                                }
                                 className="mt-1 block w-3/4"
                                 isFocused
                                 required

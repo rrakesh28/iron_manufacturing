@@ -21,7 +21,7 @@ class EstimateController extends Controller
      */
     public function index(Request $request)
     {
-        $estimates = Estimate::orderBy('created_at','DESC')->get();
+        $estimates = Estimate::orderBy('created_at', 'DESC')->get();
 
         if ($request->search) {
             $search = $request->search;
@@ -33,7 +33,7 @@ class EstimateController extends Controller
                         ->orWhere('company', 'LIKE', '%' . $search . '%')
                         ->orWhere('mobile_number', 'LIKE', '%' . $search . '%');
                 })
-                ->orderBy('created_at','DESC')
+                ->orderBy('created_at', 'DESC')
                 ->get();
         }
 
@@ -117,6 +117,11 @@ class EstimateController extends Controller
                     $estimateProduct->color = $product['color'];
                     $estimateProduct->inches = $product['inches'];
                     $estimateProduct->total_kgs = $total_kgs;
+                    if ($product['showProduct'] == true) {
+                        $estimateProduct->type = NULL;
+                    } else {
+                        $estimateProduct->type = 'variant';
+                    }
                     $estimateProduct->amount = round($answer, 2);
                     $estimateProduct->final_amount = round($final_amount, 2);
                     $estimateProduct->save();
@@ -142,12 +147,17 @@ class EstimateController extends Controller
                     $estimateProduct->inches = $product['inches'];
                     $estimateProduct->kgs = $product['kgs'];
                     $estimateProduct->total_kgs = ($product['kgs'] * $product['quantity']);
+                    if ($product['showProduct'] == true) {
+                        $estimateProduct->type = NULL;
+                    } else {
+                        $estimateProduct->type = 'variant';
+                    }
                     $estimateProduct->amount = round($answer, 2);
                     $estimateProduct->final_amount = round($final_amount, 2);
                     $estimateProduct->save();
                 }
             } else if ($product['product']['unit_type'] == 'Unit') {
-                $price_per_unit = $product['product']['price_per_unit'];
+                $price_per_unit = $product['price_per_unit'];
                 $answer = $price_per_unit * $product['quantity'];
                 $final_amount = $answer;
                 $total += $final_amount;
@@ -157,7 +167,7 @@ class EstimateController extends Controller
                 $estimateProduct->product_id = $product['product']['id'];
                 $estimateProduct->product_name = $product['product']['name'];
                 $estimateProduct->unit_type = $product['product']['unit_type'];
-                $estimateProduct->price_per_unit = $product['product']['price_per_unit'];
+                $estimateProduct->price_per_unit = $product['price_per_unit'];
                 $estimateProduct->unit_selected = "Unit";
                 $estimateProduct->quantity = $product['quantity'];
                 $estimateProduct->feets = $product['feet'];
@@ -188,6 +198,11 @@ class EstimateController extends Controller
                     $estimateProduct->inches = $product['inches'];
                     $estimateProduct->kgs = $product['kgs'];
                     $estimateProduct->total_kgs = ($product['kgs'] * $product['quantity']);
+                    if ($product['showProduct'] == true) {
+                        $estimateProduct->type = NULL;
+                    } else {
+                        $estimateProduct->type = 'variant';
+                    }
                     $estimateProduct->amount = round($answer, 2);
                     $estimateProduct->final_amount = round($final_amount, 2);
                     $estimateProduct->save();
@@ -259,6 +274,11 @@ class EstimateController extends Controller
                     $estimateProduct->feets = $product['feet'];
                     $estimateProduct->color = $product['color'];
                     $estimateProduct->inches = $product['inches'];
+                    if ($product['showProduct'] = true && $product['type'] != 'variant') {
+                        $estimateProduct->type = NULL;
+                    } else {
+                        $estimateProduct->type = 'variant';
+                    }
                     $estimateProduct->total_kgs = $total_kgs;
                     $estimateProduct->amount = round($answer, 2);
                     $estimateProduct->final_amount = round($final_amount, 2);
@@ -289,12 +309,17 @@ class EstimateController extends Controller
                     $estimateProduct->inches = $product['inches'];
                     $estimateProduct->kgs = $product['kgs'];
                     $estimateProduct->total_kgs = ($product['kgs'] * $product['quantity']);
+                    if ($product['showProduct'] = true && $product['type'] != 'variant') {
+                        $estimateProduct->type = NULL;
+                    } else {
+                        $estimateProduct->type = 'variant';
+                    }
                     $estimateProduct->amount = round($answer, 2);
                     $estimateProduct->final_amount = round($final_amount, 2);
                     $estimateProduct->save();
                 }
             } else if ($product['product']['unit_type'] == 'Unit') {
-                $price_per_unit = $product['product']['price_per_unit'];
+                $price_per_unit = $product['price_per_unit'];
                 $answer = $price_per_unit * $product['quantity'];
                 $final_amount = $answer;
                 $total += $final_amount;
@@ -309,12 +334,17 @@ class EstimateController extends Controller
                 $estimateProduct->product_id = $product['product']['id'];
                 $estimateProduct->product_name = $product['product']['name'];
                 $estimateProduct->unit_type = $product['product']['unit_type'];
-                $estimateProduct->price_per_unit = $product['product']['price_per_unit'];
+                $estimateProduct->price_per_unit = $product['price_per_unit'];
                 $estimateProduct->unit_selected = "Unit";
                 $estimateProduct->quantity = $product['quantity'];
                 $estimateProduct->feets = $product['feet'];
                 $estimateProduct->inches = $product['inches'];
                 $estimateProduct->kgs = $product['kgs'];
+                if ($product['showProduct'] = true && $product['type'] != 'variant') {
+                    $estimateProduct->type = NULL;
+                } else {
+                    $estimateProduct->type = 'variant';
+                }
                 $estimateProduct->amount = round($answer, 2);
                 $estimateProduct->final_amount = round($final_amount, 2);
                 $estimateProduct->save();
@@ -343,6 +373,11 @@ class EstimateController extends Controller
                     $estimateProduct->inches = $product['inches'];
                     $estimateProduct->kgs = $product['kgs'];
                     $estimateProduct->total_kgs = ($product['kgs'] * $product['quantity']);
+                    if ($product['showProduct'] = true && $product['type'] != 'variant') {
+                        $estimateProduct->type = NULL;
+                    } else {
+                        $estimateProduct->type = 'variant';
+                    }
                     $estimateProduct->amount = round($answer, 2);
                     $estimateProduct->final_amount = round($final_amount, 2);
                     $estimateProduct->save();
@@ -394,6 +429,7 @@ class EstimateController extends Controller
         $bill->final_loading_charges = $estimate->loading_charges;
         $bill->final_crimping_charges = $estimate->crimping_charges;
         $bill->final_amount = $estimate->total_amount;
+        $bill->final_transport_charges = 0;
         $bill->final_discount = $estimate->discount;
         $bill->save();
 
@@ -413,7 +449,9 @@ class EstimateController extends Controller
             $billProducts->estimated_quantity = $product->quantity;
             $billProducts->estimated_feets = $product->feets;
             $billProducts->estimated_inches = $product->inches;
-            $billProducts->estimated_total_kgs = $product->total_kgs;
+            if ($product->type != 'variant') {
+                $billProducts->estimated_total_kgs = $product->total_kgs;
+            }
             $billProducts->estimated_amount = $product->amount;
             $billProducts->estimated_final_amount = $product->final_amount;
 
@@ -421,7 +459,10 @@ class EstimateController extends Controller
             $billProducts->final_quantity = $product->quantity;
             $billProducts->final_feets = $product->feets;
             $billProducts->final_inches = $product->inches;
-            $billProducts->final_total_kgs = $product->total_kgs;
+
+            if ($product->type != 'variant') {
+                $billProducts->final_total_kgs = $product->total_kgs;
+            }
             $billProducts->final_amount = $product->amount;
             $billProducts->final_total_amount = $product->final_amount;
             $billProducts->save();

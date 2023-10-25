@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->double('amount');
             $table->double('final_amount');
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

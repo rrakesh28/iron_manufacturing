@@ -18,7 +18,7 @@ class BillController extends Controller
      */
     public function index(Request $request)
     {
-        $bills = Bill::orderBy('created_at','DESC')->get();
+        $bills = Bill::orderBy('created_at', 'DESC')->get();
 
         if ($request->search) {
             $search = $request->search;
@@ -30,7 +30,7 @@ class BillController extends Controller
                         ->orWhere('company', 'LIKE', '%' . $search . '%')
                         ->orWhere('mobile_number', 'LIKE', '%' . $search . '%');
                 })
-                ->orderBy('created_at','DESC')
+                ->orderBy('created_at', 'DESC')
                 ->get();
         }
 
@@ -83,6 +83,7 @@ class BillController extends Controller
         $bill->final_total_kgs = 0;
         $bill->final_loading_charges = 0;
         $bill->final_crimping_charges = 0;
+        $bill->final_transport_charges = 0;
         $bill->final_amount = 0;
         $bill->final_discount = 0;
         $bill->save();
@@ -122,7 +123,11 @@ class BillController extends Controller
                     $billProduct->final_inches = $product['inches'];
                     $billProduct->final_amount = round($answer, 2);
                     $billProduct->final_total_amount = round($final_amount, 2);
-                    $billProduct->final_kgs = $product['kgs'];
+                    if ($product['showProduct'] == true) {
+                        $billProduct->final_kgs = $product['kgs'];
+                    } else {
+                        $billProduct->final_kgs = 0;
+                    }
                     $billProduct->final_total_kgs = $total_kgs;
                     $billProduct->save();
 
@@ -161,7 +166,11 @@ class BillController extends Controller
                     $billProduct->color = $product['color'];
                     $billProduct->final_inches = $product['inches'];
                     $billProduct->final_kgs = $product['kgs'];
-                    $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    if ($product['showProduct'] == true) {
+                        $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    } else {
+                        $billProduct->final_total_kgs = 0;
+                    }
                     $billProduct->final_amount = round($answer, 2);
                     $billProduct->final_total_amount = round($final_amount, 2);
                     $billProduct->save();
@@ -181,7 +190,7 @@ class BillController extends Controller
                     }
                 }
             } else if ($product['product']['unit_type'] == 'Unit') {
-                $price_per_unit = $product['product']['price_per_unit'];
+                $price_per_unit = $product['price_per_unit'];
                 $answer = $price_per_unit * $product['quantity'];
                 $final_amount = $answer;
                 $total += $final_amount;
@@ -192,12 +201,16 @@ class BillController extends Controller
                 $billProduct->product_name = $product['product']['name'];
                 $billProduct->color = $product['color'];
                 $billProduct->unit_type = $product['product']['unit_type'];
-                $billProduct->price_per_unit = $product['product']['price_per_unit'];
+                $billProduct->price_per_unit = $product['price_per_unit'];
                 $billProduct->unit_selected = "Unit";
                 $billProduct->final_quantity = $product['quantity'];
                 $billProduct->final_feets = $product['feet'];
                 $billProduct->final_inches = $product['inches'];
-                $billProduct->final_kgs = $product['kgs'];
+                if ($product['showProduct'] == true) {
+                    $billProduct->final_kgs = $product['kgs'];
+                } else {
+                    $billProduct->final_kgs = 0;
+                }
                 $billProduct->final_amount = round($answer, 2);
                 $billProduct->final_total_amount = round($final_amount, 2);
                 $billProduct->save();
@@ -233,7 +246,11 @@ class BillController extends Controller
                     $billProduct->final_feets = $product['feet'];
                     $billProduct->final_inches = $product['inches'];
                     $billProduct->final_kgs = $product['kgs'];
-                    $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    if ($product['showProduct'] == true) {
+                        $billProduct->final_total_kgs = ($product['kgs'] * $product['quantity']);
+                    } else {
+                        $billProduct->final_total_kgs = 0;
+                    }
                     $billProduct->final_amount = round($answer, 2);
                     $billProduct->final_total_amount = round($final_amount, 2);
                     $billProduct->save();
@@ -672,11 +689,12 @@ class BillController extends Controller
         }
     }
 
-    public function addTransportCharges(Request $request,Bill $bill){
+    public function addTransportCharges(Request $request, Bill $bill)
+    {
         $bill->final_transport_charges = $request->transport_charges;
-        if($bill->save()){
+        if ($bill->save()) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }

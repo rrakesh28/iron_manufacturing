@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import AppLayout from "@/Layouts/AppLayout";
 import InputError from "@/Components/InputError";
@@ -19,21 +18,20 @@ function Edit({ products, bill }) {
     });
 
     useEffect(() => {
-        const updatedProducts = bill.bill_products.map(
-            (product, index) => ({
-                product: product.product,
-                price_per_kg: product.price_per_kg,
-                quantity: product.final_quantity,
-                unit: product.unit_selected,
-                feet: product.final_feets,
-                inches: product.final_inches,
-                color: product.color,
-                kgs: product.final_kgs,
-                weight: product.final_total_kgs,
-                id: product.id,
-                showProduct:true,
-            })
-        );
+        const updatedProducts = bill.bill_products.map((product, index) => ({
+            product: product.product,
+            price_per_kg: product.price_per_kg,
+            price_per_unit: product.price_per_unit,
+            quantity: product.final_quantity,
+            unit: product.unit_selected,
+            feet: product.final_feets,
+            inches: product.final_inches,
+            color: product.color,
+            kgs: product.final_kgs,
+            weight: product.final_total_kgs,
+            id: product.id,
+            showProduct: true,
+        }));
 
         setData((data) => ({
             ...data,
@@ -55,16 +53,17 @@ function Edit({ products, bill }) {
         let object = {
             product: "",
             price_per_kg: "",
+            price_per_unit: "",
             loading_charges: 0,
             discount: "",
             quantity: "",
             unit: "",
-            feet: "",
+            feet: "a",
             color: "",
             inches: "",
             kgs: "",
-            weight:"",
-            showProduct:true
+            weight: "",
+            showProduct: true,
         };
 
         setData("products", [...data.products, object]);
@@ -76,6 +75,7 @@ function Edit({ products, bill }) {
         let object = {
             product: productFromList.product,
             price_per_kg: productFromList.price_per_kg,
+            price_per_unit: productFromList.price_per_unit,
             loading_charges: "",
             discount: "",
             quantity: "",
@@ -83,7 +83,7 @@ function Edit({ products, bill }) {
             feet: "",
             inches: "",
             kgs: "",
-            color: "",
+            color: "a",
             weight: "",
             showProduct: false,
         };
@@ -112,6 +112,9 @@ function Edit({ products, bill }) {
                 ) {
                     products[index]["price_per_kg"] = product.price_per_kg;
                 }
+                if (product.unit_type === "Unit") {
+                    products[index]["price_per_unit"] = product.price_per_unit;
+                }
                 setData("products", products);
             });
     };
@@ -131,7 +134,6 @@ function Edit({ products, bill }) {
                             })
                         )
                         .then((res) => {
-
                             let productsData = [...data.products];
                             productsData.splice(index, 1);
                             setData("products", productsData);
@@ -156,7 +158,7 @@ function Edit({ products, bill }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("bill.update",{bill:bill}));
+        post(route("bill.update", { bill: bill }));
     };
     return (
         <AppLayout>
@@ -224,7 +226,6 @@ function Edit({ products, bill }) {
                                                     : "opacity-0"
                                             }`}
                                         >
-                                            
                                             <InputLabel
                                                 htmlFor="product"
                                                 value="Product"
@@ -367,21 +368,22 @@ function Edit({ products, bill }) {
                                                 required
                                             />
                                         </div>
-
-                                        {productSelected.unit === "Feet" && (
+                                        {productSelected.product.unit_type ===
+                                            "Unit" && (
                                             <div className="mt-4">
                                                 <InputLabel
-                                                    htmlFor="color"
-                                                    value="Color"
+                                                    htmlFor="price_per_unit"
+                                                    value="Price Per Unit"
                                                 />
 
-                                                <select
-                                                    name="color"
-                                                    id="color"
-                                                    className="w-full border rounded-lg"
-                                                    defaultValue={
-                                                        productSelected.color
+                                                <TextInput
+                                                    id="price_per_unit"
+                                                    type="number"
+                                                    name="price_per_unit"
+                                                    value={
+                                                        productSelected.price_per_unit
                                                     }
+                                                    className="mt-1 block w-full"
                                                     onChange={(e) => {
                                                         handleFormChange(
                                                             e,
@@ -389,59 +391,12 @@ function Edit({ products, bill }) {
                                                         );
                                                     }}
                                                     required
-                                                >
-                                                    <option
-                                                        value=""
-                                                        selected
-                                                        disabled
-                                                    >
-                                                        Select Color
-                                                    </option>
-                                                    <option value="light blue ">
-                                                        light blue{" "}
-                                                    </option>
-                                                    <option value="nova blue">
-                                                        nova blue
-                                                    </option>
-                                                    <option value="torquoise blue">
-                                                        torquoise blue
-                                                    </option>
-                                                    <option value="taraus blue">
-                                                        taraus blue
-                                                    </option>
-                                                    <option value="silver">
-                                                        silver
-                                                    </option>
-                                                    <option value="graphite gray">
-                                                        graphite gray
-                                                    </option>
-                                                    <option value="haif white">
-                                                        haif white
-                                                    </option>
-                                                    <option value="orange">
-                                                        orange
-                                                    </option>
-                                                    <option value="mist green">
-                                                        mist green
-                                                    </option>
-                                                    <option value="brick red">
-                                                        brick red
-                                                    </option>
-                                                    <option value="terracotta">
-                                                        terracotta
-                                                    </option>
-                                                    <option value="yellow">
-                                                        yellow
-                                                    </option>
-                                                    <option value="red">
-                                                        red
-                                                    </option>
-                                                    <option value="dark green">
-                                                        dark green
-                                                    </option>
-                                                </select>
+                                                />
+
                                                 <InputError
-                                                    message={errors.feet}
+                                                    message={
+                                                        errors.price_per_unit
+                                                    }
                                                     className="mt-2"
                                                 />
                                             </div>
